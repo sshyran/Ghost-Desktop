@@ -1,8 +1,8 @@
 /* jshint node:true */
-const {app, BrowserWindow, protocol} = requireNode('electron');
-const {dirname, resolve} = requireNode('path');
-const url = requireNode('url');
-const protocolServe = requireNode('electron-protocol-serve');
+const {app, BrowserWindow, protocol} = require('electron');
+const {dirname, resolve} = require('path');
+const url = require('url');
+const protocolServe = require('electron-protocol-serve');
 
 let mainWindow = null;
 
@@ -17,10 +17,7 @@ protocol.registerStandardSchemes(['serve'], {secure: true});
 // The index.html is in the tests/ directory, so we want all other assets to
 // load from its parent directory
 protocolServe({
-    cwd: resolve(dirname(indexPath), '..'),
-    app,
-    protocol,
-    indexPath
+    cwd: resolve(dirname(indexPath), '..'), app, protocol, indexPath
 });
 
 app.on('window-all-closed', function onWindowAllClosed() {
@@ -40,6 +37,8 @@ app.on('ready', function onReady() {
     });
 
     delete mainWindow.module;
+
+    console.log(`Loading ${emberAppLocation}`);
 
     mainWindow.loadURL(emberAppLocation);
 

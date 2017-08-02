@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { isReachable } from '../utils/is-reachable';
 
 const {String, Helper} = Ember;
 
