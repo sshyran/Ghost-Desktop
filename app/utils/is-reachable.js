@@ -1,16 +1,13 @@
 export function isReachable(url) {
     return new Promise((resolve) => {
-        const request = requireNode('request')
+        const request = requireNode('request');
 
-        request({
-            url: url,
-            method: 'HEAD'
-        }, (err, res) => {
+        request({url, method: 'HEAD'}, (err) => {
             if (err) {
-                resolve(false)
+                resolve(false);
             } else {
-                resolve(true)
+                resolve(true);
             }
-        })
-    })
+        });
+    });
 }

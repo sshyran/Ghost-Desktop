@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const debug = require('debug-electron')('ghost-desktop:main:state');
+const debug = require('debug')('ghost-desktop:main:state');
 
 let instance;
 

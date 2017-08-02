@@ -2,7 +2,8 @@ import Ember from 'ember';
 import ENV from 'ghost-desktop/config/environment';
 import {isReachable} from 'ghost-desktop/utils/is-reachable';
 
-const { Service, Evented, computed } = Ember;
+const {Service, Evented, computed} = Ember;
+const debug = require('debug')('ghost-desktop:auto-update');
 
 export default Service.extend(Evented, {
     autoUpdater: null,
@@ -19,7 +20,7 @@ export default Service.extend(Evented, {
             }
 
             if (this.get('environment') !== 'production') {
-                return false;
+                return true;
             }
 
             return true;
@@ -71,21 +72,31 @@ export default Service.extend(Evented, {
     /**
      * Checks Ghost Desktop's update server for updates.
      */
-    checkForUpdates() {
-        this.isOnline().then((reachable) => {
+    checkForUpdates(force = false) {
+        debug(`Checking for update${force ? ' (forced)' : ''}`);
+
+        this.isOnline(force).then((reachable) => {
             // Bail out if we're not able to reach the update server.
             if (!reachable) {
+                debug(`Update url not reachable, bailing.`);
                 return;
             }
 
             // Makes sure the environment we're in is supported.
             if (!this.get('isSupportedEnvironment')) {
+                debug(`Environment not supported, bailing`);
                 return;
             }
 
             // We're already in a update check state.
             if (this.get('isCheckingForUpdate')) {
+                debug(`Already checking for an update, bailing`);
                 return;
+            }
+
+            // Let's disable further checks now
+            if (force) {
+                this.set('isCheckingForUpdate', true);
             }
 
             if (!this.get('autoUpdater')) {
@@ -93,6 +104,7 @@ export default Service.extend(Evented, {
             }
 
             if (this.get('autoUpdater')) {
+                debug(`Executing check using Electron's autoupdater`);
                 this.get('autoUpdater').checkForUpdates();
             }
         });
@@ -101,7 +113,12 @@ export default Service.extend(Evented, {
     /**
      * Checks to see if we're online and able to reach the update server.
      */
-    isOnline() {
+    isOnline(force = false) {
+        // Ignore this check if we're forcing an update check
+        if (force) {
+            return Promise.resolve(true);
+        }
+
         return isReachable(this.get('updateFeedUrl'));
     },
 
@@ -128,21 +145,27 @@ export default Service.extend(Evented, {
             return;
         }
 
+        const feedUrl = this.get('updateFeedUrl');
+        debug(`Feed url: ${feedUrl}`);
+
         autoUpdater.removeAllListeners();
-        autoUpdater.setFeedURL(this.get('updateFeedUrl'));
+        autoUpdater.setFeedURL(feedUrl);
 
         autoUpdater.on('checking-for-update', () => {
+            debug(`Electron emitted "checking-for-update"`);
             this.set('isCheckingForUpdate', true);
             this.trigger('checking-for-update');
         });
 
         autoUpdater.on('update-available', () => {
+            debug(`Electron emitted "update-available'"`);
             this.set('isCheckingForUpdate', false);
             this.set('isUpdateAvailable', true);
             this.trigger('update-available');
         });
 
         autoUpdater.on('update-downloaded', () => {
+            debug(`Electron emitted "update-downloaded'`);
             this.set('isCheckingForUpdate', false);
             this.set('isUpdateAvailable', true);
             this.set('isUpdateDownloaded', true);
@@ -150,10 +173,20 @@ export default Service.extend(Evented, {
         });
 
         autoUpdater.on('update-not-available', () => {
+            debug(`Electron emitted "update-not-available"`);
             this.set('isCheckingForUpdate', false);
             this.set('isUpdateAvailable', false);
             this.set('isLatestVersion', true);
             this.trigger('update-not-available');
+        });
+
+        autoUpdater.on('error', (...args) => {
+            debug(`Electron emitted "error"`);
+            debug(JSON.stringify(args));
+            this.set('isCheckingForUpdate', false);
+            this.set('isUpdateAvailable', null);
+            this.set('isLatestVersion', null);
+            this.trigger('error');
         });
 
         this.set('autoUpdater', autoUpdater);

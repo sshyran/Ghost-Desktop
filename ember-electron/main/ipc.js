@@ -1,7 +1,7 @@
 const {ipcMain, BrowserWindow} = require('electron');
 const {state} = require('./state-manager');
 const {reloadMainWindow} = require('./app');
-const debug = require('debug-electron')('ghost-desktop:main:ipc');
+const debug = require('debug')('ghost-desktop:main:ipc');
 
 ipcMain.on('blog-data', (event, data) => {
     state.blogs = state.blogs || [];

@@ -25,6 +25,9 @@
                             <p>Ghost will periodically check for updates and automatically install new versions.</p>
                         {{/if}}
                         <p>You are currently running Ghost Desktop <strong>{{autoUpdate.appVersion}}</strong>.</p>
+                        <button  {{action "forceUpdateCheck"}} type="button" class="btn btn-green" disabled={{autoUpdate.isCheckingForUpdate}}>
+                            Check for Update
+                        </button>
                     </div>
                 {{/if}}
                 <div class="form-group for-checkbox">

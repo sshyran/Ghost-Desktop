@@ -1,6 +1,6 @@
 const {app, BrowserWindow} = require('electron');
 const {stateManager} = require('./state-manager');
-const debug = require('debug-electron')('ghost-desktop:main:open-url');
+const debug = require('debug')('ghost-desktop:main:open-url');
 const queryString = require('query-string');
 
 const urlMatchers = {

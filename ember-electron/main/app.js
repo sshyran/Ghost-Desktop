@@ -1,5 +1,5 @@
 const {app, BrowserWindow, protocol} = require('electron');
-const debug = require('debug-electron')('ghost-desktop:main:app');
+const debug = require('debug')('ghost-desktop:main:app');
 const {resolve, dirname, join} = require('path');
 
 const {fetchWindowState} = require('./window-state');
