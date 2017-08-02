@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import ENV from 'ghost-desktop/config/environment';
+import {isReachable} from 'ghost-desktop/utils/is-reachable';
 
-const {Service, Evented, computed} = Ember;
+const { Service, Evented, computed } = Ember;
 
 export default Service.extend(Evented, {
     autoUpdater: null,
@@ -101,13 +102,7 @@ export default Service.extend(Evented, {
      * Checks to see if we're online and able to reach the update server.
      */
     isOnline() {
-        return new Promise((resolve) => {
-            const isReachable = requireNode('is-reachable');
-
-            isReachable(this.get('updateFeedUrl'), (err, reachable) => {
-                resolve(reachable);
-            });
-        });
+        return isReachable(this.get('updateFeedUrl'));
     },
 
     /**
