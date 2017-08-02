@@ -5,6 +5,8 @@ import config from './config/environment';
 
 const {Application} = Ember;
 
+localStorage.debug = 'ghost-desktop:*';
+
 Ember.MODEL_FACTORY_INJECTIONS = true;
 
 const App = Application.extend({

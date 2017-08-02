@@ -66,6 +66,13 @@ export default Component.extend({
          */
         resetZoom() {
             this.set('preferences.zoomFactor', 100);
+        },
+
+        /**
+         * Forces an update check
+         */
+        forceUpdateCheck() {
+            this.get('autoUpdate').checkForUpdates(true);
         }
     }
 });
