@@ -16,7 +16,7 @@
     "make": "npm run contributors && ember electron:make",
     "test": "npm run test:lint && npm run test:unit",
     "test:unit": "ember electron:test",
-    "test:lint": "eslint './main/**/*.js' './app/**/*.js'"
+    "test:lint": "eslint './ember-electron/main/**/*.js' './app/**/*.js'"
   },
   "repository": "",
   "engines": {

@@ -10,4 +10,4 @@ window.GhostDesktop.addToEditor = function (title, content) {
     if ($contentElement) {
         $contentElement.val(`${$contentElement.val()}\n${content}`).change();
     }
-}
+};

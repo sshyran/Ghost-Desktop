@@ -23,4 +23,7 @@ function setupLinkExternalizer() {
     document.addEventListener('webkitAnimationStart', externalize, false);
 }
 
+/**
+ * Init
+ */
 setupLinkExternalizer();

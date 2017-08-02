@@ -40,6 +40,9 @@ function observeNightShift(i = 0) {
     }
 }
 
+/**
+ * Init
+ */
 document.addEventListener('DOMContentLoaded', () => {
     observeNightShift();
 }, false);

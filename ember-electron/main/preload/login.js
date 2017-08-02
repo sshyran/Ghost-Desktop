@@ -6,6 +6,7 @@
  * b) successful loaded
  */
 function checkStatus() {
+    const $ = window.$ || document.querySelectorAll;
     const err = document.querySelector('p.main-error');
     const errChildren = err.childElementCount && err.childElementCount > 0;
     const errText = err.textContent && err.textContent.length > 0;
@@ -42,8 +43,7 @@ function checkStatus() {
  * @param {string} password
  */
 function login(username = '', password = '', i = 0) {
-    $ = $ || document.querySelectorAll;
-
+    const $ = window.$ || document.querySelectorAll;
     const usernameField = $('input[name="identification"]');
     const passwordField = $('input[name="password"]');
     const loginButton = $('button.login');
@@ -72,4 +72,3 @@ function login(username = '', password = '', i = 0) {
  * Init
  */
 window.GhostDesktop.login = login;
-setTimeout(() => init(), 100);
