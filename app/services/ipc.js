@@ -7,13 +7,23 @@ export default Service.extend(Evented, {
         this.ipcRenderer = requireNode('electron').ipcRenderer;
 
         // Setup all the handlers
+
+        // Create a new draft
         this.ipcRenderer.on('create-draft', (sender, ...args) => {
             this.restoreWindow();
             this.trigger('create-draft', ...args);
         });
+
+        // Open the blog
         this.ipcRenderer.on('open-blog', (sender, ...args) => {
             this.restoreWindow();
             this.trigger('open-blog', ...args);
+        });
+
+        // Toggle night shift mode
+        this.ipcRenderer.on('night-shift', (sender, ...args) => {
+            this.restoreWindow();
+            this.trigger('night-shift', ...args);
         });
     },
 

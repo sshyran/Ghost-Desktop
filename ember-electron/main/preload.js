@@ -1,6 +1,6 @@
 // Preload various modules before actual loading
 // the individual Ghost blogs
-window.desktop = window.desktop || {};
+window.GhostDesktop = window.GhostDesktop || {};
 
 require('./preload/login');
 require('./preload/upgrade-notification');
@@ -9,3 +9,4 @@ require('./preload/spellchecker');
 require('./preload/external-links');
 require('./preload/devtron');
 require('./preload/interactions');
+require('./preload/night-shift');

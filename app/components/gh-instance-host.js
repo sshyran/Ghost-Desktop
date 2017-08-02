@@ -129,8 +129,8 @@ export default Component.extend({
         const escapedUsername = escapeString(username);
         const escapedPassword = escapeString(password);
         const commands = [
-            `if (desktop && desktop.login) {`,
-            `desktop.login('${escapedUsername}', '${escapedPassword}');`,
+            `if (GhostDesktop && GhostDesktop.login) {`,
+            `GhostDesktop.login('${escapedUsername}', '${escapedPassword}');`,
             `}`
         ];
 
@@ -160,7 +160,7 @@ export default Component.extend({
      * @param {string} newUrl
      */
     _handleWillNavigate(newUrl = '') {
-        debug(`${this.get('debugName')} will navigate: ${url}}`)
+        debug(`${this.get('debugName')} will navigate: ${newUrl}`);
     },
 
     /**
@@ -170,7 +170,7 @@ export default Component.extend({
      * @param {string} newUrl
      */
     _handleRedirect(oldUrl = '', newUrl = '') {
-        debug(`${this.get('debugName')} was redirected: ${url}}`)
+        debug(`${this.get('debugName')} was redirected: ${oldUrl}, ${newUrl}`);
     },
 
     /**

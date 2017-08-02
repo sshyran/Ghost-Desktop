@@ -58,9 +58,10 @@ function login(username = '', password = '', i = 0) {
 
         setTimeout(checkStatus, 100);
     } else {
-        if (i < 15) {
-            console.log('Login: Could not find fields, trying again in 150ms.');
-            setTimeout(() => login(username, password, i + 1), 150);
+        // We'll try for 5s
+        if (i < 20) {
+            console.log('Login: Could not find fields, trying again in 250ms.');
+            setTimeout(() => login(username, password, i + 1), 250);
         } else {
             console.warn('Login: Could not find correct fields, giving up');
         }
@@ -70,5 +71,5 @@ function login(username = '', password = '', i = 0) {
 /**
  * Init
  */
-window.desktop.login = login;
+window.GhostDesktop.login = login;
 setTimeout(() => init(), 100);

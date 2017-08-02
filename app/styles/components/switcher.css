@@ -18,6 +18,11 @@
     background-color: inherit;
 }
 
+.night-shift > .switcher,
+.night-shift > .switcher.is-vibrant {
+    background-color: rgb(22, 28, 30);
+}
+
 .switcher.mac {
     padding-top: 25px;
 }
