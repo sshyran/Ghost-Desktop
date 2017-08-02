@@ -1,8 +1,8 @@
 /* jshint node:true */
-const {app, BrowserWindow, protocol} = require('electron');
-const {dirname, resolve} = require('path');
-const url = require('url');
-const protocolServe = require('electron-protocol-serve');
+const {app, BrowserWindow, protocol} = requireNode('electron');
+const {dirname, resolve} = requireNode('path');
+const url = requireNode('url');
+const protocolServe = requireNode('electron-protocol-serve');
 
 let mainWindow = null;
 

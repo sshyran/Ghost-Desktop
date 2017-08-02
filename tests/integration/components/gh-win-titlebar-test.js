@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit'
 import hbs from 'htmlbars-inline-precompile'
 
-const browserWindow = require('electron').remote.getCurrentWindow();
+const browserWindow = requireNode('electron').remote.getCurrentWindow();
 
 moduleForComponent('gh-win-titlebar', 'Integration | Component | gh win titlebar', {
     integration: true,

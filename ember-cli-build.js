@@ -7,36 +7,10 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app'),
 
 module.exports = function(defaults) {
     const isTest = (process.env.EMBER_ENV || 'development') === 'test';
-    const blacklist = isTest ? [] : [
-        'es6.arrowFunctions',
-        'es6.blockScoping',
-        'es6.classes',
-        'es6.forOf',
-        'es6.templateLiterals',
-        'es6.constants',
-        'es6.properties.computed',
-        'es6.properties.shorthand',
-        'es6.literals',
-        'es6.spec.symbols',
-        'es6.spread',
-        'es6.parameters',
-        'es6.spec.arrowFunctions',
-        'es6.spec.templateLiterals',
-        'es6.spec.blockScoping',
-        'es6.tailCall',
-        'es6.regex.sticky',
-        'es6.regex.unicode',
-        'es6.objectSuper',
-        'es6.destructuring'
-    ];
 
     const app = new EmberApp(defaults, {
         babel: {
-            blacklist: blacklist,
             comments: false
-        },
-        'ember-cli-babel': {
-            includePolyfill: true
         },
         fingerprint: {
             enabled: false

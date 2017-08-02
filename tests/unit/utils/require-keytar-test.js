@@ -15,7 +15,7 @@ test('it returns false when require keytar fails', function(assert) {
         if (module === 'keytar') {
             throw new Error('Module loading error');
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 

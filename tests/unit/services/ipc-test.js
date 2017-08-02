@@ -1,6 +1,6 @@
 import {moduleFor, test} from 'ember-qunit';
 
-const EventEmitter = require('events');
+const EventEmitter = requireNode('events');
 class FakeIpcRenderer extends EventEmitter {}
 
 moduleFor('service:ipc', 'Unit | Service | ipc', {
@@ -33,7 +33,7 @@ test('it triggers create-draft on ipc create-draft', function(assert) {
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -66,7 +66,7 @@ test('it triggers open-blog on ipc open-blog', function(assert) {
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -103,7 +103,7 @@ test('restoreWindow shows window if hidden', function(assert) {
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -136,7 +136,7 @@ test('restoreWindow restores window if minimized', function(assert) {
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 

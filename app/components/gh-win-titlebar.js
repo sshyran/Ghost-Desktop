@@ -6,8 +6,8 @@ export default Component.extend({
     classNameBindings: [':win-titlebar'],
     title: 'Ghost',
     windowMenu: inject.service(),
-    isMaximized: require('electron').remote.getCurrentWindow().isMaximized(),
-    browserWindow: require('electron').remote.getCurrentWindow(),
+    isMaximized: requireNode('electron').remote.getCurrentWindow().isMaximized(),
+    browserWindow: requireNode('electron').remote.getCurrentWindow(),
 
     didInsertElement() {
         this._super(...arguments);

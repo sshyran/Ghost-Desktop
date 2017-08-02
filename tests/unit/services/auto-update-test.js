@@ -30,7 +30,7 @@ test('reports the correct application version', function(assert) {
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -136,7 +136,7 @@ test('_setup sets the feed url', function(assert) {
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -180,7 +180,7 @@ test('_setup handles autoUpdater events', function(assert) {
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -211,7 +211,7 @@ test('autoUpdater\'s update checks is reflected in isCheckingForUpdate', functio
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -244,7 +244,7 @@ test('autoUpdater\'s update-available is reflected in isUpdateAvailable', functi
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -277,7 +277,7 @@ test('autoUpdater\'s update-downloaded is reflected in isUpdateDownloaded', func
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
@@ -310,7 +310,7 @@ test('autoUpdater\'s update-not-available is reflected in isUpdateAvailable', fu
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 

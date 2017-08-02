@@ -61,25 +61,42 @@ export default Model.extend({
     /**
      * Uses the operating system's native credential store to set the password
      * for this blog.
+     *
      * @param {string} value - Password to set
+     * @return {Promise<void>} - Success
      */
     setPassword(value) {
-        const keytar = requireKeytar();
-        return (keytar ? keytar.replacePassword(this.get('url'), this.get('identification'), value) : false);
+        return new Promise((resolve) => {
+            const keytar = requireKeytar();
+
+            if (keytar) {
+                return keytar.replacePassword(this.get('url'), this.get('identification'), value);
+            } else {
+                resolve();
+            }
+        });
     },
 
     /**
      * Uses the operating system's native credential store to get the password
      * for this blog.
-     * @return {string} Password for this blog
+     *
+     * @return {Promise<string>} Password for this blog
      */
     getPassword() {
-        if (!this.get('url') || !this.get('identification')) {
-            return null;
-        }
+        return new Promise((resolve) => {
+            if (!this.get('url') || !this.get('identification')) {
+                resolve(null);
+            }
 
-        const keytar = requireKeytar();
-        return (keytar ? keytar.getPassword(this.get('url'), this.get('identification')) : null);
+            const keytar = requireKeytar();
+
+            if (keytar) {
+                return keytar.getPassword(this.get('url'), this.get('identification'));
+            } else {
+                resolve(null);
+            }
+        });
     },
 
     /**
@@ -117,7 +134,7 @@ export default Model.extend({
      * too.
      */
     save() {
-        const {ipcRenderer} = require('electron');
+        const {ipcRenderer} = requireNode('electron');
         const serializedData = this.toJSON({includeId: true});
 
         ipcRenderer.send('blog-serialized', serializedData);

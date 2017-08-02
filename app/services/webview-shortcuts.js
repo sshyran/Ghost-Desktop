@@ -70,7 +70,7 @@ export default Service.extend({
         this.queryAndClick(`a[href*='/ghost/editor/']`, 'New Post', waitForWebview)
             .then(() => {
                 if (title || content) {
-                    const escape = require('js-string-escape');
+                    const escape = requireNode('js-string-escape');
                     const $wv = findVisibleWebview();
 
                     if ($wv) {

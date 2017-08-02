@@ -3,7 +3,7 @@ import ENV from 'ghost-desktop/config/environment';
 import {isReachable} from 'ghost-desktop/utils/is-reachable';
 
 const {Service, Evented, computed} = Ember;
-const debug = require('debug')('ghost-desktop:auto-update');
+const debug = requireNode('debug')('ghost-desktop:auto-update');
 
 export default Service.extend(Evented, {
     autoUpdater: null,

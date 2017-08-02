@@ -1,7 +1,7 @@
 import setWindowTitle from 'ghost-desktop/utils/set-window-title';
 import {module, test} from 'qunit';
 
-const he = require('he');
+const he = requireNode('he');
 
 module('Unit | Utility | set window title');
 
@@ -26,7 +26,7 @@ test('it sets the window title', function(assert) {
                 }
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 

@@ -46,6 +46,29 @@ function init() {
 }
 
 /**
+ * Automatically login.
+ *
+ * @param {string} username
+ * @param {string} password
+ */
+function login(username = '', password = '') {
+    const usernameField = $('input[name="identification"]');
+    const passwordField = $('input[name="password"]');
+    const loginButton = $('button.login');
+
+    if (usernameField && passwordField && loginButton) {
+        usernameField.val(username);
+        usernameField.change();
+        passwordField.val(password);
+        passwordField.change();
+        loginButton.click();
+    } else {
+        console.warn('Tried to login, but could not find correct fields');
+    }
+}
+
+/**
  * Init
  */
-setTimeout(init, 100);
+window.desktop.login = login;
+setTimeout(() => init(), 100);

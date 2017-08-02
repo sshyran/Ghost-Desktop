@@ -1,4 +1,4 @@
-import escapeString from 'ghost-desktop/utils/escape-string';
+import {escapeString} from 'ghost-desktop/utils/escape-string';
 import {module, test} from 'qunit';
 
 module('Unit | Utility | escape string');

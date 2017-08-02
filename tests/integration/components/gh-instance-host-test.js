@@ -20,7 +20,7 @@ test('it renders', function(assert) {
 });
 
 test('it initializes the webview', function(assert) {
-    const path = require('path');
+    const path = requireNode('path');
     const blog = TestBlog.create({
         id: 1,
         name: 'Testblog (Content)',

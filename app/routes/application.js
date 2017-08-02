@@ -15,7 +15,7 @@ export default Route.extend({
     },
 
     setupTeardown() {
-        const browserWindow = require('electron').remote.getCurrentWindow();
+        const browserWindow = requireNode('electron').remote.getCurrentWindow();
 
         window.onbeforeunload = function () {
             browserWindow.removeAllListeners();
@@ -34,7 +34,7 @@ export default Route.extend({
      */
     afterModel(blogs) {
         if (blogs) {
-            const {ipcRenderer} = require('electron');
+            const {ipcRenderer} = requireNode('electron');
 
             blogs.forEach((blog) => {
                 const serializedData = blog.toJSON({includeId: true});

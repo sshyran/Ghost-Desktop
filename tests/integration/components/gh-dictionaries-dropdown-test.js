@@ -33,7 +33,7 @@ moduleForComponent('gh-dictionaries-dropdown', 'Integration | Component | gh dic
                     }
                 }
             } else {
-                return oldRequire(target);
+                return oldrequireNode(target);
             }
         }
 

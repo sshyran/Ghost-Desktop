@@ -37,7 +37,7 @@ test('it attempts to set the user tasks, given a list of blogs', function(assert
                 remote: mockRemote
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 
@@ -76,7 +76,7 @@ test('still works with one borked blog', function(assert) {
                 remote: mockRemote
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 
@@ -103,7 +103,7 @@ test('does not attempt to set anything if passed no blogs', function(assert) {
                 remote: mockRemote
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 

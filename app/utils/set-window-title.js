@@ -1,4 +1,4 @@
-const he = require('he');
+const he = requireNode('he');
 
 /**
  * Sets the title on the currently focused Window (or the first found window)

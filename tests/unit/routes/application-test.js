@@ -59,7 +59,7 @@ test('it returns blogs as a model', function(assert) {
 //                 }
 //             };
 //         } else {
-//             return oldRequire(...arguments);
+//             return oldrequireNode(...arguments);
 //         }
 //     };
 
@@ -86,7 +86,7 @@ test('after the model loads, we tell the main thread about the blogs', function(
                 }
             };
         } else {
-            return oldRequire(...arguments);
+            return oldrequireNode(...arguments);
         }
     };
 
