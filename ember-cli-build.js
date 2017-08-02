@@ -6,8 +6,6 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app'),
     mythCompress = isProduction || environment === 'test';
 
 module.exports = function(defaults) {
-    const isTest = (process.env.EMBER_ENV || 'development') === 'test';
-
     const app = new EmberApp(defaults, {
         babel: {
             comments: false
