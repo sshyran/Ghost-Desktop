@@ -7,6 +7,7 @@ import escapeString from '../utils/escape-string';
 const {Component, inject, observer, run} = Ember;
 
 const path = requireNode('path');
+const debug = requireNode('debug')('ghost-desktop:instance-host');
 
 /**
  * The instance host component contains a webview, displaying a Ghost blog
@@ -216,7 +217,7 @@ export default Component.extend({
             this.show();
         }
 
-        console.log(`Ghost Instance failed to load. Error Code: ${errorCode}`, errorDescription);
+        debug(`Ghost Instance failed to load. Error Code: ${errorCode}`, errorDescription);
         // TODO: Handle notification click
         /* eslint-disable no-unused-vars */
         if (this.get('preferences.isNotificationsEnabled')) {
@@ -281,7 +282,7 @@ export default Component.extend({
         const $webview = ($webviews && $webviews[0]) ? $webviews[0] : undefined;
 
         if (!$webview) {
-            console.log(new Error('Could not find webview containing Ghost blog.'));
+            debug('Could not find webview containing Ghost blog.');
         }
 
         return $webview;

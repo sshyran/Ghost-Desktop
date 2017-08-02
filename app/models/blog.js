@@ -4,6 +4,7 @@ import requireKeytar from '../utils/require-keytar';
 import getBlogName from '../utils/get-blog-name';
 
 const {Model, attr} = DS;
+const debug = requireNode('debug')('ghost-desktop:blog-model');
 
 export default Model.extend({
     index: attr('number', {
@@ -91,10 +92,9 @@ export default Model.extend({
         if (url) {
             return getBlogName(url)
                 .then((name) => {
-                    console.log(name);
                     this.set('name', name);
                 })
-                .catch((e) => console.log(e));
+                .catch((e) => debug(`Tried to update blog name, but failed: ${e}`));
         }
     },
 

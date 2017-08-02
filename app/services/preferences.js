@@ -2,6 +2,7 @@ import Ember from 'ember';
 import {storageFor} from 'ember-local-storage';
 
 const {Service, Evented, computed} = Ember;
+const debug = require('debug')('ghost-desktop:preferences');
 
 export default Service.extend(Evented, {
     preferences: storageFor('preferences'),
@@ -35,7 +36,9 @@ export default Service.extend(Evented, {
                 this.set('preferences.contributors', contributors);
             }
         } catch (error) {
-            if (!window.QUnit) console.log('Failed catching contributors');
+            if (!window.QUnit) {
+                debug('Failed catching contributors');
+            }
         }
     },
 
