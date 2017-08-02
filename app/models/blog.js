@@ -65,16 +65,12 @@ export default Model.extend({
      * @param {string} value - Password to set
      * @return {Promise<void>} - Success
      */
-    setPassword(value) {
-        return new Promise((resolve) => {
-            const keytar = requireKeytar();
+    async setPassword(value) {
+        const keytar = requireKeytar();
 
-            if (keytar) {
-                return keytar.replacePassword(this.get('url'), this.get('identification'), value);
-            } else {
-                resolve();
-            }
-        });
+        if (keytar) {
+            await keytar.replacePassword(this.get('url'), this.get('identification'), value);
+        }
     },
 
     /**
@@ -83,20 +79,18 @@ export default Model.extend({
      *
      * @return {Promise<string>} Password for this blog
      */
-    getPassword() {
-        return new Promise((resolve) => {
-            if (!this.get('url') || !this.get('identification')) {
-                resolve(null);
-            }
+    async getPassword() {
+        if (!this.get('url') || !this.get('identification')) {
+            return null;
+        }
 
-            const keytar = requireKeytar();
+        const keytar = requireKeytar();
 
-            if (keytar) {
-                return keytar.getPassword(this.get('url'), this.get('identification'));
-            } else {
-                resolve(null);
-            }
-        });
+        if (keytar) {
+            return keytar.getPassword(this.get('url'), this.get('identification'));
+        } else {
+            return null;
+        }
     },
 
     /**
