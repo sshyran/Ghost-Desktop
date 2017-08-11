@@ -86,6 +86,7 @@
     "keytar": "3.0.2",
     "query-string": "4.3.1",
     "randomcolor": "0.4.4",
+    "request": "^2.34.0",
     "request-promise-native": "^1.0.3",
     "spellchecker": "3.3.1"
   },
