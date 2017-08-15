@@ -80,7 +80,7 @@ module.exports = {
         certificatePassword: getSigningPassword()
     },
     electronInstallerDebian: {
-        name: 'ghost-desktop',
+        name: 'Ghost',
         maintainer: 'Felix Rieseberg <felix@felixrieseberg.com>',
         homepage: 'https://ghost.org/',
         genericName: 'Blogging Software',
