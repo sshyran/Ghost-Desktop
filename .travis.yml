@@ -1,5 +1,9 @@
 ---
-sudo: false
+language: node_js
+node_js:
+  - "7"
+sudo: true
+dist: trusty
 
 cache:
   directories:
@@ -9,34 +13,17 @@ cache:
 matrix:
   include:
     - os: linux
-      addons:
-        apt:
-          packages:
-            - build-essential
-            - clang-3.3
-            - fakeroot
-            - git
-            - libgnome-keyring-dev
-            - rpm
-            - libx11-dev
-            - libxkbfile-dev
       env:
-        - NODE_VERSION=6.10 DISPLAY=:99.0 CC=clang CXX=clang++ npm_config_clang=1 TARGET_ARCH=x64 OS=LINUX
+        - DISPLAY=:99.0 CC=clang CXX=clang++ npm_config_clang=1 TARGET_ARCH=x64 OS=LINUX
     - os: osx
       osx_image: xcode7.3
       env:
-        - NODE_VERSION=6.3 TARGET_ARCH=x64 OS=DARWIN DISPLAY=:99.0
+        - TARGET_ARCH=x64 OS=DARWIN DISPLAY=:99.0
 
 before_install:
-  # OS X ---------------------------------------------------------------------
-  # nvm is not yet supported on osx, manually install
-  - rm -rf ~/.nvm
-  - git clone https://github.com/creationix/nvm.git /tmp/.nvm
-  - source /tmp/.nvm/nvm.sh
-  - nvm install $NODE_VERSION
-  - nvm use --delete-prefix $NODE_VERSION
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -yq xvfb gnome-keyring libsecret-1-dev python-gnomekeyring; fi
   - node --version && npm --version
-  # Continue with our normally scheduled program -----------------------------
   - "npm config set spin false"
   - "npm install -g node-gyp"
   - "npm install -g grunt-cli"

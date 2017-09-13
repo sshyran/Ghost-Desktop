@@ -9,7 +9,8 @@
         "**/bower_components": true,
         "**/tmp": true,
         "**/vendor": true,
-        "**/dist": true
+        "**/dist": true,
+        "**/electron-out": true
     }
 ,
 "vsicons.presets.angular": true
