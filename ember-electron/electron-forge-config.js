@@ -34,7 +34,7 @@ module.exports = {
     },
     electronPackagerConfig: {
         appCategoryType: 'public.app-category.productivity',
-        appCopyright: 'Copyright (c) 2016 Ghost Foundation',
+        appCopyright: 'Copyright (c) 2016-2017 Ghost Foundation',
         name: 'Ghost',
         versionString: {
             CompanyName: 'Ghost Foundation',
@@ -82,12 +82,17 @@ module.exports = {
     electronInstallerDebian: {
         name: 'Ghost',
         maintainer: 'Felix Rieseberg <felix@felixrieseberg.com>',
-        homepage: 'https://tryghost.com',
+        homepage: 'https://ghost.org/',
         genericName: 'Blogging Software',
         arch: 'amd64',
         icon:  path.join(__dirname, '../assets/icons/ghost-macos.png'),
         bin: 'Ghost',
-        productDescription: 'A beautiful desktop application enabling you to easily manage multiple Ghost blogs and work without distractions.'
+        productName: 'Ghost Desktop',
+        productDescription: 'A beautiful desktop application enabling you to easily manage multiple Ghost blogs and work without distractions.',
+        section: 'Office',
+        categories: [
+            'Network', 'Office'
+        ]
     },
     electronInstallerRedhat: {}
 };
