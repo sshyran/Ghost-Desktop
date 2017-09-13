@@ -18,7 +18,7 @@ export function reload(item, focusedWindow) {
     if (focusedWindow && (process.platform !== 'darwin' || ENV.environment === 'test')) {
         focusedWindow.reload();
     } else {
-        const {ipcRenderer} = require('electron');
+        const {ipcRenderer} = requireNode('electron');
         ipcRenderer.send('soft-restart-requested', true);
     }
 }

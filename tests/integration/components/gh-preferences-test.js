@@ -27,7 +27,7 @@ test('sets zoom factor', function(assert) {
     run(() => {
         this.$('button:contains("Set Zoom")').click();
 
-        const frame = require('electron').webFrame;
+        const frame = requireNode('electron').webFrame;
         const zf = frame.getZoomFactor();
 
         assert.equal(zf, 1.2);
@@ -43,7 +43,7 @@ test('resets zoom factor', function(assert) {
     run(() => {
         this.$('button:contains("Reset")').click();
 
-        const frame = require('electron').webFrame;
+        const frame = requireNode('electron').webFrame;
         const zf = frame.getZoomFactor();
 
         assert.equal(zf, 1);

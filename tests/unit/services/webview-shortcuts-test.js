@@ -3,8 +3,8 @@ import {moduleFor, test} from 'ember-qunit';
 moduleFor('service:webview-shortcuts', 'Unit | Service | webview shortcuts', {
     setup: (assert) => {
         const done = assert.async();
-        const path = require('path');
-        const findParentDir = require('find-parent-dir');
+        const path = requireNode('path');
+        const findParentDir = requireNode('find-parent-dir');
         const dirname = findParentDir.sync(__dirname, '.git');
         const src = path.join(dirname, 'tests', 'fixtures', 'static-shortcuts', 'shortcuts.html');
 

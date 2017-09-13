@@ -1,5 +1,5 @@
 // Thanks to Jo Liss for this code
-export default function escapeString(string) {
+export function escapeString(string) {
     return (`${string}`).replace(/["'\\\n\r\u2028\u2029]/g, (character) => {
         switch (character) {
         case '"':

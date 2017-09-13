@@ -2,6 +2,7 @@ import Ember from 'ember';
 import {storageFor} from 'ember-local-storage';
 
 const {Service, Evented, computed} = Ember;
+const debug = requireNode('debug')('ghost-desktop:preferences');
 
 export default Service.extend(Evented, {
     preferences: storageFor('preferences'),
@@ -16,7 +17,7 @@ export default Service.extend(Evented, {
             return this.get('preferences.zoomFactor');
         },
         set(k, v) {
-            const frame = require('electron').webFrame;
+            const frame = requireNode('electron').webFrame;
             const setting = (v >= 50 && v <= 300) ? v : 100;
 
             frame.setZoomFactor(setting / 100);
@@ -30,12 +31,14 @@ export default Service.extend(Evented, {
 
     setupContributors() {
         try {
-            const contributors = require('../ember-electron/main/contributors.json');
+            const contributors = requireNode('../ember-electron/main/contributors.json');
             if (contributors) {
                 this.set('preferences.contributors', contributors);
             }
         } catch (error) {
-            if (!window.QUnit) console.log('Failed catching contributors');
+            if (!window.QUnit) {
+                debug('Failed catching contributors');
+            }
         }
     },
 

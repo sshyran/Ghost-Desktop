@@ -12,7 +12,7 @@ test('getIsYosemiteOrHigher: True for Sierra', function(assert) {
                 release: () => '16.1.0'
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     }
 
@@ -29,7 +29,7 @@ test('getIsYosemiteOrHigher: True for El Capitan', function(assert) {
                 release: () => '15.6.0'
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     }
 
@@ -46,7 +46,7 @@ test('getIsYosemiteOrHigher: True for Yosemite', function(assert) {
                 release: () => '14.0.0'
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     }
 
@@ -63,7 +63,7 @@ test('getIsYosemiteOrHigher: False for Mavericks', function(assert) {
                 release: () => '13.0.0'
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     }
 
@@ -80,7 +80,7 @@ test('getIsYosemiteOrHigher: False for Windows', function(assert) {
                 release: () => '14.0.0'
             };
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     }
 

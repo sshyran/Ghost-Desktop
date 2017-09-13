@@ -2,11 +2,12 @@ import Ember from 'ember';
 import ENV from 'ghost-desktop/config/environment';
 import {injectCss} from '../utils/inject-css';
 import Phrases from '../utils/phrases';
-import escapeString from '../utils/escape-string';
+import {escapeString} from '../utils/escape-string';
 
-const {Component, inject, observer, run} = Ember;
+const {Component, inject, observer, run, computed} = Ember;
 
 const path = requireNode('path');
+const debug = requireNode('debug')('ghost-desktop:instance-host');
 
 /**
  * The instance host component contains a webview, displaying a Ghost blog
@@ -17,6 +18,12 @@ export default Component.extend({
     classNameBindings: ['blog.isSelected:selected'],
     preferences: inject.service(),
     preload: `file://${path.join(__dirname, '../ember-electron/main/preload.js')}`,
+    debugName: computed('blog', function () {
+        const blog = this.get('blog');
+        const name = blog ? blog.get('name') : null || '(unknown blog)';
+
+        return `WebView ${name}`;
+    }),
 
     /**
      * Observes the 'isResetRequested' property, resetting the instance if
@@ -55,6 +62,10 @@ export default Component.extend({
             .on('did-finish-load', () => this._handleLoaded())
             .off('did-fail-load')
             .on('did-fail-load', (e, c, s) => this._handleLoadFailure(e, c, s))
+            .off('did-get-redirect-request')
+            .on('did-get-redirect-request', (e, n) => this._handleWillNavigate(n))
+            .off('will-navigate')
+            .on('will-navigate', (e, o, n) => this._handleRedirect(o, n))
             .off('new-window')
             .on('new-window', (e) => this._handleNewWindow(e))
             .off('console-message')
@@ -99,9 +110,11 @@ export default Component.extend({
     /**
      * Programmatically attempt to login
      */
-    signin($webview = this._getWebView()) {
+    async signin($webview = this._getWebView()) {
         const username = this.get('blog.identification');
-        const password = this.get('blog').getPassword();
+        const password = await this.get('blog').getPassword();
+
+        debug(`${this.get('debugName')} trying to sign in.`);
 
         // If we can't find username or password, bail out and let the
         // user deal with whatever happened
@@ -109,15 +122,16 @@ export default Component.extend({
         // TODO: Ask the user for credentials and add them back to the OS
         // keystore
         if (!username || !password || !$webview) {
+            debug(`${this.get('debugName')} tried to sign in, but no username or password found.`);
             return this.show();
         }
 
+        const escapedUsername = escapeString(username);
+        const escapedPassword = escapeString(password);
         const commands = [
-            `$('input[name="identification"]').val('${escapeString(username)}');`,
-            `$('input[name="identification"]').change();`,
-            `$('input[name="password"]').val('${escapeString(password)}');`,
-            `$('input[name="password"]').change();`,
-            `$('button.login').click();`
+            `if (GhostDesktop && GhostDesktop.login) {`,
+            `GhostDesktop.login('${escapedUsername}', '${escapedPassword}');`,
+            `}`
         ];
 
         // Execute the commands. Once done, the load handler will
@@ -141,10 +155,30 @@ export default Component.extend({
     },
 
     /**
+     * Handles will-navigate (mostly by just logging it)
+     *
+     * @param {string} newUrl
+     */
+    _handleWillNavigate(newUrl = '') {
+        debug(`${this.get('debugName')} will navigate: ${newUrl}`);
+    },
+
+    /**
+     * Handles redirection (mostly by just logging it)
+     *
+     * @param {string} oldUrl
+     * @param {string} newUrl
+     */
+    _handleRedirect(oldUrl = '', newUrl = '') {
+        debug(`${this.get('debugName')} was redirected: ${oldUrl}, ${newUrl}`);
+    },
+
+    /**
      * The webview started loading, meaning that it moved on from being a simple
      * HTMLElement to bloom into a beautiful webview (with all the methods we need)
      */
     _handleStartLoading() {
+        debug(`${this.get('debugName')} did-start-loading`);
         const $webview = this._getWebView();
 
         this._insertCss();
@@ -157,20 +191,24 @@ export default Component.extend({
      * Handle's the 'did-finish-load' event on the webview hosting the Ghost blog
      */
     _handleLoaded() {
+        debug(`${this.get('debugName')} did-finish-loading`);
         const $webview = this._getWebView();
+        const isAttemptedSignin = this.get('isAttemptedSignin');
         let title = '';
 
         try {
             title = $webview.getTitle();
         } catch (e) {
-            console.warn('Error while trying to to get web view title:', e);
+            debug(`${this.get('debugName')} Error while trying to to get web view title:`);
+            console.warn(e);
         }
 
         // Check if we're on the sign in page, and if so, attempt to
         // login automatically (without bothering the user)
-        if (title.includes('Sign In') && !this.get('isAttemptedSignin')) {
+        if ((title.includes('Sign In') || title === 'Ghost Admin') && !isAttemptedSignin) {
             this.signin();
         } else {
+            debug(`${this.get('debugName')} Not trying to sign in.`, {title, isAttemptedSignin});
             this.show();
         }
     },
@@ -197,6 +235,8 @@ export default Component.extend({
      * @param errorDescription {string}
      */
     _handleLoadFailure(e, errorCode, errorDescription = '') {
+        debug(`${this.get('debugName')} encountered load error: ${errorCode}`);
+
         const $webview = this._getWebView();
         const path = requireNode('path');
         let errorPage = path.join(__dirname, '..', 'main', 'load-error', 'error.html');
@@ -216,7 +256,7 @@ export default Component.extend({
             this.show();
         }
 
-        console.log(`Ghost Instance failed to load. Error Code: ${errorCode}`, errorDescription);
+        debug(`Ghost Instance failed to load. Error Code: ${errorCode}`, errorDescription);
         // TODO: Handle notification click
         /* eslint-disable no-unused-vars */
         if (this.get('preferences.isNotificationsEnabled')) {
@@ -281,7 +321,7 @@ export default Component.extend({
         const $webview = ($webviews && $webviews[0]) ? $webviews[0] : undefined;
 
         if (!$webview) {
-            console.log(new Error('Could not find webview containing Ghost blog.'));
+            debug('Could not find webview containing Ghost blog.');
         }
 
         return $webview;

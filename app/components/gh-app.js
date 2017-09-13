@@ -11,10 +11,11 @@ export default Component.extend({
     autoUpdate: inject.service(),
     ipc: inject.service(),
     webviewShortcuts: inject.service(),
-    classNameBindings: ['isMac:mac', 'isWindows:win', ':gh-app'],
+    classNameBindings: ['isMac:mac', 'isWindows:win', 'isNightShift:night-shift', ':gh-app'],
     isFindInViewActive: false,
     isMac: !!(process.platform === 'darwin'),
     isWindows: !!(process.platform === 'win32'),
+    isNightShift: false,
 
     /**
      * Called when the attributes passed into the component have been updated.
@@ -34,6 +35,7 @@ export default Component.extend({
         const ipc = this.get('ipc');
 
         ipc.notifyReady();
+        ipc.on('night-shift', (status) => this.handleNightShift(status));
         ipc.on('open-blog', (details) => this.handleOpenBlogEvent(details));
         ipc.on('create-draft', (details) => this.handleCreateDraftEvent(details));
     },
@@ -57,8 +59,22 @@ export default Component.extend({
         }
     },
 
+    /**
+     * Handles the "create a draft" event
+     *
+     * @param {string} [{title, content}={title: '', content: ''}]
+     */
     handleCreateDraftEvent({title, content} = {title: '', content: ''}) {
         this.get('webviewShortcuts').openNewPost(true, {title, content});
+    },
+
+    /**
+     * Toggles the night shift setting
+     *
+     * @param {boolean} [status=false]
+     */
+    handleNightShift(status = false) {
+        this.set('isNightShift', status);
     },
 
     /**

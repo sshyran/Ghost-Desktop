@@ -17,7 +17,7 @@ test('it setups a dock menu', function(assert) {
         if (module === 'electron') {
             return {remote: mockRemote};
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 
@@ -49,7 +49,7 @@ test('ignores borked blog items', function(assert) {
         if (module === 'electron') {
             return {remote: mockRemote};
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 
@@ -83,7 +83,7 @@ test('does not do anything if called without items', function(assert) {
         if (module === 'electron') {
             return {remote: mockRemote};
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 

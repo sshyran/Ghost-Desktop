@@ -44,7 +44,7 @@ test('right click opens context menu', function(assert) {
         if (module === 'electron') {
             return {remote: mockRemote};
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 

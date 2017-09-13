@@ -15,7 +15,7 @@ test('it renders', function(assert) {
 
 test('it searches', function(assert) {
     const done = assert.async();
-    const path = require('path');
+    const path = requireNode('path');
     let doneCalled = false;
 
     this.set('url', `file://${path.join(__dirname, 'tests', 'fixtures', 'static-content', 'content.html')}`);

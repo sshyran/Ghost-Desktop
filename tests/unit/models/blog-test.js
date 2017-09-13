@@ -59,11 +59,11 @@ test('it can store a password', function(assert) {
     run(() => blog.setPassword('test'));
 });
 
-test('it can retrieve a password', function(assert) {
+test('it can retrieve a password', async function(assert) {
     const blog = this.subject({identification: 'test', url: 'testblog'});
 
-    run(() => {
-        const password = blog.getPassword();
+    await run(async () => {
+        const password = await blog.getPassword();
 
         // On Travis, this test might fail - so we accept it right away.
         // This issue can be solved by using a Travis instance with

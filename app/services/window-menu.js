@@ -161,9 +161,9 @@ export default Service.extend({
                         click: () => shortcuts.openSettingsTags()
                     });
                     item.submenu.insertAt(2, {
-                        label: 'Navigation',
-                        accelerator: 'CmdOrCtrl+Alt+N',
-                        name: 'open-navigation',
+                        label: 'Design',
+                        accelerator: 'CmdOrCtrl+Alt+D',
+                        name: 'open-design',
                         click: () => shortcuts.openSettingsNavigation()
                     });
                     item.submenu.insertAt(2, {
@@ -188,7 +188,7 @@ export default Service.extend({
                         click: () => shortcuts.openContent()
                     });
                     item.submenu.insertAt(2, {
-                        label: 'New Post',
+                        label: 'New Story',
                         accelerator: 'CmdOrCtrl+N',
                         name: 'open-new-post',
                         click: () => shortcuts.openNewPost()

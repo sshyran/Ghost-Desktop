@@ -4,6 +4,7 @@ import requireKeytar from '../utils/require-keytar';
 import getBlogName from '../utils/get-blog-name';
 
 const {Model, attr} = DS;
+const debug = requireNode('debug')('ghost-desktop:blog-model');
 
 export default Model.extend({
     index: attr('number', {
@@ -60,25 +61,36 @@ export default Model.extend({
     /**
      * Uses the operating system's native credential store to set the password
      * for this blog.
+     *
      * @param {string} value - Password to set
+     * @return {Promise<void>} - Success
      */
-    setPassword(value) {
+    async setPassword(value) {
         const keytar = requireKeytar();
-        return (keytar ? keytar.replacePassword(this.get('url'), this.get('identification'), value) : false);
+
+        if (keytar) {
+            await keytar.replacePassword(this.get('url'), this.get('identification'), value);
+        }
     },
 
     /**
      * Uses the operating system's native credential store to get the password
      * for this blog.
-     * @return {string} Password for this blog
+     *
+     * @return {Promise<string>} Password for this blog
      */
-    getPassword() {
+    async getPassword() {
         if (!this.get('url') || !this.get('identification')) {
             return null;
         }
 
         const keytar = requireKeytar();
-        return (keytar ? keytar.getPassword(this.get('url'), this.get('identification')) : null);
+
+        if (keytar) {
+            return keytar.getPassword(this.get('url'), this.get('identification'));
+        } else {
+            return null;
+        }
     },
 
     /**
@@ -91,10 +103,9 @@ export default Model.extend({
         if (url) {
             return getBlogName(url)
                 .then((name) => {
-                    console.log(name);
                     this.set('name', name);
                 })
-                .catch((e) => console.log(e));
+                .catch((e) => debug(`Tried to update blog name, but failed: ${e}`));
         }
     },
 
@@ -117,7 +128,7 @@ export default Model.extend({
      * too.
      */
     save() {
-        const {ipcRenderer} = require('electron');
+        const {ipcRenderer} = requireNode('electron');
         const serializedData = this.toJSON({includeId: true});
 
         ipcRenderer.send('blog-serialized', serializedData);

@@ -1,4 +1,4 @@
-const randomColor = require('randomcolor');
+const randomColor = requireNode('randomcolor');
 const colorSettings = {luminosity: 'light'};
 
 /**

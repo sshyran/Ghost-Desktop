@@ -67,17 +67,19 @@ export default Service.extend({
     openNewPost(waitForWebview, {title, content} = {title: '', content: ''}) {
         window.openNewPost = this.openNewPost.bind(this);
 
-        this.queryAndClick(`a[href*='/ghost/editor/']`, 'New Post', waitForWebview)
-            .then(() => {
-                if (title || content) {
-                    const escape = require('js-string-escape');
-                    const $wv = findVisibleWebview();
+        Promise.race(
+            this.queryAndClick(`a[href*='/ghost/editor/']`, 'New Post', waitForWebview),
+            this.queryAndClick(`a[href*='#/editor/']`, 'New story', waitForWebview)
+        ).then(() => {
+            if (title || content) {
+                const escape = requireNode('js-string-escape');
+                const $wv = findVisibleWebview();
 
-                    if ($wv) {
-                        $wv.executeJavaScript(`GhostDesktop.addToEditor('${escape(title)}', '${escape(content)}')`);
-                    }
+                if ($wv) {
+                    $wv.executeJavaScript(`GhostDesktop.addToEditor('${escape(title)}', '${escape(content)}')`);
                 }
-            });
+            }
+        });
     },
 
     /**
@@ -87,6 +89,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openContent(waitForWebview) {
+        this.queryAndClick(`a[href='#/']`, 'Stories', waitForWebview);
         this.queryAndClick(`a[href='/ghost/']`, 'Content', waitForWebview);
     },
 
@@ -97,6 +100,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openTeam(waitForWebview) {
+        this.queryAndClick(`a[href*='#/team/']`, 'Team', waitForWebview);
         this.queryAndClick(`a[href*='/ghost/team/']`, 'Team', waitForWebview);
     },
 
@@ -107,6 +111,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openSettingsGeneral(waitForWebview) {
+        this.queryAndClick(`a[href*='#/settings/general/']`, 'General', waitForWebview);
         this.queryAndClick(`a[href*='/ghost/settings/general/']`, 'General', waitForWebview);
     },
 
@@ -117,6 +122,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openSettingsNavigation(waitForWebview) {
+        this.queryAndClick(`a[href*='#/settings/design/']`, 'Design', waitForWebview);
         this.queryAndClick(`a[href*='/ghost/settings/navigation/']`, 'Navigation', waitForWebview);
     },
 
@@ -127,6 +133,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openSettingsTags(waitForWebview) {
+        this.queryAndClick(`a[href*='#/settings/tags/']`, 'Tags', waitForWebview);
         this.queryAndClick(`a[href*='/ghost/settings/tags/']`, 'Tags', waitForWebview);
     },
 
@@ -137,6 +144,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openSettingsCodeInjection(waitForWebview) {
+        this.queryAndClick(`a[href*='#/settings/code-injection/']`, 'Code injection', waitForWebview);
         this.queryAndClick(`a[href*='/ghost/settings/code-injection/']`, 'Code Injection', waitForWebview);
     },
 
@@ -147,6 +155,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openSettingsApps(waitForWebview) {
+        this.queryAndClick(`a[href*='#/settings/apps/']`, 'Apps', waitForWebview);
         this.queryAndClick(`a[href*='/ghost/settings/apps/']`, 'Apps', waitForWebview);
     },
 
@@ -157,6 +166,7 @@ export default Service.extend({
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
     openSettingsLabs(waitForWebview) {
+        this.queryAndClick(`a[href*='#/settings/labs/']`, 'Labs', waitForWebview);
         this.queryAndClick(`a[href*='/ghost/settings/labs/']`, 'Labs', waitForWebview);
     }
 });

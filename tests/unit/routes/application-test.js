@@ -75,7 +75,7 @@ test('after the model loads, we tell the main thread about the blogs', function(
     assert.expect(2);
     const oldRequire = window.require;
 
-    window.require = function(target) {
+    window.requireNode = function(target) {
         if (target === 'electron') {
             return {
                 ipcRenderer: {
@@ -97,5 +97,5 @@ test('after the model loads, we tell the main thread about the blogs', function(
         }
     }]);
 
-    window.require = oldRequire;
+    window.requireNode = oldRequire;
 });

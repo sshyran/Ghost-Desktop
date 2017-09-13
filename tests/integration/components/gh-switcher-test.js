@@ -2,7 +2,7 @@ import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import {blogs} from '../../fixtures/blogs';
 
-const hexrgb = require('hexrgb');
+const hexrgb = requireNode('hexrgb');
 
 moduleForComponent('gh-switcher', 'Integration | Component | gh switcher', {
     integration: true,
@@ -93,7 +93,7 @@ test('a right click on a blog opens the context menu', function(assert) {
         if (module === 'electron') {
             return {remote: mockRemote};
         } else {
-            oldRequire(...arguments);
+            oldrequireNode(...arguments);
         }
     };
 

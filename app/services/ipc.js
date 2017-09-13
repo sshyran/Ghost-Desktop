@@ -4,16 +4,26 @@ const {Service, Evented} = Ember;
 
 export default Service.extend(Evented, {
     init() {
-        this.ipcRenderer = require('electron').ipcRenderer;
+        this.ipcRenderer = requireNode('electron').ipcRenderer;
 
         // Setup all the handlers
+
+        // Create a new draft
         this.ipcRenderer.on('create-draft', (sender, ...args) => {
             this.restoreWindow();
             this.trigger('create-draft', ...args);
         });
+
+        // Open the blog
         this.ipcRenderer.on('open-blog', (sender, ...args) => {
             this.restoreWindow();
             this.trigger('open-blog', ...args);
+        });
+
+        // Toggle night shift mode
+        this.ipcRenderer.on('night-shift', (sender, ...args) => {
+            this.restoreWindow();
+            this.trigger('night-shift', ...args);
         });
     },
 
@@ -29,7 +39,7 @@ export default Service.extend(Evented, {
      * If the window is somehow borked or hidden, we'll get it back
      */
     restoreWindow() {
-        this.window = this.window || require('electron').remote.getCurrentWindow();
+        this.window = this.window || requireNode('electron').remote.getCurrentWindow();
 
         if (this.window && !this.window.isVisible()) {
             this.window.show();
