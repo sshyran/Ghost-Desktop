@@ -22,6 +22,9 @@ const blog501 = {
         },
         updateName() {
             return new Promise((resolve) => resolve());
+        },
+        get(property) {
+            return this[property];
         }
     }
 };
@@ -34,6 +37,9 @@ const blog404 = {
         },
         updateName() {
             return new Promise((resolve) => resolve());
+        },
+        get(property) {
+            return this[property];
         }
     }
 };
@@ -46,6 +52,9 @@ const blog200 = {
         },
         updateName() {
             return new Promise((resolve) => resolve());
+        },
+        get(property) {
+            return this[property];
         }
     }
 };
@@ -58,6 +67,9 @@ const blogFile404 = {
         },
         updateName() {
             return new Promise((resolve) => resolve());
+        },
+        get(property) {
+            return this[property];
         }
     }
 };
@@ -74,20 +86,20 @@ test('show sets the instance to loaded', function(assert) {
     assert.ok(component.get('isInstanceLoaded'));
 });
 
-test('signing aborts attempts to signin when username or password are missing', function(assert) {
+test('signing aborts attempts to signin when username or password are missing', async function(assert) {
     const component = this.subject(blog501);
 
     this.render();
-    run(() => component.signin());
+    await run(async () => await component.signin());
 
     assert.ok(component.get('isInstanceLoaded'));
 });
 
-test('signing attempts to signin', function(assert) {
+test('signing attempts to signin', async function(assert) {
     const component = this.subject(blog200);
 
     this.render();
-    component.signin();
+    await component.signin();
 
     assert.ok(component.get('isAttemptedSignin'));
 });

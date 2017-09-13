@@ -31,10 +31,10 @@ function observeNightShift(i = 0) {
 
         const observer = new MutationObserver(() => notifyWindowAboutNightShift(!darkStyle.disabled));
         observer.observe(darkStyle, {attributes: true});
-    } else if (i < 21) {
+    } else if (i < 100) {
         // We'll give the app five seconds to load some night-shift
         // stuff. If it doesn't, we'll assume that there's no support
-        setTimeout(() => observeNightShift(i + 1), 250);
+        setTimeout(() => observeNightShift(i + 1), 250 + (i * 20));
     } else {
         console.log(`Night shift not available, not observing.`);
     }

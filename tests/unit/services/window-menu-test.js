@@ -45,7 +45,7 @@ test('injectMenuItem() eventually calls setApplicationMenu', function(assert) {
                 }
             };
         } else {
-            return oldrequireNode(...arguments);
+            return oldRequire(...arguments);
         }
     };
 
@@ -83,7 +83,7 @@ test('injectMenuItem() adds the correct properties', function(assert) {
                 }
             };
         } else {
-            return oldrequireNode(...arguments);
+            return oldRequire(...arguments);
         }
     };
 
