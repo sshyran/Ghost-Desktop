@@ -56,7 +56,7 @@ function createMainWindow() {
         debug(`Window state keeper failed: ${error}`);
         window = new BrowserWindow({
             show: false,
-            height: 800,
+            height: 720,
             width: 1000,
             titleBarStyle,
             vibrancy: 'dark',
