@@ -13,7 +13,7 @@ const winStateKeeper = require('electron-window-state');
 function fetchWindowState() {
     const {screen} = electron;
     const defaultWidth = 1000;
-    const defaultHeight = 800;
+    const defaultHeight = 720;
 
     // Instantiate the state keeper with a default state.
     const stateKeeper = winStateKeeper({defaultWidth, defaultHeight});
