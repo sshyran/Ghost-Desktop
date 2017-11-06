@@ -66,8 +66,8 @@
     "find-parent-dir": "^0.3.0",
     "fs-extra": "^0.30.0",
     "loader.js": "^4.2.3",
-    "node-fetch": "^1.6.0",
-    "normalize.css": "^6.0.0",
+    "node-fetch": "^1.7.3",
+    "normalize.css": "^7.0.0",
     "tmp": "0.0.31"
   },
   "dependencies": {
