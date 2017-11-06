@@ -63,16 +63,11 @@
     "ember-test-helpers": "^0.5.27",
     "eslint": "^3.5.0",
     "eslint-plugin-ember-suave": "^1.0.0",
-    "estraverse-fb": "^1.3.1",
     "find-parent-dir": "^0.3.0",
     "fs-extra": "^0.30.0",
-    "lazy-require": "^2.2.0",
     "loader.js": "^4.2.3",
-    "matchdep": "^1.0.1",
     "node-fetch": "^1.6.0",
     "normalize.css": "^6.0.0",
-    "replace-in-file": "^2.0.1",
-    "rimraf": "latest",
     "tmp": "0.0.31"
   },
   "dependencies": {
