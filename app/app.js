@@ -5,6 +5,14 @@ import config from './config/environment';
 
 localStorage.debug = 'ghost-desktop:*';
 
+// Forward log information to the main console
+const {ipcRenderer} = requireNode('electron');
+const {log} = console;
+console.log = (...args) => {
+    log(...args);
+    ipcRenderer.send('console-message', args);
+};
+
 const App = Application.extend({
     modulePrefix: config.modulePrefix,
     podModulePrefix: config.podModulePrefix,
