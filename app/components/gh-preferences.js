@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {getIsYosemiteOrHigher} from '../utils/versions';
 
 const {Component, inject, computed} = Ember;
 
@@ -7,7 +8,7 @@ export default Component.extend({
     preferences: inject.service(),
     autoUpdate: inject.service(),
     zoomFactor: computed.oneWay('preferences.preferences.zoomFactor'),
-    showVibrancy: (process.platform === 'darwin'),
+    showVibrancy: getIsYosemiteOrHigher(),
 
     actions: {
         /**

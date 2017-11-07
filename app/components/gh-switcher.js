@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import {getIsYosemiteOrHigher} from '../utils/versions';
 
 const {Component, inject, computed} = Ember;
 
@@ -14,7 +13,7 @@ export default Component.extend({
     classNameBindings: ['isMinimized', 'isMac:mac', 'isVibrant', ':switcher', ':win-height-adjusted'],
     isMinimized: computed.alias('preferences.isQuickSwitcherMinimized'),
     isMac: !!(process.platform === 'darwin'),
-    isVibrant: getIsYosemiteOrHigher(),
+    isVibrant: computed.alias('preferences.isVibrancyEnabled'),
     sortedBlogs: computed.sort('blogs', 'sortDefinition'),
     sortDefinition: ['index'],
 

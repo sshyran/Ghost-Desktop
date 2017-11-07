@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import {storageFor} from 'ember-local-storage';
+import {getIsYosemiteOrHigher} from '../utils/versions';
 
 const {Service, Evented, computed} = Ember;
 const debug = requireNode('debug')('ghost-desktop:preferences');
@@ -18,6 +19,7 @@ export default Service.extend(Evented, {
 
     isVibrancyEnabled: computed({
         get() {
+            if (!getIsYosemiteOrHigher()) return false;
             return !!this.get('preferences.isVibrancyEnabled');
         },
         set(k, v) {
