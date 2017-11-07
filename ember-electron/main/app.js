@@ -37,9 +37,28 @@ function setupListeners(window) {
     });
 }
 
+/**
+ * Should the window be transparent? Let's find out!
+ *
+ * @returns {boolean} transparency
+ */
+function getTransparency() {
+    if (process.platform !== 'darwin') {
+        return false;
+    }
+
+    const {getPreferences} = require('./preferences');
+    return getPreferences().isVibrancyEnabled || true;
+}
+
 function createMainWindow() {
     const titleBarStyle = (process.platform === 'darwin') ? 'hidden' : 'default';
     const frame = !(process.platform === 'win32');
+    const transparent = getTransparency();
+    const vibrancy = transparent ? 'dark' : null;
+    const height = 720;
+    const width = 1000;
+    const defaultOptions = {show: false, height, width, titleBarStyle, vibrancy, frame, transparent};
     let windowState, usableState, windowStateKeeper, window;
 
     // Instantiate the window with the existing size and position.
@@ -48,21 +67,11 @@ function createMainWindow() {
         usableState = windowState.usableState;
         windowStateKeeper = windowState.windowStateKeeper;
 
-        window = new BrowserWindow(
-            Object.assign(usableState, {show: false, titleBarStyle, vibrancy: 'dark', frame})
-        );
+        window = new BrowserWindow(Object.assign({}, defaultOptions, usableState));
     } catch (error) {
         // Window state keeper failed, let's still open a window
         debug(`Window state keeper failed: ${error}`);
-        window = new BrowserWindow({
-            show: false,
-            height: 720,
-            width: 1000,
-            titleBarStyle,
-            vibrancy: 'dark',
-            transparent: (process.platform === 'darwin'),
-            frame
-        });
+        window = new BrowserWindow(defaultOptions);
     }
 
     window.loadURL(emberAppLocation);

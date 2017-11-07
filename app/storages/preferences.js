@@ -7,7 +7,8 @@ Storage.reopenClass({
         return {
             isNotificationsEnabled: true,
             spellcheckLanguage: 'en',
-            isQuickSwitcherMinimized: false
+            isQuickSwitcherMinimized: false,
+            isVibrancyEnabled: process.platform === 'darwin'
         };
     }
 });

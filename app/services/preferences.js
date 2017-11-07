@@ -3,6 +3,10 @@ import {storageFor} from 'ember-local-storage';
 
 const {Service, Evented, computed} = Ember;
 const debug = requireNode('debug')('ghost-desktop:preferences');
+const {remote} = requireNode('electron');
+const fs = requireNode('fs-extra');
+const path = requireNode('path');
+const {run} = Ember;
 
 export default Service.extend(Evented, {
     preferences: storageFor('preferences'),
@@ -11,6 +15,25 @@ export default Service.extend(Evented, {
     isNotificationsEnabled: computed.alias('preferences.isNotificationsEnabled'),
     contributors: computed.alias('preferences.contributors'),
     spellcheckLanguage: computed.alias('preferences.spellcheckLanguage'),
+
+    isVibrancyEnabled: computed({
+        get() {
+            return !!this.get('preferences.isVibrancyEnabled');
+        },
+        set(k, v) {
+            const value = !!v;
+            this.set('preferences.isVibrancyEnabled', value);
+
+            const currentWindow = remote.getCurrentWindow();
+            if (value) {
+                currentWindow.setVibrancy('dark');
+            } else {
+                currentWindow.setVibrancy(null);
+            }
+
+            return value;
+        }
+    }),
 
     zoomFactor: computed({
         get() {
@@ -22,8 +45,42 @@ export default Service.extend(Evented, {
 
             frame.setZoomFactor(setting / 100);
             this.set('preferences.zoomFactor', setting);
+            return setting;
         }
     }),
+
+    getContent() {
+        const {content} = this.get('preferences');
+        const {
+            isNotificationsEnabled,
+            isQuickSwitcherMinimized,
+            isVibrancyEnabled,
+            spellcheckLanguage,
+            zoomFactor
+        } = content;
+
+        // We'll need to reconstruct the data here so that
+        // we don't include any private rifaf
+        return {
+            isNotificationsEnabled,
+            isQuickSwitcherMinimized,
+            isVibrancyEnabled,
+            spellcheckLanguage,
+            zoomFactor
+        };
+    },
+
+    async saveToDisk() {
+        try {
+            const userData = remote.app.getPath('userData');
+            const configPath = path.join(userData, 'ghost.json');
+
+            debug(`Saving configuration to ${configPath}`);
+            await fs.writeJson(configPath, this.getContent());
+        } catch (error) {
+            debug(`Failed to write configuration to disk`, error);
+        }
+    },
 
     init() {
         this.setupContributors();
@@ -44,5 +101,10 @@ export default Service.extend(Evented, {
 
     setupZoom() {
         this.set('zoomFactor', this.get('zoomFactor'));
+    },
+
+    set(...args) {
+        this._super(...args);
+        run.debounce(this, 'saveToDisk', 500);
     }
 });

@@ -7,10 +7,7 @@ export default Component.extend({
     preferences: inject.service(),
     autoUpdate: inject.service(),
     zoomFactor: computed.oneWay('preferences.preferences.zoomFactor'),
-
-    didReceiveAttrs() {
-        this._super(...arguments);
-    },
+    showVibrancy: (process.platform === 'darwin'),
 
     actions: {
         /**

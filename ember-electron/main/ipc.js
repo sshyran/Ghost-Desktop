@@ -31,9 +31,11 @@ ipcMain.on('shutdown-requested', (event) => {
     if (event.sender) {
         const win = BrowserWindow.fromWebContents(event.sender);
 
+        debug(`Shutdown requested`);
+
         setTimeout(() => {
             if (win && !win.isDestroyed()) win.destroy();
-        }, 300);
+        }, 1000);
     }
 });
 
@@ -41,4 +43,12 @@ ipcMain.on('soft-restart-requested', () => {
     debug('Soft restart requested, closing main window and creating a new one');
 
     reloadMainWindow();
+});
+
+ipcMain.on('console-message', (sender, args) => {
+    if (args[0] && args[0].includes && args[0].includes('%c')) {
+        console.log(`  ${args[0].replace(/%c/g, '')}`);
+    } else {
+        console.log(...args);
+    }
 });
