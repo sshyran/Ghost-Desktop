@@ -1,13 +1,7 @@
 {{#sortable-group tagName="div" class="switcher-blogs" onChange="reorderItems" as |group|}}
     {{#each sortedBlogs as |blog index|}}
         {{#sortable-item tagName="div" model=blog group=group handle=".switcher-blog"}}
-            <div class="switcher-blog {{if blog.isSelected "isSelected"}}">
-                <div class="switch-btn-icon" style="{{background-image blog}}" />
-                <div class="switch-btn" style="{{background-color blog.iconColor}}" {{action "switchToBlog" blog}} data-blog={{blog.id}}>
-                    <span>{{first-letter blog.name}}</span>
-                </div>
-                <div class="switch-shortcut">{{switch-shortcut index}}</div>
-            </div>
+            {{gh-switcher-icon blog=blog index=index switchToBlog="switchToBlog"}}
         {{/sortable-item}}
     {{/each}}
 {{/sortable-group}}
