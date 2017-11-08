@@ -26,12 +26,12 @@ function getPreferences() {
     }
 
     // This is supposed to the be the same as in
-    // ../../app/storages/prefercences.js
+    // ../../app/storages/preferences.js
     return {
         isNotificationsEnabled: true,
         spellcheckLanguage: 'en',
         isQuickSwitcherMinimized: false,
-        isVibrancyEnabled: process.platform === 'darwin'
+        isVibrancyEnabled: false
     };
 }
 

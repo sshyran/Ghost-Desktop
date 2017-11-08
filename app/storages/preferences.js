@@ -8,7 +8,7 @@ Storage.reopenClass({
             isNotificationsEnabled: true,
             spellcheckLanguage: 'en',
             isQuickSwitcherMinimized: false,
-            isVibrancyEnabled: process.platform === 'darwin'
+            isVibrancyEnabled: false
         };
     }
 });

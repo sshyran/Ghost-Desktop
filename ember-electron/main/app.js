@@ -48,7 +48,7 @@ function getTransparency() {
     }
 
     const {getPreferences} = require('./preferences');
-    return getPreferences().isVibrancyEnabled || true;
+    return getPreferences().isVibrancyEnabled;
 }
 
 function createMainWindow() {
@@ -56,16 +56,14 @@ function createMainWindow() {
     const frame = !(process.platform === 'win32');
     const transparent = getTransparency();
     const vibrancy = transparent ? 'dark' : null;
-    const height = 720;
-    const width = 1000;
-    const defaultOptions = {show: false, height, width, titleBarStyle, vibrancy, frame, transparent};
+    const defaultOptions = {show: false, titleBarStyle, vibrancy, frame, transparent};
     let windowState, usableState, windowStateKeeper, window;
 
     // Instantiate the window with the existing size and position.
     try {
         windowState = fetchWindowState();
         usableState = windowState.usableState;
-        windowStateKeeper = windowState.windowStateKeeper;
+        windowStateKeeper = windowState.stateKeeper;
 
         window = new BrowserWindow(Object.assign({}, defaultOptions, usableState));
     } catch (error) {
@@ -80,7 +78,7 @@ function createMainWindow() {
 
     // Letting the state keeper listen to window resizing and window moving
     // event, and save them accordingly.
-    if (windowStateKeeper) windowStateKeeper.manage(window);
+    windowStateKeeper.manage(window);
 
     return window;
 }
