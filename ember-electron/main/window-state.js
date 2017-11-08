@@ -14,6 +14,8 @@ function fetchWindowState() {
     const {screen} = electron;
     const defaultWidth = 1000;
     const defaultHeight = 720;
+    const minWidth = 400;
+    const minHeight = 400;
 
     // Instantiate the state keeper with a default state.
     const stateKeeper = winStateKeeper({defaultWidth, defaultHeight});
@@ -37,8 +39,8 @@ function fetchWindowState() {
         y: stateKeeper.y,
         width: displaySize.width < stateKeeper.width ? displaySize.width : stateKeeper.width,
         height: displaySize.height < stateKeeper.height ? displaySize.height : stateKeeper.height,
-        minWidth: displaySize.width < defaultWidth ? displaySize.width : defaultWidth,
-        minHeight: displaySize.height < defaultHeight ? displaySize.height : defaultHeight
+        minHeight,
+        minWidth
     };
 
     return {usableState, stateKeeper};
