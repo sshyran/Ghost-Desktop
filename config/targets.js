@@ -1,5 +1,5 @@
 /* eslint-env node */
 
 module.exports = {
-  chrome: 56
+    chrome: 59
 };

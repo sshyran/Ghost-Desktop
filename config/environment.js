@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = function (environment) {
-    let ENV = {
+    const ENV = {
         modulePrefix: 'ghost-desktop',
         environment,
         rootURL: null,
@@ -25,7 +25,7 @@ module.exports = function (environment) {
             // when it is created
         },
         EXTEND_PROTOTYPES: {
-            Date: false,
+            Date: false
         }
     };
 
@@ -46,9 +46,6 @@ module.exports = function (environment) {
         ENV.APP.LOG_VIEW_LOOKUPS = false;
 
         ENV.APP.rootElement = '#ember-testing';
-    }
-
-    if (environment === 'production') {
     }
 
     return ENV;
