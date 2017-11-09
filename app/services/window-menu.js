@@ -149,7 +149,7 @@ export default Service.extend({
                         click: () => shortcuts.openSettingsApps()
                     });
                     item.submenu.insertAt(2, {
-                        label: 'Code Injection',
+                        label: 'Code injection',
                         accelerator: 'CmdOrCtrl+Alt+C+I',
                         name: 'open-code-injection',
                         click: () => shortcuts.openSettingsCodeInjection()
@@ -182,13 +182,13 @@ export default Service.extend({
                         click: () => shortcuts.openTeam()
                     });
                     item.submenu.insertAt(2, {
-                        label: 'Content',
-                        accelerator: 'CmdOrCtrl+Alt+C',
+                        label: 'Stories',
+                        accelerator: 'CmdOrCtrl+Alt+S',
                         name: 'open-content',
                         click: () => shortcuts.openContent()
                     });
                     item.submenu.insertAt(2, {
-                        label: 'New Story',
+                        label: 'New story',
                         accelerator: 'CmdOrCtrl+N',
                         name: 'open-new-post',
                         click: () => shortcuts.openNewPost()
