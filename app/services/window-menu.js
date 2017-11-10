@@ -177,7 +177,7 @@ export default Service.extend({
                     });
                     item.submenu.insertAt(2, {
                         label: 'Team',
-                        accelerator: 'CmdOrCtrl+Alt+T',
+                        accelerator: 'CmdOrCtrl+Alt+E',
                         name: 'open-team',
                         click: () => shortcuts.openTeam()
                     });
