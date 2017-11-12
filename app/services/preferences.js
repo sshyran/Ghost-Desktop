@@ -1,7 +1,7 @@
-import {computed} from '@ember/object'
+import {computed} from '@ember/object';
 import {debounce} from '@ember/runloop';
 import {storageFor} from 'ember-local-storage';
-import Evented from '@ember/object/evented'
+import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 
 import {getIsYosemiteOrHigher} from '../utils/versions';

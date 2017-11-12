@@ -1,4 +1,4 @@
-import {computed, observer} from '@ember/object';
+import {computed} from '@ember/object';
 import {inject} from '@ember/service';
 import {begin, end} from '@ember/runloop';
 import Component from '@ember/component';

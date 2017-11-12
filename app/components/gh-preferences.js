@@ -1,3 +1,4 @@
+import {computed} from '@ember/object';
 import {inject} from '@ember/service';
 import Component from '@ember/component';
 

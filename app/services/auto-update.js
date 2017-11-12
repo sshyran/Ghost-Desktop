@@ -1,5 +1,5 @@
-import {computed} from '@ember/object'
-import Evented from '@ember/object/evented'
+import {computed} from '@ember/object';
+import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 
 import ENV from 'ghost-desktop/config/environment';

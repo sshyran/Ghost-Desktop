@@ -1,4 +1,4 @@
-import {computed, observer} from '@ember/object';
+import {computed} from '@ember/object';
 import Component from '@ember/component';
 
 const {reads} = computed;

@@ -1,6 +1,6 @@
 import {computed, observer} from '@ember/object';
 import {inject} from '@ember/service';
-import {later} from '@ember/runloop';
+import {later, begin, end} from '@ember/runloop';
 import Component from '@ember/component';
 
 import ENV from 'ghost-desktop/config/environment';
@@ -91,7 +91,9 @@ export default Component.extend({
         // To make things "feel" more snappy, we're hiding the loading from the
         // user.
         if (window.QUnit) {
-            return run(() => this.set('isInstanceLoaded', true));
+            begin();
+            this.set('isInstanceLoaded', true);
+            end();
         }
 
         later(() => this.set('isInstanceLoaded', true), 1500);
