@@ -1,7 +1,6 @@
-import Ember from 'ember';
-import findVisibleWebview from '../utils/find-visible-webview';
+import Service from '@ember/service';
 
-const {Service} = Ember;
+import findVisibleWebview from '../utils/find-visible-webview';
 
 export default Service.extend({
     /**

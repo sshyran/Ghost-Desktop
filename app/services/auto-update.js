@@ -1,8 +1,9 @@
-import Ember from 'ember';
-import ENV from 'ghost-desktop/config/environment';
-import {isReachable} from 'ghost-desktop/utils/is-reachable';
+import {computed, Evented} from '@ember/object'
+import Service from '@ember/service';
 
-const {Service, Evented, computed} = Ember;
+import ENV from 'ghost-desktop/config/environment';
+import {isReachable} from '../utils/is-reachable';
+
 const debug = requireNode('debug')('ghost-desktop:auto-update');
 
 export default Service.extend(Evented, {

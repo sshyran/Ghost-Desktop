@@ -1,8 +1,8 @@
-import Ember from 'ember';
-import {setup as getMenuTemplate} from '../utils/window-menu';
 import _ from 'lodash/lodash';
+import {run} from '@ember/runloop';
+import Service from '@ember/service';
 
-const {Service, run} = Ember;
+import {setup as getMenuTemplate} from '../utils/window-menu';
 
 export default Service.extend({
     preferencesCallback: undefined,

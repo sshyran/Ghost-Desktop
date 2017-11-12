@@ -1,6 +1,5 @@
-import Ember from 'ember';
-
-const {String, Helper} = Ember;
+import {Helper} from '@ember/component';
+import String from '@ember/string';
 
 export function backgroundColor([color]) {
     return String.htmlSafe(`background-color: ${color};`);

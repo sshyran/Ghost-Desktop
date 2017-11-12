@@ -1,10 +1,6 @@
-import Ember from 'ember';
+import {Helper} from '@ember/component';
 
-const {Helper} = Ember;
-
-export function isEqual(params) {
-    const [lhs, rhs] = params;
-
+export function isEqual([lhs, rhs]) {
     return lhs === rhs;
 }
 

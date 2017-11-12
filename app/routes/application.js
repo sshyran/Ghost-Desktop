@@ -1,7 +1,7 @@
-import Ember from 'ember';
-import {setup as setupContextMenu} from '../utils/context-menu';
+import Route from '@ember/routing/route';
+import {inject} from '@ember/service';
 
-const {Route, inject} = Ember;
+import {setup as setupContextMenu} from '../utils/context-menu';
 
 export default Route.extend({
     windowMenu: inject.service(),

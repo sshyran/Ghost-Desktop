@@ -1,13 +1,10 @@
-import Ember from 'ember';
+import {Helper} from '@ember/component';
 
-const {Helper} = Ember;
-
-export function switchShortcut(params) {
-    const index = (params && params[0]) ? params[0] + 1 : 1;
+export function switchShortcut([index] = [0]) {
     const cmdOrCtrl = (process.platform && process.platform === 'darwin') ? '⌘' : 'Ctrl';
 
     // If bigger than 9, don't return anything
-    return (index > 9) ? '' : `${cmdOrCtrl} ${index}`;
+    return (index + 1 > 9) ? '' : `${cmdOrCtrl} ${index + 1}`;
 }
 
 export default Helper.helper(switchShortcut);

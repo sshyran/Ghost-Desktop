@@ -1,6 +1,5 @@
-import Ember from 'ember';
-
-const {Service, Evented} = Ember;
+import {Evented} from '@ember/object'
+import Service from '@ember/service';
 
 export default Service.extend(Evented, {
     init() {

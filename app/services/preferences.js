@@ -1,13 +1,14 @@
-import Ember from 'ember';
+import {computed, Evented} from '@ember/object'
+import {run} from '@ember/runloop';
 import {storageFor} from 'ember-local-storage';
+import Service from '@ember/service';
+
 import {getIsYosemiteOrHigher} from '../utils/versions';
 
-const {Service, Evented, computed} = Ember;
-const debug = requireNode('debug')('ghost-desktop:preferences');
 const {remote} = requireNode('electron');
+const debug = requireNode('debug')('ghost-desktop:preferences');
 const fs = requireNode('fs-extra');
 const path = requireNode('path');
-const {run} = Ember;
 
 export default Service.extend(Evented, {
     preferences: storageFor('preferences'),
