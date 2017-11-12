@@ -1,9 +1,10 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
+import {htmlSafe} from '@ember/string';
 
 export default Component.extend({
     showLetter: true,
-    iconStyle: '',
+    iconStyle: htmlSafe(''),
 
     iconColor: computed('blog', 'showLetter', {
         get() {
@@ -28,8 +29,12 @@ export default Component.extend({
 
         icon.src = url.replace(/\/ghost\/$/i, '/favicon.ico');
         icon.onload = () => {
+            if (this.get('isDestroyed') || this.get('isDestroying')) {
+                return;
+            }
+
             this.set('showLetter', false);
-            this.set('iconStyle', `background-image: url(${icon.src}`);
+            this.set('iconStyle', htmlSafe(`background-image: url(${icon.src}`));
         };
     },
 
