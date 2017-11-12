@@ -4,10 +4,15 @@
  * @returns {boolean} Is the running system macOS Yosemite or higher?
  */
 export function getIsYosemiteOrHigher() {
-    const isDarwin = process.platform === 'darwin';
-    if (!isDarwin) return false;
+    const os = requireNode('os');
 
-    const release = requireNode('os').release();
+    const isDarwin = os.platform() === 'darwin';
+
+    if (!isDarwin) {
+        return false;
+    }
+
+    const release = os.release();
     if (release && release.length >= 6) {
         const major = release.slice(0, 2);
 
