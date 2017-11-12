@@ -1,7 +1,8 @@
-import Ember from 'ember';
-import getLanguageName from '../utils/iso639';
+import {computed} from '@ember/object';
+import {inject} from '@ember/service';
+import Component from '@ember/component';
 
-const {Component, computed, inject} = Ember;
+import getLanguageName from '../utils/iso639';
 
 export default Component.extend({
     preferences: inject.service(),

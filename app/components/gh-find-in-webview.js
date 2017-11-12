@@ -1,7 +1,8 @@
-import Ember from 'ember';
-import findVisibleWebview from '../utils/find-visible-webview';
+import {inject} from '@ember/service';
+import {run} from '@ember/runloop';
+import Component from '@ember/component';
 
-const {Component, inject, run} = Ember;
+import findVisibleWebview from '../utils/find-visible-webview';
 
 export default Component.extend({
     classNames: ['find-webview'],

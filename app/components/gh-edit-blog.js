@@ -1,10 +1,12 @@
-import Ember from 'ember';
-import getIsGhost from '../utils/get-is-ghost';
-import getBlogName from '../utils/get-blog-name';
-import {sanitizeUrl, isValidUrl} from '../utils/sanitize-url';
-import Phrases from '../utils/phrases';
+import {computed, observer} from '@ember/object';
+import {inject} from '@ember/service';
+import {run} from '@ember/runloop';
+import Component from '@ember/component';
 
-const {Component, inject, computed, run} = Ember;
+import {sanitizeUrl, isValidUrl} from '../utils/sanitize-url';
+import getBlogName from '../utils/get-blog-name';
+import getIsGhost from '../utils/get-is-ghost';
+import Phrases from '../utils/phrases';
 
 export default Component.extend({
     store: inject.service(),

@@ -1,7 +1,6 @@
-import Ember from 'ember';
-import TextInputMixin from 'ghost-desktop/mixins/text-input';
+import {TextField} from '@ember/component';
 
-const {TextField} = Ember;
+import TextInputMixin from '../mixins/text-input';
 
 export default TextField.extend(TextInputMixin, {
     classNames: 'gh-input'

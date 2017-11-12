@@ -1,7 +1,6 @@
-import Ember from 'ember';
-import Phrases from '../utils/phrases';
+import Component from '@ember/component';
 
-const {Component} = Ember;
+import Phrases from '../utils/phrases';
 
 export default Component.extend({
     classNames: ['basic-auth'],

@@ -1,7 +1,8 @@
-import Ember from 'ember';
-import {getIsYosemiteOrHigher} from '../utils/versions';
+import {inject} from '@ember/service';
+import {run} from '@ember/runloop';
+import Component from '@ember/component';
 
-const {Component, inject, computed} = Ember;
+import {getIsYosemiteOrHigher} from '../utils/versions';
 
 export default Component.extend({
     classNames: ['gh-preferences'],

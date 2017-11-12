@@ -1,10 +1,11 @@
-import Ember from 'ember';
-import setWindowTitle from '../utils/set-window-title';
+import {computed, observer} from '@ember/object';
+import {inject} from '@ember/service';
+import Component from '@ember/component';
+
+import {sanitizeUrl} from '../utils/sanitize-url';
 import setDockMenu from '../utils/set-dock-menu';
 import setUsertasks from '../utils/set-user-tasks';
-import {sanitizeUrl} from '../utils/sanitize-url';
-
-const {Component, inject, computed, observer} = Ember;
+import setWindowTitle from '../utils/set-window-title';
 
 export default Component.extend({
     store: inject.service(),

@@ -1,6 +1,6 @@
-import Component from '@ember/component';
 import {computed} from '@ember/object';
 import {htmlSafe} from '@ember/string';
+import Component from '@ember/component';
 
 export default Component.extend({
     showLetter: true,

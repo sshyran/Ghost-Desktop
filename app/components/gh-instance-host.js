@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import {computed, observer} from '@ember/object';
+import {inject} from '@ember/service';
+import {run} from '@ember/runloop';
+import Component from '@ember/component';
+
 import ENV from 'ghost-desktop/config/environment';
 import {injectCss} from '../utils/inject-css';
 import Phrases from '../utils/phrases';
 import {escapeString} from '../utils/escape-string';
-
-const {Component, inject, observer, run, computed} = Ember;
 
 const path = requireNode('path');
 const debug = requireNode('debug')('ghost-desktop:instance-host');
