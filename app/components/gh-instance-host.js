@@ -1,6 +1,6 @@
 import {computed, observer} from '@ember/object';
 import {inject} from '@ember/service';
-import {later, begin, end} from '@ember/runloop';
+import {later} from '@ember/runloop';
 import Component from '@ember/component';
 
 import ENV from 'ghost-desktop/config/environment';
@@ -86,18 +86,19 @@ export default Component.extend({
      * Makes the instance visible, overlaying the loading cat in the process
      */
     show() {
+        if (this.get('isDestroyed') || this.get('isDestroyed')) {
+            return;
+        }
+
         // Fun fact: Chrome's loading apis will consider the website loaded as
         // soon as all assets are loaded. The app however still has to boot up.
         // To make things "feel" more snappy, we're hiding the loading from the
         // user.
         if (window.QUnit) {
-            begin();
             this.set('isInstanceLoaded', true);
-            end();
+        } else {
+            later(() => this.set('isInstanceLoaded', true), 1000);
         }
-
-        later(() => this.set('isInstanceLoaded', true), 1500);
-
     },
 
     /**
