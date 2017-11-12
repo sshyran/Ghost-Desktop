@@ -1,6 +1,7 @@
-import {computed, Evented} from '@ember/object'
-import {run} from '@ember/runloop';
+import {computed} from '@ember/object'
+import {debounce} from '@ember/runloop';
 import {storageFor} from 'ember-local-storage';
+import Evented from '@ember/object/evented'
 import Service from '@ember/service';
 
 import {getIsYosemiteOrHigher} from '../utils/versions';
@@ -108,6 +109,6 @@ export default Service.extend(Evented, {
 
     set(...args) {
         this._super(...args);
-        run.debounce(this, 'saveToDisk', 500);
+        debounce(this, 'saveToDisk', 500);
     }
 });

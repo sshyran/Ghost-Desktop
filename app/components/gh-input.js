@@ -1,4 +1,4 @@
-import {TextField} from '@ember/component';
+import TextField from '@ember/component/text-field';
 
 import TextInputMixin from '../mixins/text-input';
 

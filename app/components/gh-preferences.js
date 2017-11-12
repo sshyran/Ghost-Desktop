@@ -1,13 +1,12 @@
 import {inject} from '@ember/service';
-import {run} from '@ember/runloop';
 import Component from '@ember/component';
 
 import {getIsYosemiteOrHigher} from '../utils/versions';
 
 export default Component.extend({
     classNames: ['gh-preferences'],
-    preferences: inject.service(),
-    autoUpdate: inject.service(),
+    preferences: inject(),
+    autoUpdate: inject(),
     zoomFactor: computed.oneWay('preferences.preferences.zoomFactor'),
     showVibrancy: getIsYosemiteOrHigher(),
 

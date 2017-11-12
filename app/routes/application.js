@@ -4,8 +4,8 @@ import {inject} from '@ember/service';
 import {setup as setupContextMenu} from '../utils/context-menu';
 
 export default Route.extend({
-    windowMenu: inject.service(),
-    preferences: inject.service(),
+    windowMenu: inject(),
+    preferences: inject(),
 
     beforeModel() {
         this.get('preferences').setupZoom();

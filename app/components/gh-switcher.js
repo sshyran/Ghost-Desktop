@@ -2,16 +2,14 @@ import {computed} from '@ember/object';
 import {inject} from '@ember/service';
 import Component from '@ember/component';
 
-const {Component, inject, computed} = Ember;
-
 /**
  * The switcher component is a Slack-like quick switcher on the left side of
  * the app, allowing users to quickly switch between blogs.
  */
 export default Component.extend({
-    store: inject.service(),
-    preferences: inject.service(),
-    windowMenu: inject.service(),
+    store: inject(),
+    preferences: inject(),
+    windowMenu: inject(),
     classNameBindings: ['isMinimized', 'isMac:mac', 'isVibrant', ':switcher', ':win-height-adjusted'],
     isMinimized: computed.alias('preferences.isQuickSwitcherMinimized'),
     isMac: !!(process.platform === 'darwin'),

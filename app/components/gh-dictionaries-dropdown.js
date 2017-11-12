@@ -5,7 +5,7 @@ import Component from '@ember/component';
 import getLanguageName from '../utils/iso639';
 
 export default Component.extend({
-    preferences: inject.service(),
+    preferences: inject(),
 
     availableDictionaries: computed({
         get() {

@@ -1,4 +1,4 @@
-import {Helper} from '@ember/component';
+import Helper from '@ember/component/helper';
 
 export function isEqual([lhs, rhs]) {
     return lhs === rhs;

@@ -1,5 +1,5 @@
 import _ from 'lodash/lodash';
-import {run} from '@ember/runloop';
+import {debounce, later} from '@ember/runloop';
 import Service from '@ember/service';
 
 import {setup as getMenuTemplate} from '../utils/window-menu';
@@ -23,7 +23,7 @@ export default Service.extend({
      * Schedules (debounced) the setup of the application menu
      */
     setup() {
-        run.debounce(this, this._prepareMenu, 150);
+        debounce(this, this._prepareMenu, 150);
     },
 
     popup() {
@@ -99,7 +99,7 @@ export default Service.extend({
         if (blogs && preferencesCallback) {
             this.set('preferencesCallback', preferencesCallback);
             this.set('blogs', blogs);
-            run.later(this, 'setup');
+            later(this, 'setup');
         }
     },
 

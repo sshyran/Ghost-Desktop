@@ -1,6 +1,6 @@
 import {computed, observer} from '@ember/object';
 import {inject} from '@ember/service';
-import {run} from '@ember/runloop';
+import {later} from '@ember/runloop';
 import Component from '@ember/component';
 
 import ENV from 'ghost-desktop/config/environment';
@@ -18,7 +18,7 @@ const debug = requireNode('debug')('ghost-desktop:instance-host');
 export default Component.extend({
     classNames: ['instance-host'],
     classNameBindings: ['blog.isSelected:selected'],
-    preferences: inject.service(),
+    preferences: inject(),
     preload: `file://${path.join(__dirname, '../ember-electron/main/preload.js')}`,
     debugName: computed('blog', function () {
         const blog = this.get('blog');
@@ -94,7 +94,7 @@ export default Component.extend({
             return run(() => this.set('isInstanceLoaded', true));
         }
 
-        run.later(() => this.set('isInstanceLoaded', true), 1500);
+        later(() => this.set('isInstanceLoaded', true), 1500);
 
     },
 
@@ -106,7 +106,7 @@ export default Component.extend({
         this.set('isAttemptedSignin', false);
         this.didRender();
 
-        run.later(() => this.signin());
+        later(() => this.signin());
     },
 
     /**

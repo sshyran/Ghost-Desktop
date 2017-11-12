@@ -1,6 +1,6 @@
 import {computed, observer} from '@ember/object';
 import {inject} from '@ember/service';
-import {run} from '@ember/runloop';
+import {begin, end} from '@ember/runloop';
 import Component from '@ember/component';
 
 import {sanitizeUrl, isValidUrl} from '../utils/sanitize-url';
@@ -9,7 +9,7 @@ import getIsGhost from '../utils/get-is-ghost';
 import Phrases from '../utils/phrases';
 
 export default Component.extend({
-    store: inject.service(),
+    store: inject(),
     classNames: ['gh-edit-blog'],
     classNameBindings: ['isBasicAuth:basic-auth', 'hasWarning'],
     isBasicAuth: false,
@@ -156,7 +156,7 @@ export default Component.extend({
         async addOrEditBlog() {
             // Manually begin a run loop, since async/await is still
             // black magic as far as Ember is concerned
-            run.begin();
+            begin();
             this.set('isSubmitting', true);
 
             const url = sanitizeUrl(this.get('url'));
@@ -173,7 +173,7 @@ export default Component.extend({
             }
 
             this.set('isSubmitting', false);
-            run.end();
+            end();
         },
 
         /**

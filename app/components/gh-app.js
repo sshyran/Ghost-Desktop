@@ -8,10 +8,10 @@ import setUsertasks from '../utils/set-user-tasks';
 import setWindowTitle from '../utils/set-window-title';
 
 export default Component.extend({
-    store: inject.service(),
-    autoUpdate: inject.service(),
-    ipc: inject.service(),
-    webviewShortcuts: inject.service(),
+    store: inject(),
+    autoUpdate: inject(),
+    ipc: inject(),
+    webviewShortcuts: inject(),
     classNameBindings: ['isMac:mac', 'isWindows:win', 'isNightShift:night-shift', ':gh-app'],
     isFindInViewActive: false,
     isMac: !!(process.platform === 'darwin'),

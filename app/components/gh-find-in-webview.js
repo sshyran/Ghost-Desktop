@@ -1,5 +1,5 @@
 import {inject} from '@ember/service';
-import {run} from '@ember/runloop';
+import {later} from '@ember/runloop';
 import Component from '@ember/component';
 
 import findVisibleWebview from '../utils/find-visible-webview';
@@ -7,7 +7,7 @@ import findVisibleWebview from '../utils/find-visible-webview';
 export default Component.extend({
     classNames: ['find-webview'],
     classNameBindings: ['isActive:active'],
-    windowMenu: inject.service(),
+    windowMenu: inject(),
 
     didInsertElement() {
         this._super(...arguments);
@@ -33,7 +33,7 @@ export default Component.extend({
             });
         } else {
             this.set('searchterm', '');
-            run.later(() => this.$('input').focus());
+            later(() => this.$('input').focus());
         }
     },
 

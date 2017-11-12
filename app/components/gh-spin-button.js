@@ -1,5 +1,5 @@
 import {computed, observer} from '@ember/object';
-import {run} from '@ember/runloop';
+import {later, cancel} from '@ember/runloop';
 import Component from '@ember/component';
 
 const {equal} = computed;
@@ -32,7 +32,7 @@ export default Component.extend({
 
         if (submitting) {
             this.set('showSpinner', true);
-            this.set('showSpinnerTimeout', run.later(this, function () {
+            this.set('showSpinnerTimeout', later(this, function () {
                 if (!this.get('submitting')) {
                     this.set('showSpinner', false);
                 }
@@ -55,6 +55,6 @@ export default Component.extend({
 
     willDestroy() {
         this._super(...arguments);
-        run.cancel(this.get('showSpinnerTimeout'));
+        cancel(this.get('showSpinnerTimeout'));
     }
 });
