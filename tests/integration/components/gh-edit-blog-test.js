@@ -10,6 +10,21 @@ import { blogs } from '../../fixtures/blogs';
 let recordCreated = false;
 let recordSaved = false;
 
+async function assertErrorDivs(target, assert, expected, i = 0) {
+    const sleep = (ms = 100) => new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    })
+
+    const errorDivs = target.$('div.error');
+
+    if ((errorDivs && errorDivs.length === expected) || i > 20) {
+        return assert.equal(errorDivs.length, expected);
+    }
+
+    await sleep(100);
+    return await assertErrorDivs(target, assert, expected, i + 1);
+}
+
 const store = Ember.Service.extend({
     createRecord() {
         recordCreated = true;
@@ -85,6 +100,7 @@ test('it renders', function(assert) {
 });
 
 test('marks an incorrect url as invalid', function(assert) {
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="url"]').focus();
@@ -92,11 +108,11 @@ test('marks an incorrect url as invalid', function(assert) {
     this.$('input[name="url"]').change();
     this.$('input[name="identification"]').focus();
 
-    const errorDivs = this.$('div.error');
-    assert.equal(errorDivs.length, 1);
+    return assertErrorDivs(this, assert, 1);
 });
 
 test('does not mark a correct url as invalid', function(assert) {
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="url"]').focus();
@@ -104,11 +120,11 @@ test('does not mark a correct url as invalid', function(assert) {
     this.$('input[name="url"]').change();
     this.$('input[name="identification"]').focus();
 
-    const errorDivs = this.$('div.error');
-    assert.equal(errorDivs.length, 0);
+    return assertErrorDivs(this, assert, 0);
 });
 
 test('marks an incorrect identification as invalid', function(assert) {
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="identification"]').focus();
@@ -116,11 +132,11 @@ test('marks an incorrect identification as invalid', function(assert) {
     this.$('input[name="identification"]').change();
     this.$('input[name="url"]').focus();
 
-    const errorDivs = this.$('div.error');
-    assert.equal(errorDivs.length, 1);
+    return assertErrorDivs(this, assert, 1);
 });
 
 test('does not mark a correct identification as invalid', function(assert) {
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="identification"]').focus();
@@ -128,22 +144,22 @@ test('does not mark a correct identification as invalid', function(assert) {
     this.$('input[name="identification"]').change();
     this.$('input[name="url"]').focus();
 
-    const errorDivs = this.$('div.error');
-    assert.equal(errorDivs.length, 0);
+    return assertErrorDivs(this, assert, 0);
 });
 
 test('marks an incorrect password as invalid', function(assert) {
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="password"]').focus();
     this.$('input[name="password"]').change();
     this.$('input[name="url"]').focus();
 
-    const errorDivs = this.$('div.error');
-    assert.equal(errorDivs.length, 1);
+    return assertErrorDivs(this, assert, 1);
 });
 
 test('does not mark a correct password as invalid', function(assert) {
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="password"]').focus();
@@ -151,12 +167,11 @@ test('does not mark a correct password as invalid', function(assert) {
     this.$('input[name="password"]').change();
     this.$('input[name="url"]').focus();
 
-    const errorDivs = this.$('div.error');
-    assert.equal(errorDivs.length, 0);
+    return assertErrorDivs(this, assert, 0);
 });
 
 test('does not create a record for an unreachable url', function(assert) {
-    const qAsync = assert.async();
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="url"]').val('https://0.0.0.0:1111/');
@@ -167,16 +182,12 @@ test('does not create a record for an unreachable url', function(assert) {
     this.$('input[name="password"]').change();
 
     Ember.run(() => this.$('button:submit').click());
-    setTimeout(() => {
-        const errorDivs = this.$('div.error');
-        assert.equal(errorDivs.length, 1);
-        qAsync();
-    }, 1000);
+
+    return assertErrorDivs(this, assert, 1);
 });
 
 test('does not create a record for a non-ghost url', function(assert) {
-    const qAsync = assert.async();
-    let timesCheckedForError = 0;
+    assert.expect(1);
     this.render(hbs`{{gh-edit-blog}}`);
 
     this.$('input[name="url"]').val('http://bing.com');
@@ -188,24 +199,7 @@ test('does not create a record for a non-ghost url', function(assert) {
 
     Ember.run(() => this.$('button:submit').click());
 
-    function checkForError() {
-        const errorDivs = this.$('div.error');
-
-        if (timesCheckedForError > 80) {
-            // 20 seconds passed, let's stop here
-            return;
-        }
-
-        if (errorDivs.length > 0) {
-            assert.equal(errorDivs.length, 1);
-            qAsync();
-        } else {
-            timesCheckedForError++;
-            setTimeout(checkForError, 250);
-        }
-    }
-
-    setTimeout(checkForError, 500);
+    return assertErrorDivs(this, assert, 1);
 });
 
 test('adding a blog creates a blog record', function(assert) {
