@@ -8,8 +8,8 @@
 function checkStatus() {
     const $ = window.$ || document.querySelectorAll;
     const err = document.querySelector('p.main-error');
-    const errChildren = err.childElementCount && err.childElementCount > 0;
-    const errText = err.textContent && err.textContent.length > 0;
+    const errChildren = err && err.childElementCount && err.childElementCount > 0;
+    const errText = err && err.textContent && err.textContent.length > 0;
     const errors = err && (errChildren || errText);
 
     const loadChecks = [
