@@ -11,11 +11,9 @@ export default Component.extend({
             const blog = this.get('blog');
             const showLetter = this.get('showLetter');
 
-            if (showLetter) {
-                return '#fff';
-            }
-
-            return blog.get('iconColor');
+            return showLetter
+                ? blog.get('iconColor')
+                : '#fff';
         }
     }),
 
