@@ -1,5 +1,6 @@
 import {moduleForComponent, test} from 'ember-qunit';
-import {autoUpdateMock} from '../../fixtures/auto-update';
+import {autoUpdateMock} from '../../fixtures/mock-auto-update';
+import {osMock} from '../../fixtures/mock-os';
 
 moduleForComponent('gh-preferences', 'Unit | Component | gh preferences', {
     unit: true,
@@ -24,7 +25,10 @@ test('openExternal tries to open the url in an external browser', function(asser
         }
     };
 
-    window.requireNode = () => mockElectron;
+    window.requireNode = (module) => {
+        if (module === 'electron') return mockElectron;
+        if (module === 'os') return osMock;
+    }
 
     this.render();
     component.actions.openExternal(url);
@@ -50,7 +54,10 @@ test('deleteData tries to show a dialog', function(assert) {
 
     // Prep
     assert.expect(3);
-    window.requireNode = () => mockElectron;
+    window.requireNode = (module) => {
+        if (module === 'electron') return mockElectron;
+        if (module === 'os') return osMock;
+    }
 
     // Test
     this.render();
@@ -76,8 +83,11 @@ test('deleteData does not attempt to delete if response is 0', function(assert) 
     };
     // Prep
     assert.expect(2);
-    window.requireNode = () => mockElectron;
     window.localStorage.setItem('storage-ok', true);
+    window.requireNode = (module) => {
+        if (module === 'electron') return mockElectron;
+        if (module === 'os') return osMock;
+    }
 
     // Test
     this.render();

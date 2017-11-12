@@ -1,6 +1,6 @@
 <div class="switcher-blog {{if blog.isSelected "isSelected"}}">
     <div class="switch-btn-icon" style={{iconStyle}} />
-    <div class="switch-btn" style="{{background-color iconColor}}" {{action "switchToBlog" blog}} data-blog={{blog.id}}>
+    <div class="switch-btn" style={{background-color iconColor}} {{action "switchToBlog" blog}} data-blog={{blog.id}}>
         {{#if showLetter}}
             <span>{{first-letter blog.name}}</span>
         {{/if}}

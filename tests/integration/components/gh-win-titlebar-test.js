@@ -1,11 +1,24 @@
 import { moduleForComponent, test } from 'ember-qunit'
 import hbs from 'htmlbars-inline-precompile'
+import Service from '@ember/service';
 
 const browserWindow = requireNode('electron').remote.getCurrentWindow();
 
+const windowMenuStub = Service.extend({
+    popup() {
+        return true;
+    }
+});
+
 moduleForComponent('gh-win-titlebar', 'Integration | Component | gh win titlebar', {
     integration: true,
-    afterEach: () => browserWindow.removeAllListeners(['enter-full-screen', 'unmaximize', 'maximize', 'leave-full-screen'])
+    beforeEach: function () {
+        this.register('service:window-menu', windowMenuStub);
+        this.inject.service('window-menu', { as: 'windowMenu' });
+    },
+    afterEach: function () {
+        browserWindow.removeAllListeners(['enter-full-screen', 'unmaximize', 'maximize', 'leave-full-screen'])
+    }
 });
 
 test('it renders', function (assert) {
@@ -52,11 +65,3 @@ test('unmaxizimes the window', function (assert) {
 
     assert.equal(browserWindow.isMaximized(), false);
 });
-
-// test('closes the window', function (assert) {
-//     this.render(hbs`{{gh-win-titlebar}}`)
-
-//     this.$('button[title="Close"]').click()
-
-//     assert.equal(window.invokedOnFakeWindow, 'close')
-// })

@@ -171,7 +171,7 @@ test('does not create a record for an unreachable url', function(assert) {
         const errorDivs = this.$('div.error');
         assert.equal(errorDivs.length, 1);
         qAsync();
-    }, 500);
+    }, 1000);
 });
 
 test('does not create a record for a non-ghost url', function(assert) {

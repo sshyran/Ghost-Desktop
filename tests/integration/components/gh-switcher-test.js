@@ -1,6 +1,7 @@
 import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import {blogs} from '../../fixtures/blogs';
+import {osMock} from '../../fixtures/mock-os';
 
 const hexrgb = requireNode('hexrgb');
 
@@ -89,13 +90,11 @@ test('a right click on a blog opens the context menu', function(assert) {
             }
         };
     };
-    window.requireNode = function (module) {
-        if (module === 'electron') {
-            return {remote: mockRemote};
-        } else {
-            oldrequireNode(...arguments);
-        }
-    };
+    window.requireNode = (module) => {
+        if (module === 'electron') return {remote: mockRemote};
+        if (module === 'os') return osMock;
+        return oldRequire(module);
+    }
 
     this.set('_blogs', [blogs[0]]);
     this.render(hbs`{{gh-switcher blogs=_blogs}}`);

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import {moduleFor, test} from 'ember-qunit';
-import {autoUpdateMock} from '../../fixtures/auto-update';
+import {autoUpdateMock} from '../../fixtures/mock-auto-update';
 
 const {run} = Ember;
 

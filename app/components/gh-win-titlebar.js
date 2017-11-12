@@ -1,11 +1,10 @@
-import Ember from 'ember';
-
-const {Component, inject} = Ember;
+import Component from '@ember/component';
+import {inject} from '@ember/service';
 
 export default Component.extend({
     classNameBindings: [':win-titlebar'],
     title: 'Ghost',
-    windowMenu: inject.service(),
+    windowMenu: inject('window-menu'),
     isMaximized: requireNode('electron').remote.getCurrentWindow().isMaximized(),
     browserWindow: requireNode('electron').remote.getCurrentWindow(),
 
