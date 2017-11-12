@@ -5,7 +5,7 @@
  * a) failed login
  * b) successful loaded
  */
-function checkStatus() {
+function checkStatus(i = 0) {
     const $ = window.$ || document.querySelectorAll;
     const err = document.querySelector('p.main-error');
     const errChildren = err && err.childElementCount && err.childElementCount > 0;
@@ -27,12 +27,17 @@ function checkStatus() {
     if (loaded) {
         // Yay, successfully loaded - let's give the renderer 200 more ms
         // for rendering
+        window.GHOST_LOADED = true;
+        console.log(`We're positively loaded`);
         setTimeout(() => console.log('loaded'), 200);
     } else if (errors) {
         // Noooo, login errors!
         console.log('login-error');
     } else {
-        setTimeout(checkStatus, 100);
+        if (i > 150) return;
+
+        console.log(`Not loaded, trying again in 100ms`);
+        setTimeout(() => checkStatus(i + 1), 150);
     }
 }
 
@@ -43,11 +48,15 @@ function checkStatus() {
  * @param {string} password
  */
 function login(username = '', password = '', i = 0) {
+    if (window.GHOST_LOADED) return;
+
     const $ = window.$ || document.querySelectorAll;
     const usernameField = $('input[name="identification"]');
     const passwordField = $('input[name="password"]');
     const loginButton = $('button.login');
     const results = usernameField.length  && passwordField.length  && loginButton.length;
+
+    if (i === 0) checkStatus();
 
     if (results) {
         usernameField.val(username);
@@ -55,15 +64,14 @@ function login(username = '', password = '', i = 0) {
         passwordField.val(password);
         passwordField.change();
         loginButton.click();
-
-        setTimeout(checkStatus, 100);
     } else {
         // We'll try for 5s
         if (i < 20) {
             console.log('Login: Could not find fields, trying again in 250ms.');
             setTimeout(() => login(username, password, i + 1), 250);
         } else {
-            console.warn('Login: Could not find correct fields, giving up');
+            console.warn('Login: Could not find correct fields, giving up (or loaded!)');
+            setTimeout(() => console.log('loaded'), 200);
         }
     }
 }
