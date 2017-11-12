@@ -69,7 +69,7 @@ export default Model.extend({
         const keytar = requireKeytar();
 
         if (keytar) {
-            await keytar.replacePassword(this.get('url'), this.get('identification'), value);
+            await keytar.setPassword(this.get('url'), this.get('identification'), value);
         }
     },
 
