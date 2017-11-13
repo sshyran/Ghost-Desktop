@@ -110,7 +110,19 @@ function fetchContributors() {
 
                 return fetchNames(contributors);
             })
-            .then((dataWithNames) => resolve(dataWithNames))
+            .then((dataWithNames) => {
+                // Let's see if Jochen Kirstätter made it
+                const jochen = dataWithNames.find(({login}) => login === 'jochenkirstaetter');
+                if (!jochen) {
+                    dataWithNames.push({
+                        login: 'jochenkirstaetter',
+                        url: 'https://github.com/jochenkirstaetter',
+                        api: 'https://api.github.com/users/jochenkirstaetter'
+                    });
+                }
+
+                resolve(dataWithNames)
+            })
             .catch(() => resolve());
     });
 }
