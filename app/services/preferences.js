@@ -7,8 +7,8 @@ import Service from '@ember/service';
 import {getIsYosemiteOrHigher} from '../utils/versions';
 
 const {remote} = requireNode('electron');
-const debug = requireNode('debug')('ghost-desktop:preferences');
 const fs = requireNode('fs-extra');
+const log = requireNode('electron-log');
 const path = requireNode('path');
 
 export default Service.extend(Evented, {
@@ -79,10 +79,10 @@ export default Service.extend(Evented, {
             const userData = remote.app.getPath('userData');
             const configPath = path.join(userData, 'ghost.json');
 
-            debug(`Saving configuration to ${configPath}`);
+            log.info(`Saving configuration to ${configPath}`);
             await fs.writeJson(configPath, this.getContent());
         } catch (error) {
-            debug(`Failed to write configuration to disk`, error);
+            log.info(`Failed to write configuration to disk`, error);
         }
     },
 
@@ -98,7 +98,7 @@ export default Service.extend(Evented, {
             }
         } catch (error) {
             if (!window.QUnit) {
-                debug('Failed catching contributors');
+                log.info('Failed catching contributors');
             }
         }
     },

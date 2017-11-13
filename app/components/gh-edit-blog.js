@@ -8,6 +8,8 @@ import getBlogName from '../utils/get-blog-name';
 import getIsGhost from '../utils/get-is-ghost';
 import Phrases from '../utils/phrases';
 
+const log = requireNode('electron-log');
+
 export default Component.extend({
     store: inject(),
     classNames: ['gh-edit-blog'],
@@ -34,6 +36,10 @@ export default Component.extend({
         if (this.get('blog')) {
             const blog = this.get('blog');
             const isBasicAuth = (blog.get('basicUsername') || blog.get('basicPassword'));
+
+            if (isBasicAuth) {
+                log.info(`gh-edit-blog: Using basic auth`);
+            }
 
             this.setProperties({
                 url: blog.get('url'),
@@ -65,8 +71,10 @@ export default Component.extend({
      * @returns {Promise}
      */
     _validateUrlIsGhost(url = '', basicAuth) {
+        log.verbose(`gh-edit-blog: Validating Ghost url ${url}`);
         return getIsGhost(url, basicAuth)
             .then((is) => {
+                log.verbose(`gh-edit-blog: Validation result: ${is}`);
                 this.set('isUrlInvalid', !is);
 
                 if (!is) {
@@ -75,12 +83,14 @@ export default Component.extend({
 
                 return is;
             })
-            .catch((err) => {
+            .catch(({status} = {}) => {
                 // Handle 401
-                if (err && err.status === 401) {
+                if (status === 401) {
+                    log.verbose(`gh-edit-blog: Validation error, basic auth required`);
                     this.set('isBasicAuth', true);
                 } else {
                     // We failed to reach the page, mark it as invalid
+                    log.verbose(`gh-edit-blog: Validation error, failed to reach page (${status})`);
                     this.set('isUrlInvalid', true);
                     this.set('urlError', Phrases.urlNotReachable);
                 }
@@ -124,14 +134,17 @@ export default Component.extend({
      */
     _createBlogIfNotExists(url = '', name = '', identification = '', basicUsername = '', basicPassword = '') {
         return new Promise(async (resolve) => {
+            log.info(`gh-edit-blog: Creating new blog record (or updating a new one)`);
             let record = this.get('blog') || await this._ensureSingleRecord(url);
 
             if (!record) {
                 // If the blog doesn't already exist, create it
+                log.info(`gh-edit-blog: Creating new record for ${url}`);
                 record = this.get('store').createRecord('blog', {url});
             } else {
                 // If it does exist, ensure that everybody knows this is super new
                 // This ensures we update even if only the password field was updated
+                log.info(`gh-edit-blog: Record found, setting "isResetRequested" to true`);
                 record.set('isResetRequested', true);
             }
 

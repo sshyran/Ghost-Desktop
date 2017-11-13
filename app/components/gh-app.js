@@ -7,6 +7,8 @@ import setDockMenu from '../utils/set-dock-menu';
 import setUsertasks from '../utils/set-user-tasks';
 import setWindowTitle from '../utils/set-window-title';
 
+const log = requireNode('electron-log');
+
 export default Component.extend({
     store: inject(),
     autoUpdate: inject(),
@@ -99,9 +101,11 @@ export default Component.extend({
      */
     setup() {
         if (this.get('hasBlogs')) {
+            log.silly(`gh-app: Found blogs, opening first one.`);
             this.send('switchToBlog', this.findSelectedBlog() || this.get('blogs.firstObject'));
             this.createMenus();
         } else {
+            log.silly(`gh-app: Didn't find a blog, setting "edit blog" to visible.`);
             this.set('selectedBlog', null);
             this.set('isEditBlogVisible', true);
         }
@@ -114,6 +118,7 @@ export default Component.extend({
      * On all: Window Menu
      */
     createMenus() {
+        log.silly(`gh-app: Creating menus`);
         const blogs = this.get('blogs');
         const menu = [];
 
@@ -143,6 +148,7 @@ export default Component.extend({
      * Reloads the blogs from the local databse
      */
     refreshBlogs() {
+        log.silly(`gh-app: Refreshing blogs.`);
         this.get('store').findAll('blog')
             .then((result) => {
                 this.set('blogs', result);

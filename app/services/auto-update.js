@@ -5,7 +5,7 @@ import Service from '@ember/service';
 import ENV from 'ghost-desktop/config/environment';
 import {isReachable} from '../utils/is-reachable';
 
-const debug = requireNode('debug')('ghost-desktop:auto-update');
+const log = requireNode('electron-log');
 
 export default Service.extend(Evented, {
     autoUpdater: null,
@@ -18,11 +18,13 @@ export default Service.extend(Evented, {
     isSupportedEnvironment: computed({
         get() {
             if (this.get('isLinux') || process.mas) {
+                log.info(`Updater: Not supported, because Linux or MAS`);
                 return false;
             }
 
             if (this.get('environment') !== 'production') {
-                return true;
+                log.info(`Updater: Not supported, because environment not production`);
+                return false;
             }
 
             return true;
@@ -48,6 +50,8 @@ export default Service.extend(Evented, {
             const {remote} = requireNode('electron');
             const appVersion = remote.app.getVersion();
 
+            log.info(`Updater: Running version ${appVersion}`);
+
             return appVersion;
         }
     }),
@@ -62,10 +66,12 @@ export default Service.extend(Evented, {
                 ? `http://desktop-updates.ghost.org/update/osx/${this.get('appVersion')}`
                 : `http://desktop-updates.ghost.org/update/win32/${this.get('appVersion')}`;
 
-            // Developer ovverride?
+            // Developer override?
             if (process.env.GHOST_UPDATER_URL) {
                 updateFeed = process.env.GHOST_UPDATER_URL;
             }
+
+            log.info(`Updater: Using ${updateFeed}`);
 
             return updateFeed;
         }
@@ -75,24 +81,24 @@ export default Service.extend(Evented, {
      * Checks Ghost Desktop's update server for updates.
      */
     checkForUpdates(force = false) {
-        debug(`Checking for update${force ? ' (forced)' : ''}`);
+        log.info(`Updater: Checking for update${force ? ' (forced)' : ''}`);
 
         this.isOnline(force).then((reachable) => {
             // Bail out if we're not able to reach the update server.
             if (!reachable) {
-                debug(`Update url not reachable, bailing.`);
+                log.info(`Updater: Update url not reachable, bailing.`);
                 return;
             }
 
             // Makes sure the environment we're in is supported.
             if (!this.get('isSupportedEnvironment')) {
-                debug(`Environment not supported, bailing`);
+                log.info(`Updater: Environment not supported, bailing`);
                 return;
             }
 
             // We're already in a update check state.
             if (this.get('isCheckingForUpdate')) {
-                debug(`Already checking for an update, bailing`);
+                log.info(`Updater: Already checking for an update, bailing`);
                 return;
             }
 
@@ -106,7 +112,7 @@ export default Service.extend(Evented, {
             }
 
             if (this.get('autoUpdater')) {
-                debug(`Executing check using Electron's autoupdater`);
+                log.info(`Updater: Executing check using Electron's autoupdater`);
                 this.get('autoUpdater').checkForUpdates();
             }
         });
@@ -148,26 +154,26 @@ export default Service.extend(Evented, {
         }
 
         const feedUrl = this.get('updateFeedUrl');
-        debug(`Feed url: ${feedUrl}`);
+        log.info(`Updater: Feed url: ${feedUrl}`);
 
         autoUpdater.removeAllListeners();
         autoUpdater.setFeedURL(feedUrl);
 
         autoUpdater.on('checking-for-update', () => {
-            debug(`Electron emitted "checking-for-update"`);
+            log.info(`Updater: Electron emitted "checking-for-update"`);
             this.set('isCheckingForUpdate', true);
             this.trigger('checking-for-update');
         });
 
         autoUpdater.on('update-available', () => {
-            debug(`Electron emitted "update-available'"`);
+            log.info(`Updater: Electron emitted "update-available'"`);
             this.set('isCheckingForUpdate', false);
             this.set('isUpdateAvailable', true);
             this.trigger('update-available');
         });
 
         autoUpdater.on('update-downloaded', () => {
-            debug(`Electron emitted "update-downloaded'`);
+            log.info(`Updater: Electron emitted "update-downloaded'`);
             this.set('isCheckingForUpdate', false);
             this.set('isUpdateAvailable', true);
             this.set('isUpdateDownloaded', true);
@@ -175,7 +181,7 @@ export default Service.extend(Evented, {
         });
 
         autoUpdater.on('update-not-available', () => {
-            debug(`Electron emitted "update-not-available"`);
+            log.info(`Updater: Electron emitted "update-not-available"`);
             this.set('isCheckingForUpdate', false);
             this.set('isUpdateAvailable', false);
             this.set('isLatestVersion', true);
@@ -183,8 +189,8 @@ export default Service.extend(Evented, {
         });
 
         autoUpdater.on('error', (...args) => {
-            debug(`Electron emitted "error"`);
-            debug(JSON.stringify(args));
+            log.info(`Updater: Electron emitted "error"`);
+            log.info(JSON.stringify(args));
             this.set('isCheckingForUpdate', false);
             this.set('isUpdateAvailable', null);
             this.set('isLatestVersion', null);

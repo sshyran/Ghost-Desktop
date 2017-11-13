@@ -4,6 +4,8 @@ import Component from '@ember/component';
 
 import {getIsYosemiteOrHigher} from '../utils/versions';
 
+const log = requireNode('electron-log');
+
 export default Component.extend({
     classNames: ['gh-preferences'],
     preferences: inject(),
@@ -27,6 +29,7 @@ export default Component.extend({
          * Delete all settings and restart the app
          */
         deleteData() {
+            log.info(`Preferences: User wants to all preferences, confirming.`);
             const {remote} = requireNode('electron');
             const {dialog} = remote;
 
@@ -38,6 +41,7 @@ export default Component.extend({
                 message: 'Do you really want to delete all preferences? This action cannot be undone.'
             }, (response) => {
                 if (response === 1) {
+                    log.info(`Preferences: Deletion confirmed, deleting all data.`);
                     window.localStorage.clear();
                     window.location.reload();
                 }
@@ -48,6 +52,7 @@ export default Component.extend({
          * Install an update, if available
          */
         installUpdate() {
+            log.info(`Preferences: "Install update"`);
             this.get('autoUpdate').update();
         },
 
@@ -64,6 +69,7 @@ export default Component.extend({
          * Resets the zoom factor to 1.0
          */
         resetZoom() {
+            log.verbose(`Preferences: Resetting zoom to 100`);
             this.set('preferences.zoomFactor', 100);
         },
 
@@ -71,6 +77,7 @@ export default Component.extend({
          * Forces an update check
          */
         forceUpdateCheck() {
+            log.verbose(`Preferences: Forcing update check`);
             this.get('autoUpdate').checkForUpdates(true);
         }
     }

@@ -4,7 +4,7 @@ import requireKeytar from '../utils/require-keytar';
 import getBlogName from '../utils/get-blog-name';
 
 const {Model, attr} = DS;
-const debug = requireNode('debug')('ghost-desktop:blog-model');
+const log = requireNode('electron-log');
 
 export default Model.extend({
     index: attr('number', {
@@ -29,6 +29,7 @@ export default Model.extend({
             return;
         }
 
+        log.verbose(`Blog model: Selected ${this.url}`);
         this.set('isSelected', true);
         this.save();
     },
@@ -41,6 +42,7 @@ export default Model.extend({
             return;
         }
 
+        log.verbose(`Blog model: Unselecting ${this.url}`);
         this.set('isSelected', false);
         this.save();
     },
@@ -50,6 +52,8 @@ export default Model.extend({
      */
     randomIconColor(excluding = null) {
         const newColor = getIconColor(excluding);
+
+        log.verbose(`Blog model: Creating new color ${this.url}`);
 
         if (newColor === this.get('iconColor')) {
             return this.randomIconColor(excluding);
@@ -67,6 +71,9 @@ export default Model.extend({
      */
     async setPassword(value) {
         const keytar = requireKeytar();
+
+        log.verbose(`Blog model: Updating password ${this.url}`);
+        log.verbose(`Blog model: Keytar present: ${!!keytar}`);
 
         if (keytar) {
             await keytar.setPassword(this.get('url'), this.get('identification'), value);
@@ -86,6 +93,9 @@ export default Model.extend({
 
         const keytar = requireKeytar();
 
+        log.verbose(`Blog model: Getting password ${this.url}`);
+        log.verbose(`Blog model: Keytar present: ${!!keytar}`);
+
         if (keytar) {
             return keytar.getPassword(this.get('url'), this.get('identification'));
         } else {
@@ -100,12 +110,17 @@ export default Model.extend({
     updateName() {
         const url = this.get('url');
 
+        log.verbose(`Blog model: Updating name ${this.url}`);
+
         if (url) {
             return getBlogName(url)
                 .then((name) => {
+                    log.verbose(`Blog model: Name found ${this.url}`);
                     this.set('name', name);
                 })
-                .catch((e) => debug(`Tried to update blog name, but failed: ${e}`));
+                .catch((e) => {
+                    log.info(`Blog model: Tried to update blog name, but failed: ${e}`)
+                });
         }
     },
 
@@ -119,7 +134,13 @@ export default Model.extend({
         this._super();
 
         const keytar = requireKeytar();
-        return (keytar ? keytar.deletePassword(this.get('url'), this.get('identification')) : null);
+
+        log.verbose(`Blog model: Deleting record`);
+        log.verbose(`Blog model: Keytar present: ${!!keytar}`);
+
+        return (keytar
+            ? keytar.deletePassword(this.get('url'), this.get('identification'))
+            : null);
     },
 
     /**
@@ -130,6 +151,8 @@ export default Model.extend({
     save() {
         const {ipcRenderer} = requireNode('electron');
         const serializedData = this.toJSON({includeId: true});
+
+        log.verbose(`Blog model: Saving record`);
 
         ipcRenderer.send('blog-serialized', serializedData);
         return this._super(...arguments);

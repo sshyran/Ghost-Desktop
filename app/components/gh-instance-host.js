@@ -9,7 +9,7 @@ import Phrases from '../utils/phrases';
 import {escapeString} from '../utils/escape-string';
 
 const path = requireNode('path');
-const debug = requireNode('debug')('ghost-desktop:instance-host');
+const log = requireNode('electron-log');
 
 /**
  * The instance host component contains a webview, displaying a Ghost blog
@@ -37,6 +37,7 @@ export default Component.extend({
         const blog = this.get('blog');
 
         if (blog && blog.get('isResetRequested')) {
+            log.verbose(`gh-instance-host: ${blog.get('name')} requested reset`);
             blog.set('isResetRequested', false);
             blog.save();
 
@@ -53,6 +54,8 @@ export default Component.extend({
 
     didRender() {
         this._super(...arguments);
+
+        log.silly(`gh-instance-host: Rendered, now setting up listeners`);
 
         // Once the webview is created, we immediatly attach handlers
         // to handle the successful load of the content - and a
@@ -105,6 +108,8 @@ export default Component.extend({
      * A crude attempt at trying things again.
      */
     reload() {
+        log.info(`gh-instance-host: Reloading ${this.get('debugName')}`);
+
         this.set('isInstanceLoaded', false);
         this.set('isAttemptedSignin', false);
         this.didRender();
@@ -119,7 +124,7 @@ export default Component.extend({
         const username = this.get('blog.identification');
         const password = await this.get('blog').getPassword();
 
-        debug(`${this.get('debugName')} trying to sign in.`);
+        log.info(`gh-instance-host: ${this.get('debugName')} trying to sign in.`);
 
         // If we can't find username or password, bail out and let the
         // user deal with whatever happened
@@ -127,7 +132,7 @@ export default Component.extend({
         // TODO: Ask the user for credentials and add them back to the OS
         // keystore
         if (!username || !password || !$webview) {
-            debug(`${this.get('debugName')} tried to sign in, but no username or password found.`);
+            log.info(`gh-instance-host: ${this.get('debugName')} tried to sign in, but no username or password found.`);
             return this.show();
         }
 
@@ -135,7 +140,7 @@ export default Component.extend({
         const escapedPassword = escapeString(password);
         const commands = [
             `if (GhostDesktop && GhostDesktop.login) {`,
-            `GhostDesktop.login('${escapedUsername}', '${escapedPassword}');`,
+            `  GhostDesktop.login('${escapedUsername}', '${escapedPassword}');`,
             `}`
         ];
 
@@ -165,7 +170,7 @@ export default Component.extend({
      * @param {string} newUrl
      */
     _handleWillNavigate(newUrl = '') {
-        debug(`${this.get('debugName')} will navigate: ${newUrl}`);
+        log.info(`gh-instance-host: ${this.get('debugName')} will navigate: ${newUrl}`);
     },
 
     /**
@@ -175,7 +180,7 @@ export default Component.extend({
      * @param {string} newUrl
      */
     _handleRedirect(oldUrl = '', newUrl = '') {
-        debug(`${this.get('debugName')} was redirected: ${oldUrl}, ${newUrl}`);
+        log.info(`gh-instance-host: ${this.get('debugName')} was redirected: ${oldUrl}, ${newUrl}`);
     },
 
     /**
@@ -183,7 +188,7 @@ export default Component.extend({
      * HTMLElement to bloom into a beautiful webview (with all the methods we need)
      */
     _handleStartLoading() {
-        debug(`${this.get('debugName')} did-start-loading`);
+        log.verbose(`${this.get('debugName')} did-start-loading`);
         const $webview = this._getWebView();
 
         this._insertCss();
@@ -196,7 +201,7 @@ export default Component.extend({
      * Handle's the 'did-finish-load' event on the webview hosting the Ghost blog
      */
     _handleLoaded() {
-        debug(`${this.get('debugName')} did-finish-loading`);
+        log.info(`gh-instance-host: ${this.get('debugName')} did-finish-loading`);
         const $webview = this._getWebView();
         const isAttemptedSignin = this.get('isAttemptedSignin');
         let title = '';
@@ -204,8 +209,7 @@ export default Component.extend({
         try {
             title = $webview.getTitle();
         } catch (e) {
-            debug(`${this.get('debugName')} Error while trying to to get web view title:`);
-            console.warn(e);
+            log.warn(`${this.get('debugName')} Error while trying to to get web view title:`);
         }
 
         // Check if we're on the sign in page, and if so, attempt to
@@ -213,7 +217,7 @@ export default Component.extend({
         if ((title.includes('Sign In') || title === 'Ghost Admin') && !isAttemptedSignin) {
             this.signin();
         } else {
-            debug(`${this.get('debugName')} Not trying to sign in.`, {title, isAttemptedSignin});
+            log.info(`gh-instance-host: ${this.get('debugName')} Not trying to sign in.`, {title, isAttemptedSignin});
             this.show();
         }
     },
@@ -225,6 +229,7 @@ export default Component.extend({
      */
     _handleNewWindow(e) {
         if (e && e.originalEvent && e.originalEvent.url) {
+            log.verbose(`Opening external link ${e.originalEvent.url}`);
             requireNode('electron').shell.openExternal(e.originalEvent.url);
         }
     },
@@ -240,7 +245,7 @@ export default Component.extend({
      * @param errorDescription {string}
      */
     _handleLoadFailure(e, errorCode, errorDescription = '') {
-        debug(`${this.get('debugName')} encountered load error: ${errorCode}`);
+        log.info(`gh-instance-host: ${this.get('debugName')} encountered load error: ${errorCode}`);
 
         const $webview = this._getWebView();
         const path = requireNode('path');
@@ -261,7 +266,8 @@ export default Component.extend({
             this.show();
         }
 
-        debug(`Ghost Instance failed to load. Error Code: ${errorCode}`, errorDescription);
+        log.warn(`Ghost Instance failed to load.`);
+        log.warn(`Error Code: ${errorCode}, Description: ${errorDescription}`)
         // TODO: Handle notification click
         /* eslint-disable no-unused-vars */
         if (this.get('preferences.isNotificationsEnabled')) {
@@ -277,6 +283,10 @@ export default Component.extend({
      * @param e {Object} - jQuery Event
      */
     _handleConsole(e) {
+        if (e && e.originalEvent && e.originalEvent.message) {
+            log.silly(`WebView Console: ${e.originalEvent.message}`);
+        }
+
         if (e && e.originalEvent && e.originalEvent.message.includes('login-error')) {
             /* eslint-disable no-unused-vars */
             if (this.get('preferences.isNotificationsEnabled')) {
@@ -305,7 +315,9 @@ export default Component.extend({
      * Sends the current spellchecker language to the webview
      */
     _setupSpellchecker($webview = this._getWebView()) {
-        $webview.send('spellchecker', this.get('preferences.spellcheckLanguage'));
+        const language = this.get('preferences.spellcheckLanguage');
+        log.verbose(`Setting up spellchecker: ${language}`);
+        $webview.send('spellchecker', language);
     },
 
     /**
@@ -326,7 +338,9 @@ export default Component.extend({
         const $webview = ($webviews && $webviews[0]) ? $webviews[0] : undefined;
 
         if (!$webview) {
-            debug('Could not find webview containing Ghost blog.');
+            log.warn('Could not find webview containing Ghost blog.');
+        } else {
+            log.silly(`Found webview containing Ghost blog: ${$webview.id}`);
         }
 
         return $webview;

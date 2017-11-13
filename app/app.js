@@ -3,16 +3,6 @@ import config from './config/environment';
 import loadInitializers from 'ember-load-initializers';
 import Resolver from './resolver';
 
-localStorage.debug = 'ghost-desktop:*';
-
-// Forward log information to the main console
-const {ipcRenderer} = requireNode('electron');
-const {log} = console;
-console.log = (...args) => {
-    log(...args);
-    ipcRenderer.send('console-message', args);
-};
-
 const App = Application.extend({
     modulePrefix: config.modulePrefix,
     podModulePrefix: config.podModulePrefix,

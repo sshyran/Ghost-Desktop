@@ -7,13 +7,13 @@
  */
 export function injectCss(webview, name = '') {
     const fs = requireNode('fs');
-    const debug = requireNode('debug')('ghost-desktop:inject-css');
+    const log = requireNode('electron-log');
 
     const cssPath = `${__dirname}/${window.QUnit ? '..' : '.'}/assets/inject/css/${name}.css`;
 
     fs.readFile(cssPath, 'utf8', (err, data) => {
         if (err) {
-            debug(err);
+            log.info(err);
         }
 
         if (data) {
