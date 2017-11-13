@@ -61,16 +61,11 @@ function fetchName(contributor) {
  */
 function fetchNames(contributors) {
     return new Promise((resolve) => {
-        let withNames = contributors;
-        let promises = [];
+        const withNames = contributors;
+        const promises = [];
 
         contributors.forEach((contributor, i) => {
-            /**
-             * (description)
-             *
-             * @param name (description)
-             */
-            let nameFetcher = fetchName(contributor)
+            const nameFetcher = fetchName(contributor)
                 .then((name) => {
                     withNames[i].name = name;
                 });
@@ -90,8 +85,9 @@ function fetchNames(contributors) {
  */
 function fetchContributors() {
     return new Promise((resolve) => {
-        let url = 'https://api.github.com/repos/TryGhost/Ghost-Desktop/contributors';
-        let contributors = [];
+        const url = 'https://api.github.com/repos/TryGhost/Ghost-Desktop/contributors';
+        const contributors = [];
+        const blacklist = ['Epic-Stuff-Bot']
 
         fetch(url)
             .then((response) => {
@@ -99,14 +95,16 @@ function fetchContributors() {
             })
             .then((data) => {
                 if (data && data.forEach) {
-                    data.forEach((contributor) => {
-                        /* jscs: disable */
+                    data.forEach(({html_url, url, login}) => {
+                        if (blacklist.find((name) => name === login)) {
+                            return;
+                        }
+
                         contributors.push({
-                            url: contributor.html_url,
-                            api: contributor.url,
-                            login: contributor.login
+                            url: html_url,
+                            api: url,
+                            login: login
                         });
-                        /* jscs: enable */
                     });
                 }
 
