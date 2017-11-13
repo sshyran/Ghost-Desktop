@@ -24,32 +24,6 @@ export function reload(item, focusedWindow) {
 }
 
 /**
- * Toggles fullscreen on the currently focused window
- *
- * @export
- * @param item (description) * @param item - The menu item calling
- * @param {Electron.BrowserWindow} focusedWindow - The currently focussed window focusedWindow (description)
- */
-export function toggleFullscreen(item, focusedWindow) {
-    if (focusedWindow) {
-        focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-    }
-}
-
-/**
- * Toggles the developer tools on the currently focused window
- *
- * @export
- * @param item - The menu item calling
- * @param {Electron.BrowserWindow} focusedWindow - The currently focussed window
- */
-export function toggleDevTools(item, focusedWindow) {
-    if (focusedWindow) {
-        focusedWindow.toggleDevTools();
-    }
-}
-
-/**
  * Attempts to toggle developer tools for the currently visible Ghost instance
  *
  * @export
@@ -105,39 +79,13 @@ export function setup() {
         {
             label: 'Edit',
             submenu: [
-                {
-                    label: 'Undo',
-                    accelerator: 'CmdOrCtrl+Z',
-                    role: 'undo'
-                },
-                {
-                    label: 'Redo',
-                    accelerator: 'Shift+CmdOrCtrl+Z',
-                    role: 'redo'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Cut',
-                    accelerator: 'CmdOrCtrl+X',
-                    role: 'cut'
-                },
-                {
-                    label: 'Copy',
-                    accelerator: 'CmdOrCtrl+C',
-                    role: 'copy'
-                },
-                {
-                    label: 'Paste',
-                    accelerator: 'CmdOrCtrl+V',
-                    role: 'paste'
-                },
-                {
-                    label: 'Select All',
-                    accelerator: 'CmdOrCtrl+A',
-                    role: 'selectall'
-                }
+                {role: 'undo'},
+                {role: 'redo'},
+                {type: 'separator'},
+                {role: 'cut'},
+                {role: 'copy'},
+                {role: 'paste'},
+                {role: 'selectall'}
             ]
         },
         {
@@ -157,35 +105,18 @@ export function setup() {
                     }
                 },
                 {
-                    label: 'Toggle Full Screen',
-                    accelerator: (process.platform === 'darwin') ? 'Ctrl+Command+F' : 'F11',
-                    click: toggleFullscreen
+                    role: 'togglefullscreen'
                 }
             ]
         },
         {
-            label: 'Window',
-            role: 'window',
-            submenu: [
-                {
-                    label: 'Minimize',
-                    accelerator: 'CmdOrCtrl+M',
-                    role: 'minimize'
-                },
-                {
-                    label: 'Close',
-                    accelerator: 'CmdOrCtrl+W',
-                    role: 'close'
-                }
-            ]
+            role: 'window'
         },
         {
             label: 'Developer',
             submenu: [
                 {
-                    label: 'Toggle Developer Tools',
-                    accelerator: (process.platform === 'darwin') ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-                    click: toggleDevTools
+                    role: 'toggledevtools'
                 },
                 {
                     label: 'Toggle Developer Tools (Current Blog)',
@@ -193,7 +124,7 @@ export function setup() {
                     click: toggleGhostDevTools
                 },
                 {
-                    label: 'Repository',
+                    label: 'Open Repository in Browser',
                     click: openRepository
                 }
             ]
@@ -209,6 +140,15 @@ export function setup() {
                 {
                     label: 'Report Issues',
                     click: openReportIssues
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Show logs',
+                    click() {
+                        ipcRenderer.send('open-log-location');
+                    }
                 }
             ]
         }
@@ -223,42 +163,19 @@ export function setup() {
                     label: 'About Ghost',
                     role: 'about'
                 },
-                {
-                    type: 'separator'
-                },
+                {type: 'separator' },
                 {
                     // The click action gets injected from gh-switcher
                     label: 'Preferences',
                     accelerator: 'CmdOrCtrl+,'
                 },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Services',
-                    role: 'services',
-                    submenu: []
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: `Hide ${name}`,
-                    accelerator: 'Command+H',
-                    role: 'hide'
-                },
-                {
-                    label: 'Hide Others',
-                    accelerator: 'Command+Alt+H',
-                    role: 'hideothers'
-                },
-                {
-                    label: 'Show All',
-                    role: 'unhide'
-                },
-                {
-                    type: 'separator'
-                },
+                {type: 'separator'},
+                {role: 'services'},
+                {type: 'separator'},
+                {role: 'hide', label: 'Hide Ghost'},
+                {role: 'hideothers'},
+                {role: 'unhide'},
+                {type: 'separator'},
                 {
                     label: 'Quit',
                     accelerator: 'Command+Q',
