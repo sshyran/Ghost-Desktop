@@ -1,4 +1,4 @@
-import {setup, reload, toggleDevTools, toggleGhostDevTools, toggleFullscreen, openReportIssues, openRepository} from 'ghost-desktop/utils/window-menu';
+import {setup, reload, toggleGhostDevTools, openReportIssues, openRepository} from 'ghost-desktop/utils/window-menu';
 import {module, test} from 'qunit';
 
 module('Unit | Utility | window menu');
@@ -14,25 +14,6 @@ test('reloads a given BrowserWindow', function(assert) {
     reload({}, {
         reload() {
             assert.ok(true, 'reload called');
-        }
-    });
-});
-
-test('toggles devtools on a given BrowserWindow', function(assert) {
-    toggleDevTools({}, {
-        toggleDevTools() {
-            assert.ok(true, 'toggleDevTools called');
-        }
-    });
-});
-
-test('toggles fullscreen on a given BrowserWindow', function(assert) {
-    toggleFullscreen({}, {
-        setFullScreen(bool) {
-            assert.ok(bool);
-        },
-        isFullScreen() {
-            return false;
         }
     });
 });
