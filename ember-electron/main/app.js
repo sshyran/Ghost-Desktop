@@ -125,10 +125,12 @@ app.on('ready', function onReady() {
 
     // Greetings
     if (process.platform === 'win32') {
-        console.log('\n Welcome to Ghost \n');
+        log.info(`\n Welcome to Ghost ${app.getVersion()} \n`);
     } else {
-        console.log('\n ⚡️  Welcome to Ghost  👻\n');
+        log.info(`\n ⚡️  Welcome to Ghost ${app.getVersion()}  👻\n`);
     }
+
+    log.info(`Logging to: ${log.transports.file.file}`);
 
     // If you want to open up dev tools programmatically, call
     // mainWindow.openDevTools();

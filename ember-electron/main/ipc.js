@@ -1,4 +1,4 @@
-const {ipcMain, BrowserWindow} = require('electron');
+const {ipcMain, BrowserWindow, shell} = require('electron');
 const {reloadMainWindow} = require('./app');
 const {state} = require('./state-manager');
 const log = require('electron-log');
@@ -45,10 +45,6 @@ ipcMain.on('soft-restart-requested', () => {
     reloadMainWindow();
 });
 
-ipcMain.on('console-message', (sender, args) => {
-    if (args[0] && args[0].includes && args[0].includes('%c')) {
-        console.log(`  ${args[0].replace(/%c/g, '')}`);
-    } else {
-        console.log(...args);
-    }
+ipcMain.on('open-log-location', () => {
+    shell.showItemInFolder(log.transports.file.file);
 });

@@ -18,7 +18,7 @@ function getPreferences() {
         try {
             const data = fs.readJSONSync(configPath);
 
-            log.info(`Read configuration data`, data);
+            log.verbose(`Read configuration data`, data);
             return data;
         } catch (error) {
             log.error(`Failed to read configuration data, assuming default`, error);
