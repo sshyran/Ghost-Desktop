@@ -1,7 +1,7 @@
 const {app} = require('electron');
 const fs = require('fs-extra');
+const log = require('electron-log');
 const path = require('path');
-const debug = require('debug')('ghost-desktop:main:preferences');
 
 /**
  * From the window, we'll save preferences to disk (to a file called ghost.json).
@@ -18,10 +18,10 @@ function getPreferences() {
         try {
             const data = fs.readJSONSync(configPath);
 
-            debug(`Read configuration data`, data);
+            log.info(`Read configuration data`, data);
             return data;
         } catch (error) {
-            debug(`Failed to read configuration data, assuming default`, error);
+            log.error(`Failed to read configuration data, assuming default`, error);
         }
     }
 

@@ -1,7 +1,7 @@
 const {ipcMain, BrowserWindow} = require('electron');
-const {state} = require('./state-manager');
 const {reloadMainWindow} = require('./app');
-const debug = require('debug')('ghost-desktop:main:ipc');
+const {state} = require('./state-manager');
+const log = require('electron-log');
 
 ipcMain.on('blog-data', (event, data) => {
     state.blogs = state.blogs || [];
@@ -18,20 +18,20 @@ ipcMain.on('blog-data', (event, data) => {
         }
     }
 
-    debug(`Blog ${data.id} (${data.url}) updated. Blogs known to main thread: ${state.blogs.length}`);
+    log.info(`Blog ${data.id} (${data.url}) updated. Blogs known to main thread: ${state.blogs.length}`);
 });
 
 ipcMain.on('main-window-ready', (event, data) => {
     state['main-window-ready'] = true;
 
-    debug(`Main window ready: ${data}`);
+    log.info(`Main window ready: ${data}`);
 });
 
 ipcMain.on('shutdown-requested', (event) => {
     if (event.sender) {
         const win = BrowserWindow.fromWebContents(event.sender);
 
-        debug(`Shutdown requested`);
+        log.info(`Shutdown requested`);
 
         setTimeout(() => {
             if (win && !win.isDestroyed()) win.destroy();
@@ -40,7 +40,7 @@ ipcMain.on('shutdown-requested', (event) => {
 });
 
 ipcMain.on('soft-restart-requested', () => {
-    debug('Soft restart requested, closing main window and creating a new one');
+    log.info('Soft restart requested, closing main window and creating a new one');
 
     reloadMainWindow();
 });

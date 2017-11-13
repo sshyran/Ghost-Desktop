@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const debug = require('debug')('ghost-desktop:main:state');
+const log = require('electron-log');
 
 let instance;
 
@@ -32,7 +32,7 @@ class StateManager extends EventEmitter {
          */
         const stateHandler = {
             set(target, property, newValue /* receiver */) {
-                debug(`Called "set" on state: Property: ${property}; Value ${newValue}`);
+                log.verbose(`State Handler: Called "set" on state: Property: ${property}; Value ${newValue}`);
 
                 instance.emit(`set-${property}`, {
                     previousValue: target[property],

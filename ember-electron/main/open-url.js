@@ -1,6 +1,6 @@
 const {app, BrowserWindow} = require('electron');
 const {stateManager} = require('./state-manager');
-const debug = require('debug')('ghost-desktop:main:open-url');
+const log = require('electron-log');
 const queryString = require('query-string');
 
 const urlMatchers = {
@@ -23,7 +23,7 @@ class OpenUrlManager {
             event.preventDefault();
         }
 
-        debug(`Received open-url event with url ${url}`);
+        log.info(`Received open-url event with url ${url}`);
 
         if (urlMatchers.openBlog.test(url)) {
             return this.handleOpenBlogUrl(url);
@@ -41,10 +41,10 @@ class OpenUrlManager {
         try {
             details = queryString.parse(rawDetails);
         } catch (e) {
-            return debug('Failed to queryString.parse open-blog url');
+            return log.info('Failed to queryString.parse open-blog url');
         }
 
-        debug(`Received open-blog event with blog url ${JSON.stringify(details)}`);
+        log.info(`Received open-blog event with blog url ${JSON.stringify(details)}`);
         this.sendToMainWindow('open-blog', details);
     }
 
@@ -52,15 +52,15 @@ class OpenUrlManager {
         const [, rawDetails] = url.match(urlMatchers.createDraft);
         let details;
 
-        debug(`Received create-draft event with url ${rawDetails}`);
+        log.info(`Received create-draft event with url ${rawDetails}`);
 
         try {
             details = queryString.parse(rawDetails);
         } catch (e) {
-            return debug('Failed to queryString.parse create-draft url');
+            return log.info('Failed to queryString.parse create-draft url');
         }
 
-        debug(`Received with create-draft event with details ${JSON.stringify(details || '{}')}`);
+        log.info(`Received with create-draft event with details ${JSON.stringify(details || '{}')}`);
         this.sendToMainWindow('create-draft', details);
     }
 

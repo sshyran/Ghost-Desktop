@@ -1,15 +1,19 @@
-const {app, BrowserWindow} = require('electron');
-const debug = require('debug')('ghost-desktop:main:app');
+// Before we do anything else, handle Squirrel Events
+if (require('./squirrel')()) return;
 
-const {fetchWindowState} = require('./window-state');
-const {state} = require('./state-manager');
+const {app, BrowserWindow} = require('electron');
 const {ensureSingleInstance} = require('./single-instance');
+const {fetchWindowState} = require('./window-state');
 const {parseArguments} = require('./parse-arguments');
+const {state} = require('./state-manager');
+const log = require('electron-log');
 
 const emberAppLocation = `file://${__dirname}/../../ember/index.html`;
 
-// Before we do anything else, handle Squirrel Events
-if (require('./squirrel')()) return;
+// Logger configuration
+log.transports.console.level = process.env.GHOST_DESKTOP_LOG_LEVEL || 'info';
+log.transports.file.level = process.env.GHOST_DESKTOP_LOG_LEVEL || 'info';
+log.transports.file.appName = 'ghost';
 
 let mainWindow = null;
 
@@ -74,7 +78,7 @@ function createMainWindow() {
         window = new BrowserWindow(Object.assign({}, defaultOptions, usableState));
     } catch (error) {
         // Window state keeper failed, let's still open a window
-        debug(`Window state keeper failed: ${error}`);
+        log.error(`Window state keeper failed: ${error}`);
         window = new BrowserWindow(defaultOptions);
     }
 
