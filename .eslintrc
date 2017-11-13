@@ -36,8 +36,8 @@
         "prefer-const": "error",
         "indent": ["error", 4],
         "space-before-function-paren": ["error", {"anonymous": "ignore", "named": "never"}],
-        "object-curly-spacing": ["error", "never"],
-        "array-bracket-spacing": ["error", "never"],
+        "object-curly-spacing": ["error", "always"],
+        "array-bracket-spacing": ["error", "always"],
         "key-spacing": ["error", {"mode": "minimum"}],
         "keyword-spacing": ["error", {"overrides": {
             "catch": {"after": true}
