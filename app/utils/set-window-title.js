@@ -7,8 +7,8 @@ const he = requireNode('he');
  * @param {string} [title='Ghost'] - New title
  */
 export default function setWindowTitle(title = 'Ghost') {
-    const {remote} = requireNode('electron');
-    const {BrowserWindow} = remote;
+    const { remote } = requireNode('electron');
+    const { BrowserWindow } = remote;
     const currentWindow = BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];
     const decodedTitle = he.decode(title);
 

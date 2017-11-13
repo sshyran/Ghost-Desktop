@@ -1,7 +1,7 @@
 import Helper from '@ember/component/helper';
-import {htmlSafe} from '@ember/string';
+import { htmlSafe } from '@ember/string';
 
-export function backgroundColor([color]) {
+export function backgroundColor([ color ]) {
     return htmlSafe(`background-color: ${color};`);
 }
 

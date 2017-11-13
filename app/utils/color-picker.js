@@ -1,5 +1,5 @@
 const randomColor = requireNode('randomcolor');
-const colorSettings = {luminosity: 'light'};
+const colorSettings = { luminosity: 'light' };
 
 /**
  * Generates a random set of (nicely selected!) colors and selects one to be returned.

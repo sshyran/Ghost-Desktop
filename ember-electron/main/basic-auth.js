@@ -1,5 +1,5 @@
-const {app} = require('electron');
-const {state} = require('./state-manager');
+const { app } = require('electron');
+const { state } = require('./state-manager');
 
 app.on('login', (event, webContents, request, authInfo, callback) => {
     if (state.blogs && state.blogs.length > 0 && request && request.url) {

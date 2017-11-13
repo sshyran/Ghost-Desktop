@@ -1,11 +1,11 @@
 // Before we do anything else, handle Squirrel Events
 if (require('./squirrel')()) return;
 
-const {app, BrowserWindow} = require('electron');
-const {ensureSingleInstance} = require('./single-instance');
-const {fetchWindowState} = require('./window-state');
-const {parseArguments} = require('./parse-arguments');
-const {state} = require('./state-manager');
+const { app, BrowserWindow } = require('electron');
+const { ensureSingleInstance } = require('./single-instance');
+const { fetchWindowState } = require('./window-state');
+const { parseArguments } = require('./parse-arguments');
+const { state } = require('./state-manager');
 const log = require('electron-log');
 
 const emberAppLocation = `file://${__dirname}/../../ember/index.html`;
@@ -57,7 +57,7 @@ function getTransparency() {
         return false;
     }
 
-    const {getPreferences} = require('./preferences');
+    const { getPreferences } = require('./preferences');
     return getPreferences().isVibrancyEnabled;
 }
 
@@ -66,7 +66,7 @@ function createMainWindow() {
     const frame = !(process.platform === 'win32');
     const transparent = getTransparency();
     const vibrancy = transparent ? 'dark' : null;
-    const defaultOptions = {show: false, titleBarStyle, vibrancy, frame, transparent};
+    const defaultOptions = { show: false, titleBarStyle, vibrancy, frame, transparent };
     let windowState, usableState, windowStateKeeper, window;
 
     // Instantiate the window with the existing size and position.
@@ -143,4 +143,4 @@ app.on('ready', function onReady() {
     require('./basic-auth');
 });
 
-module.exports = {mainWindow, reloadMainWindow};
+module.exports = { mainWindow, reloadMainWindow };

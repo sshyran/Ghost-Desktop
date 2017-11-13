@@ -1,6 +1,6 @@
 import Helper from '@ember/component/helper';
 
-export function switchShortcut([index] = [0]) {
+export function switchShortcut([ index ] = [ 0 ]) {
     const cmdOrCtrl = (process.platform && process.platform === 'darwin') ? '⌘' : 'Ctrl';
 
     // If bigger than 9, don't return anything

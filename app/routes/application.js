@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
-import {inject} from '@ember/service';
+import { inject } from '@ember/service';
 
-import {setup as setupContextMenu} from '../utils/context-menu';
+import { setup as setupContextMenu } from '../utils/context-menu';
 
 export default Route.extend({
     windowMenu: inject(),
@@ -34,10 +34,10 @@ export default Route.extend({
      */
     afterModel(blogs) {
         if (blogs) {
-            const {ipcRenderer} = requireNode('electron');
+            const { ipcRenderer } = requireNode('electron');
 
             blogs.forEach((blog) => {
-                const serializedData = blog.toJSON({includeId: true});
+                const serializedData = blog.toJSON({ includeId: true });
                 ipcRenderer.send('blog-data', serializedData);
             });
         }

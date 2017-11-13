@@ -1,4 +1,4 @@
-const {openUrlManager} = require('./open-url');
+const { openUrlManager } = require('./open-url');
 
 /**
  * Parses the command lin
@@ -7,7 +7,7 @@ const {openUrlManager} = require('./open-url');
  * @returns {boolean} True if a deeplink was found, false if not
  */
 function parseArguments(argv) {
-    const args = argv ? [...argv.slice(1)] : [...process.argv.slice(1)];
+    const args = argv ? [ ...argv.slice(1) ] : [ ...process.argv.slice(1) ];
     const deepLink = args.find((arg) => /^ghost:\/\//.test(arg));
 
     if (deepLink) {
@@ -18,4 +18,4 @@ function parseArguments(argv) {
     return false;
 }
 
-module.exports = {parseArguments};
+module.exports = { parseArguments };

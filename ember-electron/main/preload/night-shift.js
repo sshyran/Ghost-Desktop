@@ -1,6 +1,6 @@
 'use strict';
 
-const {remote} = require('electron');
+const { remote } = require('electron');
 
 /**
  * Notifies the parent window about night shift.
@@ -30,7 +30,7 @@ function observeNightShift(i = 0) {
         notifyWindowAboutNightShift(!darkStyle.disabled);
 
         const observer = new MutationObserver(() => notifyWindowAboutNightShift(!darkStyle.disabled));
-        observer.observe(darkStyle, {attributes: true});
+        observer.observe(darkStyle, { attributes: true });
     } else if (i < 100) {
         // We'll give the app five seconds to load some night-shift
         // stuff. If it doesn't, we'll assume that there's no support

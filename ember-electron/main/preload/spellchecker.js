@@ -1,11 +1,11 @@
 'use strict';
 
-const {ipcRenderer, remote, webFrame} = require('electron');
+const { ipcRenderer, remote, webFrame } = require('electron');
 const spellchecker = require('spellchecker');
 
 const webContents = remote.getCurrentWebContents();
-const {Menu} = remote;
-const template = [{
+const { Menu } = remote;
+const template = [ {
     label: 'Undo',
     role: 'undo'
 }, {
@@ -25,7 +25,7 @@ const template = [{
 }, {
     label: 'Select All',
     role: 'selectall'
-}];
+} ];
 let selection;
 
 /**
@@ -35,7 +35,7 @@ let selection;
  */
 function buildMenu() {
     const buildTemplate = template.slice();
-    buildTemplate.unshift({type: 'separator'});
+    buildTemplate.unshift({ type: 'separator' });
 
     if (selection && selection.spellingSuggestions && selection.spellingSuggestions.length > 0) {
         selection.spellingSuggestions.reverse();

@@ -1,5 +1,5 @@
-import {computed} from '@ember/object';
-import {inject} from '@ember/service';
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 import Component from '@ember/component';
 
 /**
@@ -10,12 +10,12 @@ export default Component.extend({
     store: inject(),
     preferences: inject(),
     windowMenu: inject(),
-    classNameBindings: ['isMinimized', 'isMac:mac', 'isVibrant', ':switcher', ':win-height-adjusted'],
+    classNameBindings: [ 'isMinimized', 'isMac:mac', 'isVibrant', ':switcher', ':win-height-adjusted' ],
     isMinimized: computed.alias('preferences.isQuickSwitcherMinimized'),
     isMac: !!(process.platform === 'darwin'),
     isVibrant: computed.alias('preferences.isVibrancyEnabled'),
     sortedBlogs: computed.sort('blogs', 'sortDefinition'),
-    sortDefinition: ['index'],
+    sortDefinition: [ 'index' ],
 
     didRender() {
         this._super(...arguments);
@@ -30,7 +30,7 @@ export default Component.extend({
      * the preferences pane.
      */
     _setupQuickSwitch() {
-        const blogMenuItems = [{type: 'separator'}];
+        const blogMenuItems = [ { type: 'separator' } ];
 
         // The first 9 blogs are added to the 'View' menu.
         this.get('sortedBlogs')
@@ -54,8 +54,8 @@ export default Component.extend({
      * interaction with the blog below is setup.
      */
     _setupContextMenu() {
-        const {remote} = requireNode('electron');
-        const {Menu} = remote;
+        const { remote } = requireNode('electron');
+        const { Menu } = remote;
         const self = this;
         let selectedBlog = null;
 

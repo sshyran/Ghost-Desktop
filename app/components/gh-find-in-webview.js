@@ -1,12 +1,12 @@
-import {inject} from '@ember/service';
-import {later} from '@ember/runloop';
+import { inject } from '@ember/service';
+import { later } from '@ember/runloop';
 import Component from '@ember/component';
 
 import findVisibleWebview from '../utils/find-visible-webview';
 
 export default Component.extend({
-    classNames: ['find-webview'],
-    classNameBindings: ['isActive:active'],
+    classNames: [ 'find-webview' ],
+    classNameBindings: [ 'isActive:active' ],
     windowMenu: inject(),
 
     didInsertElement() {

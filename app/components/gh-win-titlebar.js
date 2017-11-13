@@ -1,8 +1,8 @@
-import {inject} from '@ember/service';
+import { inject } from '@ember/service';
 import Component from '@ember/component';
 
 export default Component.extend({
-    classNameBindings: [':win-titlebar'],
+    classNameBindings: [ ':win-titlebar' ],
     title: 'Ghost',
     windowMenu: inject('window-menu'),
     isMaximized: requireNode('electron').remote.getCurrentWindow().isMaximized(),

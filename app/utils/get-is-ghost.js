@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const {$} = Ember;
+const { $ } = Ember;
 
 /**
  * Ensures that a given url is actually a Ghost signin page
@@ -13,7 +13,7 @@ export default function getIsGhost(url, auth) {
             return reject('Tried to getIsGhost without providing url');
         }
 
-        const options = {url};
+        const options = { url };
 
         if (auth && (auth.basicUsername || auth.basicPassword)) {
             options.username = auth.basicUsername;

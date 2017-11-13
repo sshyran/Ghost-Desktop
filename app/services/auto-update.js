@@ -1,9 +1,9 @@
-import {computed} from '@ember/object';
+import { computed } from '@ember/object';
 import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 
 import ENV from 'ghost-desktop/config/environment';
-import {isReachable} from '../utils/is-reachable';
+import { isReachable } from '../utils/is-reachable';
 
 const log = requireNode('electron-log');
 
@@ -47,7 +47,7 @@ export default Service.extend(Evented, {
      */
     appVersion: computed({
         get() {
-            const {remote} = requireNode('electron');
+            const { remote } = requireNode('electron');
             const appVersion = remote.app.getVersion();
 
             log.info(`Updater: Running version ${appVersion}`);
@@ -145,8 +145,8 @@ export default Service.extend(Evented, {
      * Creates the autoUpdater, using Electorn's built-in auto-update module.
      */
     _setup() {
-        const {remote} = requireNode('electron');
-        const {autoUpdater} = remote;
+        const { remote } = requireNode('electron');
+        const { autoUpdater } = remote;
 
         // If we're not running signed code, requiring auto updater will fail
         if (this.get('environment') !== 'production') {

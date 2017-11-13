@@ -1,6 +1,6 @@
-const {app, BrowserWindow} = require('electron');
-const {mainWindow} = require('./app');
-const {parseArguments} = require('./parse-arguments');
+const { app, BrowserWindow } = require('electron');
+const { mainWindow } = require('./app');
+const { parseArguments } = require('./parse-arguments');
 
 /**
  * Ensures that there's always only one instance of Ghost Desktop running.
@@ -28,4 +28,4 @@ function ensureSingleInstance() {
     if (shouldQuit) app.quit();
 }
 
-module.exports = {ensureSingleInstance};
+module.exports = { ensureSingleInstance };

@@ -11,14 +11,14 @@ const winStateKeeper = require('electron-window-state');
  * stateKeeper: an object that keeps track of window state change events.
  */
 function fetchWindowState() {
-    const {screen} = electron;
+    const { screen } = electron;
     const defaultWidth = 1000;
     const defaultHeight = 720;
     const minWidth = 400;
     const minHeight = 400;
 
     // Instantiate the state keeper with a default state.
-    const stateKeeper = winStateKeeper({defaultWidth, defaultHeight});
+    const stateKeeper = winStateKeeper({ defaultWidth, defaultHeight });
 
     // Get the display nearest to the window's saved position, if it exists.
     const nearestDisplay = screen.getDisplayNearestPoint({
@@ -43,7 +43,7 @@ function fetchWindowState() {
         minWidth
     };
 
-    return {usableState, stateKeeper};
+    return { usableState, stateKeeper };
 }
 
-module.exports = {fetchWindowState};
+module.exports = { fetchWindowState };

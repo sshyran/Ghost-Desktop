@@ -3,7 +3,7 @@ import getIconColor from '../utils/color-picker';
 import requireKeytar from '../utils/require-keytar';
 import getBlogName from '../utils/get-blog-name';
 
-const {Model, attr} = DS;
+const { Model, attr } = DS;
 const log = requireNode('electron-log');
 
 export default Model.extend({
@@ -119,7 +119,7 @@ export default Model.extend({
                     this.set('name', name);
                 })
                 .catch((e) => {
-                    log.info(`Blog model: Tried to update blog name, but failed: ${e}`)
+                    log.info(`Blog model: Tried to update blog name, but failed: ${e}`);
                 });
         }
     },
@@ -149,8 +149,8 @@ export default Model.extend({
      * too.
      */
     save() {
-        const {ipcRenderer} = requireNode('electron');
-        const serializedData = this.toJSON({includeId: true});
+        const { ipcRenderer } = requireNode('electron');
+        const serializedData = this.toJSON({ includeId: true });
 
         log.verbose(`Blog model: Saving record`);
 

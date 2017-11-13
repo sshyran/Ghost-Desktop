@@ -1,5 +1,5 @@
-const {app, BrowserWindow} = require('electron');
-const {stateManager} = require('./state-manager');
+const { app, BrowserWindow } = require('electron');
+const { stateManager } = require('./state-manager');
 const log = require('electron-log');
 const queryString = require('query-string');
 
@@ -35,7 +35,7 @@ class OpenUrlManager {
     }
 
     handleOpenBlogUrl(url = '') {
-        const [, rawDetails] = url.match(urlMatchers.openBlog);
+        const [ , rawDetails ] = url.match(urlMatchers.openBlog);
         let details;
 
         try {
@@ -49,7 +49,7 @@ class OpenUrlManager {
     }
 
     handleCreateDraftUrl(url = '') {
-        const [, rawDetails] = url.match(urlMatchers.createDraft);
+        const [ , rawDetails ] = url.match(urlMatchers.createDraft);
         let details;
 
         log.info(`Received create-draft event with url ${rawDetails}`);
@@ -82,4 +82,4 @@ class OpenUrlManager {
 
 const openUrlManager = new OpenUrlManager();
 
-module.exports = {openUrlManager};
+module.exports = { openUrlManager };

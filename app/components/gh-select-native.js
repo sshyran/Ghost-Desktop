@@ -1,7 +1,7 @@
-import {computed} from '@ember/object';
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 
-const {reads} = computed;
+const { reads } = computed;
 
 function K() {
     return this;
@@ -22,9 +22,9 @@ export default Component.extend({
     actions: {
         change() {
             // jscs:disable requireArrayDestructuring
-            const [selectEl] = this.$('select');
+            const [ selectEl ] = this.$('select');
             // jscs:enable requireArrayDestructuring
-            const {selectedIndex} = selectEl;
+            const { selectedIndex } = selectEl;
 
             // decrement index by 1 if we have a prompt
             const hasPrompt = !!this.get('prompt');

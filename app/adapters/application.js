@@ -1,1 +1,1 @@
-export {default} from 'ember-local-storage/adapters/adapter';
+export { default } from 'ember-local-storage/adapters/adapter';

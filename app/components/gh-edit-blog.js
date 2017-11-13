@@ -1,9 +1,9 @@
-import {computed} from '@ember/object';
-import {inject} from '@ember/service';
-import {begin, end} from '@ember/runloop';
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
+import { begin, end } from '@ember/runloop';
 import Component from '@ember/component';
 
-import {sanitizeUrl, isValidUrl} from '../utils/sanitize-url';
+import { sanitizeUrl, isValidUrl } from '../utils/sanitize-url';
 import getBlogName from '../utils/get-blog-name';
 import getIsGhost from '../utils/get-is-ghost';
 import Phrases from '../utils/phrases';
@@ -12,8 +12,8 @@ const log = requireNode('electron-log');
 
 export default Component.extend({
     store: inject(),
-    classNames: ['gh-edit-blog'],
-    classNameBindings: ['isBasicAuth:basic-auth', 'hasWarning'],
+    classNames: [ 'gh-edit-blog' ],
+    classNameBindings: [ 'isBasicAuth:basic-auth', 'hasWarning' ],
     isBasicAuth: false,
     hasWarning: computed.bool('editWarning'),
 
@@ -83,7 +83,7 @@ export default Component.extend({
 
                 return is;
             })
-            .catch(({status} = {}) => {
+            .catch(({ status } = {}) => {
                 // Handle 401
                 if (status === 401) {
                     log.verbose(`gh-edit-blog: Validation error, basic auth required`);
@@ -140,7 +140,7 @@ export default Component.extend({
             if (!record) {
                 // If the blog doesn't already exist, create it
                 log.info(`gh-edit-blog: Creating new record for ${url}`);
-                record = this.get('store').createRecord('blog', {url});
+                record = this.get('store').createRecord('blog', { url });
             } else {
                 // If it does exist, ensure that everybody knows this is super new
                 // This ensures we update even if only the password field was updated
@@ -176,7 +176,7 @@ export default Component.extend({
             const identification = this.get('identification');
             const basicUsername = this.get('basicUsername');
             const basicPassword = this.get('basicPassword');
-            const isUrlGhost = await this._validateUrlIsGhost(url, {basicUsername, basicPassword});
+            const isUrlGhost = await this._validateUrlIsGhost(url, { basicUsername, basicPassword });
 
             if (isUrlGhost) {
                 const name = await getBlogName(url);

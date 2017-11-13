@@ -1,5 +1,5 @@
-import {computed} from '@ember/object';
-import {inject} from '@ember/service';
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 import Component from '@ember/component';
 
 import getLanguageName from '../utils/iso639';

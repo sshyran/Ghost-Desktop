@@ -6,9 +6,9 @@
  * @param e - MouseEvent
  */
 function handleContextMenu(e) {
-    const {remote} = requireNode('electron');
-    const {BrowserWindow, Menu} = remote;
-    const template = [{
+    const { remote } = requireNode('electron');
+    const { BrowserWindow, Menu } = remote;
+    const template = [ {
         label: 'Undo',
         role: 'undo'
     }, {
@@ -31,7 +31,7 @@ function handleContextMenu(e) {
     }, {
         label: 'Select All',
         role: 'selectall'
-    }];
+    } ];
 
     e.preventDefault();
     e.stopPropagation();

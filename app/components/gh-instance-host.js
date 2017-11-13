@@ -1,12 +1,12 @@
-import {computed, observer} from '@ember/object';
-import {inject} from '@ember/service';
-import {later} from '@ember/runloop';
+import { computed, observer } from '@ember/object';
+import { inject } from '@ember/service';
+import { later } from '@ember/runloop';
 import Component from '@ember/component';
 
 import ENV from 'ghost-desktop/config/environment';
-import {injectCss} from '../utils/inject-css';
+import { injectCss } from '../utils/inject-css';
 import Phrases from '../utils/phrases';
-import {escapeString} from '../utils/escape-string';
+import { escapeString } from '../utils/escape-string';
 
 const path = requireNode('path');
 const log = requireNode('electron-log');
@@ -16,8 +16,8 @@ const log = requireNode('electron-log');
  * inside an isolated container without Node integration.
  */
 export default Component.extend({
-    classNames: ['instance-host'],
-    classNameBindings: ['blog.isSelected:selected'],
+    classNames: [ 'instance-host' ],
+    classNameBindings: [ 'blog.isSelected:selected' ],
     preferences: inject(),
     preload: `file://${path.join(__dirname, '../ember-electron/main/preload.js')}`,
     debugName: computed('blog', function () {
@@ -217,7 +217,7 @@ export default Component.extend({
         if ((title.includes('Sign In') || title === 'Ghost Admin') && !isAttemptedSignin) {
             this.signin();
         } else {
-            log.info(`gh-instance-host: ${this.get('debugName')} Not trying to sign in.`, {title, isAttemptedSignin});
+            log.info(`gh-instance-host: ${this.get('debugName')} Not trying to sign in.`, { title, isAttemptedSignin });
             this.show();
         }
     },
@@ -267,7 +267,7 @@ export default Component.extend({
         }
 
         log.warn(`Ghost Instance failed to load.`);
-        log.warn(`Error Code: ${errorCode}, Description: ${errorDescription}`)
+        log.warn(`Error Code: ${errorCode}, Description: ${errorDescription}`);
         // TODO: Handle notification click
         /* eslint-disable no-unused-vars */
         if (this.get('preferences.isNotificationsEnabled')) {

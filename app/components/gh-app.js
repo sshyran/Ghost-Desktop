@@ -1,8 +1,8 @@
-import {computed, observer} from '@ember/object';
-import {inject} from '@ember/service';
+import { computed, observer } from '@ember/object';
+import { inject } from '@ember/service';
 import Component from '@ember/component';
 
-import {sanitizeUrl} from '../utils/sanitize-url';
+import { sanitizeUrl } from '../utils/sanitize-url';
 import setDockMenu from '../utils/set-dock-menu';
 import setUsertasks from '../utils/set-user-tasks';
 import setWindowTitle from '../utils/set-window-title';
@@ -14,7 +14,7 @@ export default Component.extend({
     autoUpdate: inject(),
     ipc: inject(),
     webviewShortcuts: inject(),
-    classNameBindings: ['isMac:mac', 'isWindows:win', 'isNightShift:night-shift', ':gh-app'],
+    classNameBindings: [ 'isMac:mac', 'isWindows:win', 'isNightShift:night-shift', ':gh-app' ],
     isFindInViewActive: false,
     isMac: !!(process.platform === 'darwin'),
     isWindows: !!(process.platform === 'win32'),
@@ -50,7 +50,7 @@ export default Component.extend({
      * @property {string} user - Email address of the user (for prefill)
      * @property {string} url - Url of the blog
      */
-    handleOpenBlogEvent({url, user} = {url: '', user: ''}) {
+    handleOpenBlogEvent({ url, user } = { url: '', user: '' }) {
         const sanitizedUrl = sanitizeUrl(url);
         const blogs = this.get('blogs');
         const matchedBlog = blogs ? blogs.find((b) => b.get('url') === sanitizedUrl) : null;
@@ -58,7 +58,7 @@ export default Component.extend({
         if (matchedBlog) {
             this.send('switchToBlog', matchedBlog);
         } else {
-            this.send('showAddBlog', {url: sanitizedUrl, user});
+            this.send('showAddBlog', { url: sanitizedUrl, user });
         }
     },
 
@@ -67,8 +67,8 @@ export default Component.extend({
      *
      * @param {string} [{title, content}={title: '', content: ''}]
      */
-    handleCreateDraftEvent({title, content} = {title: '', content: ''}) {
-        this.get('webviewShortcuts').openNewPost(true, {title, content});
+    handleCreateDraftEvent({ title, content } = { title: '', content: '' }) {
+        this.get('webviewShortcuts').openNewPost(true, { title, content });
     },
 
     /**
@@ -165,7 +165,7 @@ export default Component.extend({
      * @param {boolean}  [options.showPreferences=false] - "Preferences" UI
      * @param {DS.Model} [options.blog] - Blog to display
      */
-    setScreenVisibility({showAddBlog = true, showPreferences = false, blog = null}) {
+    setScreenVisibility({ showAddBlog = true, showPreferences = false, blog = null }) {
         const selectedBlog = this.get('selectedBlog');
 
         if ((!blog && selectedBlog) || (selectedBlog && blog && selectedBlog !== blog)) {

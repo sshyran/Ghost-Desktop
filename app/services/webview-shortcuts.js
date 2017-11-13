@@ -63,7 +63,7 @@ export default Service.extend({
      *
      * @param {boolean} [waitForWebview] Should we wait for the webview to load?
      */
-    openNewPost(waitForWebview, {title, content} = {title: '', content: ''}) {
+    openNewPost(waitForWebview, { title, content } = { title: '', content: '' }) {
         window.openNewPost = this.openNewPost.bind(this);
 
         Promise.race(

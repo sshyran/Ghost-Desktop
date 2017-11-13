@@ -1,1 +1,1 @@
-window.__devtron = {require, process};
+window.__devtron = { require, process };

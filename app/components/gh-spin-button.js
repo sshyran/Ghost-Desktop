@@ -1,8 +1,8 @@
-import {computed, observer} from '@ember/object';
-import {later, cancel} from '@ember/runloop';
+import { computed, observer } from '@ember/object';
+import { later, cancel } from '@ember/runloop';
 import Component from '@ember/component';
 
-const {equal} = computed;
+const { equal } = computed;
 
 export default Component.extend({
     tagName: 'button',
@@ -13,7 +13,7 @@ export default Component.extend({
     autoWidth: true,
 
     // Disable Button when isLoading equals true
-    attributeBindings: ['disabled', 'type', 'tabindex'],
+    attributeBindings: [ 'disabled', 'type', 'tabindex' ],
 
     // Must be set on the controller
     disabled: equal('showSpinner', true),

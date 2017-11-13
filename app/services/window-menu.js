@@ -1,8 +1,8 @@
 import _ from 'lodash/lodash';
-import {debounce, later} from '@ember/runloop';
+import { debounce, later } from '@ember/runloop';
 import Service from '@ember/service';
 
-import {setup as getMenuTemplate} from '../utils/window-menu';
+import { setup as getMenuTemplate } from '../utils/window-menu';
 
 export default Service.extend({
     preferencesCallback: undefined,
@@ -72,7 +72,7 @@ export default Service.extend({
                     const insertPosition = options.position || menu.submenu.length || 0;
 
                     if (options.addSeperator) {
-                        menu.submenu.insertAt(sepPosition, {type: 'separator'});
+                        menu.submenu.insertAt(sepPosition, { type: 'separator' });
                     }
 
                     menu.submenu.insertAt(insertPosition, newItem);
@@ -107,8 +107,8 @@ export default Service.extend({
      * Setups the window menu for the application
      */
     _prepareMenu() {
-        const {remote} = requireNode('electron');
-        const {Menu} = remote;
+        const { remote } = requireNode('electron');
+        const { Menu } = remote;
         const template = getMenuTemplate();
 
         this._injectBlogs(template);

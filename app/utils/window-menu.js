@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import ENV from 'ghost-desktop/config/environment';
 
-const {$} = Ember;
+const { $ } = Ember;
 
 /**
  * Functions
@@ -18,7 +18,7 @@ export function reload(item, focusedWindow) {
     if (focusedWindow && (process.platform !== 'darwin' || ENV.environment === 'test')) {
         focusedWindow.reload();
     } else {
-        const {ipcRenderer} = requireNode('electron');
+        const { ipcRenderer } = requireNode('electron');
         ipcRenderer.send('soft-restart-requested', true);
     }
 }
@@ -72,20 +72,20 @@ export function openRepository() {
  * @returns {Electron.Menu} - Built Menu
  */
 export function setup() {
-    const {remote, ipcRenderer} = requireNode('electron');
+    const { remote, ipcRenderer } = requireNode('electron');
     const browserWindow = remote.getCurrentWindow();
 
     const template = [
         {
             label: 'Edit',
             submenu: [
-                {role: 'undo'},
-                {role: 'redo'},
-                {type: 'separator'},
-                {role: 'cut'},
-                {role: 'copy'},
-                {role: 'paste'},
-                {role: 'selectall'}
+                { role: 'undo' },
+                { role: 'redo' },
+                { type: 'separator' },
+                { role: 'cut' },
+                { role: 'copy' },
+                { role: 'paste' },
+                { role: 'selectall' }
             ]
         },
         {
@@ -163,19 +163,19 @@ export function setup() {
                     label: 'About Ghost',
                     role: 'about'
                 },
-                {type: 'separator' },
+                { type: 'separator' },
                 {
                     // The click action gets injected from gh-switcher
                     label: 'Preferences',
                     accelerator: 'CmdOrCtrl+,'
                 },
-                {type: 'separator'},
-                {role: 'services'},
-                {type: 'separator'},
-                {role: 'hide', label: 'Hide Ghost'},
-                {role: 'hideothers'},
-                {role: 'unhide'},
-                {type: 'separator'},
+                { type: 'separator' },
+                { role: 'services' },
+                { type: 'separator' },
+                { role: 'hide', label: 'Hide Ghost' },
+                { role: 'hideothers' },
+                { role: 'unhide' },
+                { type: 'separator' },
                 {
                     label: 'Quit',
                     accelerator: 'Command+Q',
@@ -198,20 +198,20 @@ export function setup() {
 
         template.unshift({
             label: 'File',
-            submenu: [{
+            submenu: [ {
                 // The click action gets injected from gh-switcher.
                 label: 'Preferences',
                 accelerator: 'CmdOrCtrl+,'
-            }]
+            } ]
         });
     } else if (process.platform === 'win32') {
         template.unshift({
             label: 'File',
-            submenu: [{
+            submenu: [ {
                 // The click action gets injected from gh-switcher.
                 label: 'Preferences',
                 accelerator: 'CmdOrCtrl+,'
-            }]
+            } ]
         });
     }
 

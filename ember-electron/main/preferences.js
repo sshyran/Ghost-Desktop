@@ -1,4 +1,4 @@
-const {app} = require('electron');
+const { app } = require('electron');
 const fs = require('fs-extra');
 const log = require('electron-log');
 const path = require('path');
@@ -35,4 +35,4 @@ function getPreferences() {
     };
 }
 
-module.exports = {getPreferences};
+module.exports = { getPreferences };

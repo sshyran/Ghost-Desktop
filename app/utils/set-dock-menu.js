@@ -11,8 +11,8 @@
  * @param items - Items to add
  */
 export default function setDockMenu(items) {
-    const {remote} = requireNode('electron');
-    const {app, Menu, MenuItem} = remote;
+    const { remote } = requireNode('electron');
+    const { app, Menu, MenuItem } = remote;
     const menu = new Menu();
 
     if (!items || !items.length) {

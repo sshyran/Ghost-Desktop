@@ -1,6 +1,6 @@
-const {ipcMain, BrowserWindow, shell} = require('electron');
-const {reloadMainWindow} = require('./app');
-const {state} = require('./state-manager');
+const { ipcMain, BrowserWindow, shell } = require('electron');
+const { reloadMainWindow } = require('./app');
+const { state } = require('./state-manager');
 const log = require('electron-log');
 
 ipcMain.on('blog-data', (event, data) => {

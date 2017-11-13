@@ -1,12 +1,12 @@
-import {computed} from '@ember/object';
-import {debounce} from '@ember/runloop';
-import {storageFor} from 'ember-local-storage';
+import { computed } from '@ember/object';
+import { debounce } from '@ember/runloop';
+import { storageFor } from 'ember-local-storage';
 import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 
-import {getIsYosemiteOrHigher} from '../utils/versions';
+import { getIsYosemiteOrHigher } from '../utils/versions';
 
-const {remote} = requireNode('electron');
+const { remote } = requireNode('electron');
 const fs = requireNode('fs-extra');
 const log = requireNode('electron-log');
 const path = requireNode('path');
@@ -54,7 +54,7 @@ export default Service.extend(Evented, {
     }),
 
     getContent() {
-        const {content} = this.get('preferences');
+        const { content } = this.get('preferences');
         const {
             isNotificationsEnabled,
             isQuickSwitcherMinimized,

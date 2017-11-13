@@ -1,13 +1,13 @@
-import {computed} from '@ember/object';
-import {inject} from '@ember/service';
+import { computed } from '@ember/object';
+import { inject } from '@ember/service';
 import Component from '@ember/component';
 
-import {getIsYosemiteOrHigher} from '../utils/versions';
+import { getIsYosemiteOrHigher } from '../utils/versions';
 
 const log = requireNode('electron-log');
 
 export default Component.extend({
-    classNames: ['gh-preferences'],
+    classNames: [ 'gh-preferences' ],
     preferences: inject(),
     autoUpdate: inject(),
     zoomFactor: computed.oneWay('preferences.preferences.zoomFactor'),
@@ -30,12 +30,12 @@ export default Component.extend({
          */
         deleteData() {
             log.info(`Preferences: User wants to all preferences, confirming.`);
-            const {remote} = requireNode('electron');
-            const {dialog} = remote;
+            const { remote } = requireNode('electron');
+            const { dialog } = remote;
 
             dialog.showMessageBox({
                 type: 'warning',
-                buttons: ['Cancel', 'Confirm'],
+                buttons: [ 'Cancel', 'Confirm' ],
                 title: 'Delete All Settings?',
                 defaultId: 0,
                 message: 'Do you really want to delete all preferences? This action cannot be undone.'
