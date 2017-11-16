@@ -1,4 +1,4 @@
-const { ipcMain, BrowserWindow, shell } = require('electron');
+const { ipcMain, BrowserWindow, shell, app } = require('electron');
 const { reloadMainWindow } = require('./app');
 const { state } = require('./state-manager');
 const log = require('electron-log');
@@ -35,7 +35,8 @@ ipcMain.on('shutdown-requested', (event) => {
 
         setTimeout(() => {
             if (win && !win.isDestroyed()) win.destroy();
-        }, 1000);
+            app.quit();
+        }, 500);
     }
 });
 
