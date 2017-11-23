@@ -17,9 +17,7 @@ export function injectCss(webview, name = '') {
         }
 
         if (data) {
-            webview.addEventListener('dom-ready', () => {
-                webview.insertCSS(data);
-            });
+            webview.insertCSS(data);
         }
     });
 }
