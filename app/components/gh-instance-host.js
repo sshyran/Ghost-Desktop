@@ -157,10 +157,13 @@ export default Component.extend({
      */
     _insertCss($webview = this._getWebView()) {
         if ($webview) {
-            // Inject a CSS file for the specific platform (OS X; Windows)
-            injectCss($webview, process.platform);
-            // Inject a CSS file for all platforms (all.css)
-            injectCss($webview, 'all');
+            $webview.addEventListener('dom-ready', () => {
+                // Inject a CSS file for the specific platform (OS X; Windows)
+                injectCss($webview, process.platform);
+                // Inject a CSS file for all platforms (all.css)
+                injectCss($webview, 'all');
+            }, { once: true });
+
         }
     },
 
