@@ -162,7 +162,8 @@ export default Component.extend({
                 injectCss($webview, process.platform);
                 // Inject a CSS file for all platforms (all.css)
                 injectCss($webview, 'all');
-            });
+            }, { once: true });
+
         }
     },
 
