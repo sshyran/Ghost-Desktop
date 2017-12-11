@@ -13,6 +13,11 @@ export default Component.extend({
     zoomFactor: computed.oneWay('preferences.preferences.zoomFactor'),
     showVibrancy: getIsYosemiteOrHigher(),
 
+    // In Ghost 1.0, an english-only spellchecker was released for the editor
+    // component. Desktop has currently no control over that spellchecker.
+    // For more info, see https://github.com/TryGhost/Ghost-Desktop/issues/307
+    hideSpellcheck: !process.env.GHOST_SHOW_SPELLCHECK_CONFIG,
+
     actions: {
         /**
          * Open a given url in the user's default browser

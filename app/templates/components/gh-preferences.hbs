@@ -48,7 +48,9 @@
                         </label>
                     </div>
                 {{/if}}
-                {{gh-dictionaries-dropdown}}
+                {{#unless hideSpellcheck}}
+                    {{gh-dictionaries-dropdown}}
+                {{/unless}}
                 <div class="form-group">
                     <label for="zoomFactor">Zoom Factor</label>
                     <p>
