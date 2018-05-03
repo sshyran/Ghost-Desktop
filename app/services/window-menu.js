@@ -1,4 +1,3 @@
-import _ from 'lodash/lodash';
 import { debounce, later } from '@ember/runloop';
 import Service from '@ember/service';
 
@@ -28,7 +27,7 @@ export default Service.extend({
 
     popup() {
         if (this.menu) {
-            this.menu.popup();
+            this.menu.popup({});
         }
     },
 
@@ -53,7 +52,7 @@ export default Service.extend({
             addSeperator: false,
             position: undefined
         };
-        const options = _.defaults(params, defaults);
+        const options = { ...defaults, ...params };
         const injections = this.get('injections');
         const hasInjection = injections.find((item) => (item.name === options.name));
         const injection = {

@@ -10,7 +10,8 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app'),
 module.exports = function(defaults) {
     const app = new EmberApp(defaults, {
         babel: {
-            comments: false
+            comments: false,
+            plugins: ['transform-object-rest-spread']
         },
         fingerprint: {
             enabled: false
