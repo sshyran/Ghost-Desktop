@@ -24,7 +24,7 @@ test('it initializes the webview', function(assert) {
     const blog = TestBlog.create({
         id: 1,
         name: 'Testblog (Content)',
-        url: `file://${path.join(__dirname, 'tests', 'fixtures', 'static-content', 'content.html')}`,
+        url: `file://${__dirname}/tests/fixtures/static-content/content.html`,
         isSelected: false,
         identification: "test@user.com",
         iconColor: "#ff0000"
@@ -36,5 +36,6 @@ test('it initializes the webview', function(assert) {
 
     const src = self.$('webview').attr('src');
     const containsCorrectLink = src.includes('fixtures/static-content/content.html');
+
     assert.equal(containsCorrectLink, true);
 });
