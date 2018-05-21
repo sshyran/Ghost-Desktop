@@ -38,13 +38,7 @@ const store = Ember.Service.extend({
     },
 
     findAll() {
-        return new Promise((resolve, reject) => {
-            const blogContent = blogs;
-            blogContent.content = blogs;
-            blogContent.find = blogs.find;
-
-            resolve(blogContent);
-        });
+        return new Promise((resolve) => resolve(blogs));
     }
 });
 

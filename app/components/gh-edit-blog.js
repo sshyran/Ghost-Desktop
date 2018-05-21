@@ -109,7 +109,7 @@ export default Component.extend({
             this.get('store')
                 .findAll('blog')
                 .then((blogs) => {
-                    if (!blogs || !blogs.content || blogs.length === 0) {
+                    if (!blogs || blogs.length === 0) {
                         // Nothing found? That's cool, too
                         resolve(null);
                     }

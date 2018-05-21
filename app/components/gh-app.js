@@ -85,7 +85,7 @@ export default Component.extend({
      */
     hasBlogs: computed('blogs', function () {
         const b = this.get('blogs');
-        return !!(b && b.content && b.content.length && b.content.length > 0);
+        return !!(b && b.length > 0);
     }),
 
     blogsObserver: observer('hasBlogs', function () {
