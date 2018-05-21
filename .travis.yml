@@ -1,14 +1,13 @@
 ---
 language: node_js
 node_js:
-  - "7"
+  - "9"
 sudo: true
 dist: trusty
 
 cache:
   directories:
     - node_modules
-    - bower_components
 
 matrix:
   allow_failures:
@@ -29,6 +28,16 @@ matrix:
         - OS=DARWIN
         - DISPLAY=:99.0
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - xvfb
+      - gnome-keyring
+      - libsecret-1-dev
+      - python-gnomekeyring
+
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -yq xvfb gnome-keyring libsecret-1-dev python-gnomekeyring; fi
@@ -40,6 +49,13 @@ before_install:
 install:
   - npm install
   - Xvfb :99 -screen 0 1024x768x24 +extension RANDR & > /dev/null 2>&1 &
+
+before_script:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      dbus-launch /usr/bin/python -c \
+        "import gnomekeyring;gnomekeyring.create_sync('login', '');"
+    fi
 
 script:
   - npm test
