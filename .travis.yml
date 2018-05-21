@@ -33,10 +33,9 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - xvfb
-      - gnome-keyring
+      - libgnome-keyring-dev
       - libsecret-1-dev
-      - python-gnomekeyring
+      - xvfb
 
 before_install:
   - node --version && npm --version
