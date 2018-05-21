@@ -66,10 +66,10 @@ export default Service.extend({
     openNewPost(waitForWebview, { title, content } = { title: '', content: '' }) {
         window.openNewPost = this.openNewPost.bind(this);
 
-        Promise.race(
+        Promise.race([
             this.queryAndClick(`a[href*='/ghost/editor/']`, 'New Post', waitForWebview),
             this.queryAndClick(`a[href*='#/editor/']`, 'New story', waitForWebview)
-        ).then(() => {
+        ]).then(() => {
             if (title || content) {
                 const escape = requireNode('js-string-escape');
                 const $wv = findVisibleWebview();

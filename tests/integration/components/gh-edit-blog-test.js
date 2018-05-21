@@ -1,7 +1,8 @@
 import { moduleForComponent } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import test from 'ghost-desktop/tests/ember-sinon-qunit/test';
-import { blogs } from '../../fixtures/blogs';
+import { getBlogs } from '../../fixtures/blogs';
+import EmberObject from '@ember/object';
 
 /**
  * Test Preparation
@@ -28,8 +29,10 @@ async function assertErrorDivs(target, assert, expected, i = 0) {
 const store = Ember.Service.extend({
     createRecord() {
         recordCreated = true;
+
         return {
             setPassword() {},
+            setProperties() {},
             save() {
                 recordSaved = true;
                 return new Promise((resolve, reject) => resolve());
@@ -38,7 +41,7 @@ const store = Ember.Service.extend({
     },
 
     findAll() {
-        return new Promise((resolve) => resolve(blogs));
+        return new Promise((resolve) => resolve(getBlogs()));
     }
 });
 
@@ -231,7 +234,7 @@ test('adding a blog saves a blog record', function(assert) {
 });
 
 test('passed a blog, the component shows the title', function(assert) {
-    this.set('_blog', blogs[0]);
+    this.set('_blog', getBlogs()[0]);
     this.render(hbs`{{gh-edit-blog blog=_blog}}`);
 
     const text = this.$().text().trim();
@@ -241,7 +244,7 @@ test('passed a blog, the component shows the title', function(assert) {
 });
 
 test('passed a blog, the url is set to the blog\'s url', function(assert) {
-    this.set('_blog', blogs[0]);
+    this.set('_blog', getBlogs()[0]);
     this.render(hbs`{{gh-edit-blog blog=_blog}}`);
 
     const urlContent = this.$('input[name="url"]').val();
@@ -249,7 +252,7 @@ test('passed a blog, the url is set to the blog\'s url', function(assert) {
 });
 
 test('passed a blog, the identification is set to the blog\'s identification', function(assert) {
-    this.set('_blog', blogs[0]);
+    this.set('_blog', getBlogs()[0]);
     this.render(hbs`{{gh-edit-blog blog=_blog}}`);
 
     const identificationContent = this.$('input[name="identification"]').val();
@@ -257,7 +260,7 @@ test('passed a blog, the identification is set to the blog\'s identification', f
 });
 
 test('passed a blog, the password is set to the blog\'s password', function(assert) {
-    this.set('_blog', blogs[0]);
+    this.set('_blog', getBlogs()[0]);
     this.render(hbs`{{gh-edit-blog blog=_blog}}`);
 
     const passwordContent = this.$('input[name="password"]').val();
@@ -265,7 +268,7 @@ test('passed a blog, the password is set to the blog\'s password', function(asse
 });
 
 test('passed a blog, it checks values again', function(assert) {
-    this.set('_blog', blogs[0]);
+    this.set('_blog', getBlogs()[0]);
     this.render(hbs`{{gh-edit-blog blog=_blog}}`);
 
     const errorDivs = this.$('div.error');
@@ -276,11 +279,11 @@ test('passed a blog, it does not create a new record - even if everything change
     const qAsync = assert.async();
 
     const blogProps = {
-        name: blogs[0].get('name'),
-        identification: blogs[0].get('identification')
+        name: getBlogs()[0].get('name'),
+        identification: getBlogs()[0].get('identification')
     }
 
-    this.set('_blog', blogs[0]);
+    this.set('_blog', getBlogs()[0]);
     this.render(hbs`{{gh-edit-blog blog=_blog}}`);
 
     this.$('input[name="url"]').val('https://demo.ghost.io/ghost/');

@@ -29,8 +29,6 @@ test('it can be selected', function(assert) {
         assert.ok(true);
     };
 
-    blog.isDeleted = false;
-
     run(() => blog.select());
     assert.ok(blog.get('isSelected'));
 });
@@ -43,8 +41,6 @@ test('it can be deselected', function(assert) {
     blog.save =  function () {
         assert.ok(true);
     };
-
-    blog.isDeleted = false;
 
     run(() => blog.unselect());
     assert.ok(!blog.get('isSelected'));

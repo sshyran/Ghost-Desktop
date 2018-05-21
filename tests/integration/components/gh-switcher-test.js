@@ -1,6 +1,6 @@
 import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import {blogs} from '../../fixtures/blogs';
+import {getBlogs} from '../../fixtures/blogs';
 import {osMock} from '../../fixtures/mock-os';
 
 const hexrgb = requireNode('hexrgb');
@@ -20,6 +20,7 @@ test('it renders', function(assert) {
 });
 
 test('it renders all blogs as single-letter buttons', function(assert) {
+    const blogs = getBlogs();
     this.set('_blogs', blogs);
 
     // Ensure the blogs all have a predictable name, despite integration testing
@@ -34,6 +35,7 @@ test('it renders all blogs as single-letter buttons', function(assert) {
 });
 
 test('it renders all blogs with a colored icon background', function(assert) {
+    const blogs = getBlogs();
     this.set('_blogs', blogs);
     this.render(hbs`{{gh-switcher blogs=_blogs}}`);
 
@@ -49,12 +51,14 @@ test('it renders all blogs with a colored icon background', function(assert) {
 });
 
 test('it renders all blogs with the id in the data attribute', function(assert) {
+    const blogs = getBlogs();
     this.set('_blogs', blogs);
     this.render(hbs`{{gh-switcher blogs=_blogs}}`);
     assert.equal(this.$('.switch-btn').data('blog'), 0);
 });
 
 test('a click on a blog initiates blog navigation', function(assert) {
+    const blogs = getBlogs();
     this.set('_blogs', blogs);
     this.set('_switchToBlog', (blog) => {
         assert.equal(blog, blogs[0], 'clicked blog is passed to switchToBlog action');
@@ -65,6 +69,7 @@ test('a click on a blog initiates blog navigation', function(assert) {
 });
 
 test('a click on the "add blog" sign requests "add blog" ui', function(assert) {
+    const blogs = getBlogs();
     this.set('_blogs', blogs);
     this.set('_showAddBlog', () => {
         // We just ensure that the assert is called
@@ -96,6 +101,7 @@ test('a right click on a blog opens the context menu', function(assert) {
         return oldRequire(module);
     }
 
+    const blogs = getBlogs();
     this.set('_blogs', [blogs[0]]);
     this.render(hbs`{{gh-switcher blogs=_blogs}}`);
 

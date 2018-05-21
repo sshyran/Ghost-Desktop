@@ -1,64 +1,56 @@
-import {moduleForComponent, test} from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import {blogs} from '../../fixtures/blogs';
+import {getBlogs} from '../../fixtures/blogs';
 
-/**
- * Test Preparation
- */
+module('Integration | Component | gh app', function (hooks) {
+    setupRenderingTest(hooks);
 
-moduleForComponent('gh-app', 'Integration | Component | gh app', {
-    integration: true
-});
+    test('should show the "add blog" ui without existing blogs', async function (assert) {
+        assert.expect(1);
 
-/**
- * Tests
- */
+        await render(hbs`{{gh-app}}`);
 
-test('displays the "add new blog" UI if no blog is added', function(assert) {
-    this.render(hbs`{{gh-app}}`);
+        const text = this.$().text().trim();
+        const containsText = text.includes('Before we get started, please tell us where to find your blog');
+        assert.ok(containsText);
+    });
 
-    const text = this.$().text().trim();
-    const containsText = text.includes('Before we get started, please tell us where to find your blog');
-    assert.ok(containsText);
-});
+    test('renders all existing blogs in a webview', async function (assert) {
+        assert.expect(1);
 
-test('renders all existing blogs in a webview', function (assert) {
-    this.set('_blogs', blogs);
-    this.render(hbs`{{gh-app blogs=_blogs}}`);
+        const blogs = getBlogs();
+        this.set('_blogs', blogs);
 
-    const webviews = this.$('webview');
-    assert.equal(webviews.length, blogs.length);
-});
+        await render(hbs`{{gh-app blogs=_blogs}}`);
 
-test('displays the first blog if it has blogs (none selected)', function(assert) {
-    const qasync = assert.async();
-    const blogContent = blogs;
-    blogContent.content = blogs;
-    blogContent.firstObject = blogs[0];
-    blogContent.find = blogs.find;
+        const webviews = this.$('webview');
+        assert.equal(webviews.length, blogs.length);
+    });
 
-    Ember.run(() => {
-        this.set('_blogs', blogContent);
-        this.render(hbs`{{gh-app blogs=_blogs}}`);
+    test('displays the first blog if it has blogs (none selected)', async function(assert) {
+        assert.expect(1);
+
+        const blogs = getBlogs();
+        this.set('_blogs', blogs);
+
+        await render(hbs`{{gh-app blogs=_blogs}}`);
 
         const instanceHost = this.$('.instance-host')[0];
         assert.ok(this.$(instanceHost).hasClass('selected'));
-        qasync();
     });
-});
 
-test('displays the selected blog if it has blogs (one selected)', function(assert) {
-    blogs[1].select();
-    const blogContent = blogs;
-    blogContent.content = blogs;
-    blogContent.firstObject = blogs[0];
-    blogContent.find = blogs.find;
+    test('displays the selected blog if it has blogs (one selected)', async function (assert) {
+        assert.expect(1);
 
-    this.set('_blogs', blogContent);
-    this.render(hbs`{{gh-app blogs=_blogs}}`);
+        const blogs = getBlogs();
+        blogs[1].select();
+        this.set('_blogs', blogs);
+        await render(hbs`{{gh-app blogs=_blogs}}`);
 
-    const instanceHost = this.$('.instance-host')[1];
-    assert.ok(this.$(instanceHost).hasClass('selected'));
+        const instanceHost = this.$('.instance-host')[1];
+        assert.ok(this.$(instanceHost).hasClass('selected'));
 
-    blogs[1].unselect();
+    });
 });

@@ -43,8 +43,10 @@ test('openNewPost() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'new-post');
-            done();
+            if (e.originalEvent.message.includes('new-post')) {
+                assert.equal(e.originalEvent.message, 'new-post');
+                done();
+            }
         });
 
     service.openNewPost();
@@ -57,8 +59,10 @@ test('openContent() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'content');
-            done();
+            if (e.originalEvent.message.includes('content')) {
+                assert.equal(e.originalEvent.message, 'content');
+                done();
+            }
         });
 
     service.openContent();
@@ -71,8 +75,10 @@ test('openTeam() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'team');
-            done();
+            if (e.originalEvent.message.includes('team')) {
+                assert.equal(e.originalEvent.message, 'team');
+                done();
+            }
         });
 
     service.openTeam();
@@ -85,8 +91,10 @@ test('openSettingsGeneral() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'general');
-            done();
+            if (e.originalEvent.message.includes('general')) {
+                assert.equal(e.originalEvent.message, 'general');
+                done();
+            }
         });
 
     service.openSettingsGeneral();
@@ -99,8 +107,10 @@ test('openSettingsNavigation() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'navigation');
-            done();
+            if (e.originalEvent.message.includes('navigation')) {
+                assert.equal(e.originalEvent.message, 'navigation');
+                done();
+            }
         });
 
     service.openSettingsNavigation();
@@ -113,8 +123,10 @@ test('openSettingsTags() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'tags');
-            done();
+            if (e.originalEvent.message.includes('tags')) {
+                assert.equal(e.originalEvent.message, 'tags');
+                done();
+            }
         });
 
     service.openSettingsTags();
@@ -127,8 +139,10 @@ test('openSettingsCodeInjection() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'injection');
-            done();
+            if (e.originalEvent.message.includes('injection')) {
+                assert.equal(e.originalEvent.message, 'injection');
+                done();
+            }
         });
 
     service.openSettingsCodeInjection();
@@ -141,8 +155,10 @@ test('openSettingsApps() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'apps');
-            done();
+            if (e.originalEvent.message.includes('apps')) {
+                assert.equal(e.originalEvent.message, 'apps');
+                done();
+            }
         });
 
     service.openSettingsApps();
@@ -155,8 +171,10 @@ test('openSettingsLabs() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'labs');
-            done();
+            if (e.originalEvent.message.includes('labs')) {
+                assert.equal(e.originalEvent.message, 'labs');
+                done();
+            }
         });
 
     service.openSettingsLabs();
@@ -169,8 +187,10 @@ test('openPreview() clicks the correct link', function (assert) {
     $('#gh-test-webview')
         .off('console-message')
         .on('console-message', (e) => {
-            assert.equal(e.originalEvent.message, 'preview');
-            done();
+            if (e.originalEvent.message.includes('preview')) {
+                assert.equal(e.originalEvent.message, 'preview');
+                done();
+            }
         });
 
     service.openPreview();
