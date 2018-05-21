@@ -43,25 +43,19 @@ test('minimizes the window', function (assert) {
     setTimeout(done, 750);
 });
 
-test('maximizes the window', function (assert) {
-    // This will be poop on Linux, so, uhhh, ignore it
-    if (process.platform === 'linux') return assert.ok(true);
+test('maximizes and unmaxizimes the window', function (assert) {
+    // On fast machines, this test might finish immediately -
+    // and before the "maximizing" operation is fully done. We test
+    // this asynchronously just to ensure that the test is fully done.
+    const done = assert.async();
 
     this.render(hbs`{{gh-win-titlebar}}`);
-
     this.$('button[title="Maximize"]').click();
-
     assert.ok(browserWindow.isMaximized());
-});
 
-test('unmaxizimes the window', function (assert) {
-    this.render(hbs`{{gh-win-titlebar}}`);
-    this.set('isMaximized', true);
-
-    this.$('button[title="Unmaximize"]').click();
-
-    // This will be poop on macOS, so, uhhh, ignore it
-    if (process.platform === 'darwin') return assert.ok(true);
-
-    assert.equal(browserWindow.isMaximized(), false);
+    setTimeout(() => {
+        this.$('button[title="Unmaximize"]').click();
+        assert.equal(browserWindow.isMaximized(), false);
+        done();
+    }, 500);
 });
