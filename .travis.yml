@@ -35,7 +35,6 @@ addons:
     packages:
       - libgnome-keyring-dev
       - libsecret-1-dev
-      - gnome-keyring
       - xvfb
 
 before_install:
@@ -46,13 +45,6 @@ before_install:
 install:
   - npm install
   - Xvfb :99 -screen 0 1024x768x24 +extension RANDR & > /dev/null 2>&1 &
-
-before_script:
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      dbus-launch /usr/bin/python -c \
-        "import gnomekeyring;gnomekeyring.create_sync('login', '');"
-    fi
 
 script:
   - npm test
