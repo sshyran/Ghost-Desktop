@@ -35,6 +35,7 @@ addons:
     packages:
       - libgnome-keyring-dev
       - libsecret-1-dev
+      - gnome-keyring
       - xvfb
 
 before_install:
