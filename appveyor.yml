@@ -1,21 +1,18 @@
+cache:
+- node_modules
+
 # Fix line endings in Windows. (runs before repo cloning)
 init:
   - git config --global core.autocrlf true
 
 clone_depth: 1
 
-environment:
-  matrix:
-    - nodejs_version: "5.1"
-
 platform:
   - x64
 
 cache:
-  - bower_components -> bower.json
   - node_modules -> package.json
   - '%APPDATA%\npm-cache'
-  - '%APPDATA%\Roaming\bower'
 
 branches:
   only:
@@ -24,19 +21,17 @@ branches:
 # Install scripts. (runs after repo cloning)
 install:
   # Let's try to get things working
-  # Install Node 5 ---------------------------------------------------------
-  - ps: Install-Product node 6.10
+  # Install Node 8 ---------------------------------------------------------
+  - ps: Install-Product node 8 x64
   # Typical npm stuff ------------------------------------------------------
-  - md C:\nc
   - npm version
-  - npm config set cache C:\nc
   # Installation, deps -----------------------------------------------------
-  - npm install --no-optional --no-color --no-progress --ignore-scripts
+  - npm install --no-optional --no-color --no-progress
 
 # We don't actually run the full test suite (that's a TODO left, but we do
 # attempt to build).
 test_script:
-  - node ./node_modules/ember-cli/bin/ember build
+  - npm run test
 
 # Set build version format here instead of in the admin panel.
 build: off
