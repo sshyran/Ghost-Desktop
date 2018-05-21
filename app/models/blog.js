@@ -76,7 +76,11 @@ export default Model.extend({
         log.verbose(`Blog model: Keytar present: ${!!keytar}`);
 
         if (keytar) {
-            await keytar.setPassword(this.get('url'), this.get('identification'), value);
+            try {
+                await keytar.setPassword(this.get('url'), this.get('identification'), value);
+            } catch (error) {
+                log.verbose(`Blog model: Unable to store password. Error: ${error}`);
+            }
         }
     },
 
@@ -97,10 +101,14 @@ export default Model.extend({
         log.verbose(`Blog model: Keytar present: ${!!keytar}`);
 
         if (keytar) {
-            return keytar.getPassword(this.get('url'), this.get('identification'));
-        } else {
-            return null;
+            try {
+                return keytar.getPassword(this.get('url'), this.get('identification'));
+            } catch (error) {
+                log.verbose(`Blog model: Unable to retrieve password. Error: ${error}`);
+            }
         }
+
+        return null;
     },
 
     /**
