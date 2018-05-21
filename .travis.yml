@@ -39,12 +39,9 @@ addons:
       - python-gnomekeyring
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -yq xvfb gnome-keyring libsecret-1-dev python-gnomekeyring; fi
   - node --version && npm --version
   - "npm config set spin false"
   - "npm install -g node-gyp"
-  - "npm install -g grunt-cli"
 
 install:
   - npm install
