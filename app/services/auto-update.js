@@ -84,7 +84,7 @@ export default Service.extend(Evented, {
         get() {
             const host = 'https://update.electronjs.org';
             const repo = 'tryghost/ghost-desktop';
-            let feedURL = `${host}/${repo}/${process.platform}/${this.get('appVersion')}`
+            let updateFeed = `${host}/${repo}/${process.platform}/${this.get('appVersion')}`
 
             // Developer override?
             if (process.env.GHOST_UPDATER_URL) {
