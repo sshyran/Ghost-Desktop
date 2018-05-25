@@ -36,7 +36,7 @@ export default Service.extend(Evented, {
      */
     environment: computed({
         get() {
-            return ENV.environment;
+            return process.defaultApp ? 'development' : 'production';
         }
     }),
 
