@@ -95,6 +95,6 @@
     "spellchecker": "3.4.4"
   },
   "config": {
-    "forge": "./forge.config.js"
+    "forge": "./ember-electron/electron-forge-config.js"
   }
 }
