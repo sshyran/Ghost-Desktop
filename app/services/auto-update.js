@@ -2,7 +2,6 @@ import { computed } from '@ember/object';
 import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 
-import ENV from 'ghost-desktop/config/environment';
 import { isReachable } from '../utils/is-reachable';
 
 const log = requireNode('electron-log');
@@ -84,7 +83,7 @@ export default Service.extend(Evented, {
         get() {
             const host = 'https://update.electronjs.org';
             const repo = 'tryghost/ghost-desktop';
-            let updateFeed = `${host}/${repo}/${process.platform}/${this.get('appVersion')}`
+            let updateFeed = `${host}/${repo}/${process.platform}/${this.get('appVersion')}`;
 
             // Developer override?
             if (process.env.GHOST_UPDATER_URL) {
