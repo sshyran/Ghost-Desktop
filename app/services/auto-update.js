@@ -41,6 +41,27 @@ export default Service.extend(Evented, {
     }),
 
     /**
+     * Returns the user agent expected by GitHub's updater service
+     */
+    userAgent: computed({
+        get() {
+            const os = requireNode('os');
+            const { format } = requireNode('util');
+            const userAgent = format(
+                '%s/%s (%s: %s)',
+                'ghost-desktop',
+                this.get('appVersion'),
+                os.platform(),
+                os.arch()
+            );
+
+            log.info(`Updater: Using user agent "${userAgent}"`);
+
+            return userAgent;
+        }
+    }),
+
+    /**
      * Returns the current Ghost Desktop version, by querying the version
      * defined in package.json. If that fails, it'll check the version of
      * the current executable.
@@ -61,10 +82,9 @@ export default Service.extend(Evented, {
      */
     updateFeedUrl: computed({
         get() {
-            const os = requireNode('os').platform();
-            let updateFeed = (os === 'darwin')
-                ? `http://desktop-updates.ghost.org/update/osx/${this.get('appVersion')}`
-                : `http://desktop-updates.ghost.org/update/win32/${this.get('appVersion')}`;
+            const host = 'https://update.electronjs.org';
+            const repo = 'tryghost/ghost-desktop';
+            let feedURL = `${host}/${repo}/${process.platform}/${this.get('appVersion')}`
 
             // Developer override?
             if (process.env.GHOST_UPDATER_URL) {
