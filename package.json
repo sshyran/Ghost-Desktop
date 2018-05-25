@@ -93,5 +93,8 @@
     "request": "^2.86.0",
     "request-promise-native": "^1.0.5",
     "spellchecker": "3.4.4"
+  },
+  "config": {
+    "forge": "./forge.config.js"
   }
 }
