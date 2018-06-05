@@ -3,6 +3,7 @@ import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 
 import { isReachable } from '../utils/is-reachable';
+import { isPackaged } from '../utils/is-packaged';
 
 const log = requireNode('electron-log');
 
@@ -20,21 +21,12 @@ export default Service.extend(Evented, {
                 return false;
             }
 
-            if (this.get('environment') !== 'production') {
-                log.info(`Updater: Not supported, because environment not production`);
+            if (!isPackaged()) {
+                log.info(`Updater: Not supported, this is developer mode`);
                 return false;
             }
 
             return true;
-        }
-    }),
-
-    /**
-     * Returns the current environment (testing, development, production)
-     */
-    environment: computed({
-        get() {
-            return process.defaultApp ? 'development' : 'production';
         }
     }),
 
@@ -167,9 +159,7 @@ export default Service.extend(Evented, {
         const { autoUpdater } = remote;
 
         // If we're not running signed code, requiring auto updater will fail
-        if (this.get('environment') !== 'production') {
-            return;
-        }
+        if (isPackaged()) return;
 
         const feedUrl = this.get('updateFeedUrl');
         log.info(`Updater: Feed url: ${feedUrl}`);
