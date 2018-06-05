@@ -12,11 +12,10 @@ export default Service.extend(Evented, {
     isUpdateAvailable: null,
     isUpdateDownloaded: null,
     isLatestVersion: null,
-    isLinux: process.platform === 'linux',
 
     isSupportedEnvironment: computed({
         get() {
-            if (this.get('isLinux') || process.mas) {
+            if (process.platform === 'linux' || process.mas) {
                 log.info(`Updater: Not supported, because Linux or MAS`);
                 return false;
             }
