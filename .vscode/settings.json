@@ -10,7 +10,7 @@
         "**/tmp": true,
         "**/vendor": true,
         "**/dist": true,
-        "**/electron-out": true
+        "**/electron-out": false
     }
 ,
 "vsicons.presets.angular": true
