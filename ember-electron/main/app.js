@@ -1,5 +1,5 @@
 // Before we do anything else, handle Squirrel Events
-if (require('./squirrel')()) return;
+if(require('electron-squirrel-startup')) return;
 
 const { app, BrowserWindow } = require('electron');
 const { ensureSingleInstance } = require('./single-instance');
