@@ -2,6 +2,42 @@ import { computed } from '@ember/object';
 import { inject } from '@ember/service';
 import Component from '@ember/component';
 
+function getEditMenu(c, showNewIconColor) {
+    const { remote } = requireNode('electron');
+    const { Menu } = remote;
+    const template = [
+        {
+            label: 'Edit Blog',
+            click() {
+                if (c.get('selectedBlog')) {
+                    c.editBlog(c.get('selectedBlog'));
+                }
+            }
+        },
+        {
+            label: 'Remove Blog',
+            click() {
+                if (c.get('selectedBlog')) {
+                    c.removeBlog(c.get('selectedBlog'));
+                }
+            }
+        }
+    ];
+
+    if (showNewIconColor) {
+        template.push({
+            label: 'New Icon Color',
+            click() {
+                if (c.get('selectedBlog')) {
+                    c.changeBlogColor(c.get('selectedBlog'));
+                }
+            }
+        });
+    }
+
+    return Menu.buildFromTemplate(template);
+}
+
 /**
  * The switcher component is a Slack-like quick switcher on the left side of
  * the app, allowing users to quickly switch between blogs.
@@ -55,36 +91,6 @@ export default Component.extend({
      */
     _setupContextMenu() {
         const { remote } = requireNode('electron');
-        const { Menu } = remote;
-        const self = this;
-        let selectedBlog = null;
-
-        const editMenu = Menu.buildFromTemplate([
-            {
-                label: 'Edit Blog',
-                click() {
-                    if (selectedBlog) {
-                        self.editBlog(selectedBlog);
-                    }
-                }
-            },
-            {
-                label: 'Remove Blog',
-                click() {
-                    if (selectedBlog) {
-                        self.removeBlog(selectedBlog);
-                    }
-                }
-            },
-            {
-                label: 'New Icon Color',
-                click() {
-                    if (selectedBlog) {
-                        self.changeBlogColor(selectedBlog);
-                    }
-                }
-            }
-        ]);
 
         this.$()
             .off('contextmenu')
@@ -95,9 +101,12 @@ export default Component.extend({
                 let node = e.target;
 
                 while (node) {
-                    if (node.classList && node.classList.contains('switch-btn')
-                        && node.dataset && node.dataset.blog) {
-                        selectedBlog = node.dataset.blog;
+                    const { classList, dataset } = node;
+                    const { blog, showLetter } = dataset || {};
+
+                    if (classList && classList.contains('switch-btn') && blog) {
+                        const editMenu = getEditMenu(this, showLetter);
+                        this.set('selectedBlog', node.dataset.blog);
                         editMenu.popup(remote.getCurrentWindow());
                         break;
                     }
