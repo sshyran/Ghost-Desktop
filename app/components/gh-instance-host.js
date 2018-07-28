@@ -252,7 +252,7 @@ export default Component.extend({
 
         const $webview = this._getWebView();
         const path = requireNode('path');
-        let errorPage = path.join(__dirname, '..', 'main', 'load-error', 'error.html');
+        let errorPage = path.join(__dirname, '../ember-electron/', 'main', 'load-error', 'error.html');
         const validatedURL = e.originalEvent.validatedURL || '';
 
         // Don't try this at home
