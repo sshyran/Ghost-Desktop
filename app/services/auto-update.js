@@ -21,7 +21,7 @@ export default Service.extend(Evented, {
                 return false;
             }
 
-            if (!isPackaged()) {
+            if (isPackaged()) {
                 log.info(`Updater: Not supported, this is developer mode`);
                 return false;
             }
@@ -159,7 +159,7 @@ export default Service.extend(Evented, {
         const { autoUpdater } = remote;
 
         // If we're not running signed code, requiring auto updater will fail
-        if (isPackaged()) return;
+        if (!this.get('isSupportedEnvironment')) return;
 
         const feedUrl = this.get('updateFeedUrl');
         log.info(`Updater: Feed url: ${feedUrl}`);

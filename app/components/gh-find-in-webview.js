@@ -33,7 +33,13 @@ export default Component.extend({
             });
         } else {
             this.set('searchterm', '');
-            later(() => this.$('input').focus());
+            later(() => {
+                const input = this.$('input');
+
+                if (input) {
+                    this.$('input').focus();
+                }
+            });
         }
     },
 

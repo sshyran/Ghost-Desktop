@@ -10,11 +10,6 @@ test('it exists', function(assert) {
     assert.ok(service);
 });
 
-test('reports the correct environment', function(assert) {
-    const service = this.subject();
-    assert.ok(service.get('environment'));
-});
-
 test('reports the correct application version', function(assert) {
     const oldRequire = window.requireNode;
 
@@ -48,8 +43,7 @@ test('calls setup during online checkForUpdates', function(assert) {
         return Promise.resolve(true);
     };
 
-    service.set('isLinux', false);
-    service.set('environment', 'production');
+    service.set('isSupportedEnvironment', true);
     service._setup = () => assert.ok(true);
     service.checkForUpdates();
 
@@ -80,8 +74,8 @@ test('calls Electron\'s autoUpdater for update checking', function(assert) {
         });
     };
 
-    service.set('environment', 'production');
-    service.set('isLinux', false);
+    service.set('isSupportedEnvironment', true);
+    service._setup = () => assert.ok(true);
     service.set('autoUpdater', {
         checkForUpdates() {
             assert.ok(true);
@@ -142,7 +136,7 @@ test('_setup sets the feed url', function(assert) {
 
     const service = this.subject();
     service.set('appVersion', '1.0.0-beta');
-    service.set('environment', 'production');
+    service.set('isSupportedEnvironment', true);
     service._setup();
 
     window.requireNode = oldRequire;
@@ -186,7 +180,7 @@ test('_setup handles autoUpdater events', function(assert) {
 
     const service = this.subject();
     service.set('appVersion', '1.0.0-beta');
-    service.set('environment', 'production');
+    service.set('isSupportedEnvironment', true);
     service._setup();
 
     window.requireNode = oldRequire;
@@ -217,7 +211,7 @@ test('autoUpdater\'s update checks is reflected in isCheckingForUpdate', functio
 
     const service = this.subject();
     service.set('appVersion', '1.0.0-beta');
-    service.set('environment', 'production');
+    service.set('isSupportedEnvironment', true);
     service._setup();
 
     assert.equal(service.get('isCheckingForUpdate'), true);
@@ -250,7 +244,7 @@ test('autoUpdater\'s update-available is reflected in isUpdateAvailable', functi
 
     const service = this.subject();
     service.set('appVersion', '1.0.0-beta');
-    service.set('environment', 'production');
+    service.set('isSupportedEnvironment', true);
     service._setup();
 
     assert.equal(service.get('isUpdateAvailable'), true);
@@ -283,7 +277,7 @@ test('autoUpdater\'s update-downloaded is reflected in isUpdateDownloaded', func
 
     const service = this.subject();
     service.set('appVersion', '1.0.0-beta');
-    service.set('environment', 'production');
+    service.set('isSupportedEnvironment', true);
     service._setup();
 
     assert.equal(service.get('isUpdateDownloaded'), true);
@@ -316,7 +310,7 @@ test('autoUpdater\'s update-not-available is reflected in isUpdateAvailable', fu
 
     const service = this.subject();
     service.set('appVersion', '1.0.0-beta');
-    service.set('environment', 'production');
+    service.set('isSupportedEnvironment', true);
     service._setup();
 
     assert.equal(service.get('isUpdateAvailable'), false);
