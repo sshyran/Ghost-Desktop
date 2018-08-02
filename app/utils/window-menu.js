@@ -110,7 +110,7 @@ export function setup() {
             ]
         },
         {
-            role: 'windowMenu',
+            role: 'windowMenu'
         },
         {
             label: 'Developer',
