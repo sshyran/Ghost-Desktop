@@ -6,7 +6,6 @@
  * b) successful loaded
  */
 function checkStatus(i = 0) {
-    const qs = document.querySelectorAll.bind(document);
     const err = document.querySelector('p.main-error');
     const errChildren = err && err.childElementCount && err.childElementCount > 0;
     const errText = err && err.textContent && err.textContent.length > 0;
@@ -22,7 +21,7 @@ function checkStatus(i = 0) {
     const notLoadedChecks = [
         // We're for sure on a sign in screen
         () => !!document.querySelector('form.gh-signin')
-    ]
+    ];
 
     // Try the load checks first
     const loaded = loadChecks.find((check) => check());
@@ -36,7 +35,7 @@ function checkStatus(i = 0) {
         setTimeout(() => console.log('loaded'), 200);
     } else if (errors) {
         // Noooo, login errors!
-        //console.log('login-error');
+        console.log('login-error');
     } else {
         if (i > 150) return;
 

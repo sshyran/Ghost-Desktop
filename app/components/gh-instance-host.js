@@ -27,7 +27,7 @@ export default Component.extend({
         return `WebView ${name}`;
     }),
     prefix: computed('debugName', function () {
-        return `gh-instance-host: ${this.get('debugName')}: `
+        return `gh-instance-host: ${this.get('debugName')}: `;
     }),
 
     /**
@@ -69,11 +69,11 @@ export default Component.extend({
             .off('did-finish-load')
             .on('did-finish-load', () => this._handleLoaded())
             .off('did-fail-load')
-            .on('did-fail-load', (e, c, s) => this._handleLoadFailure(e, c, s))
+            .on('did-fail-load', (e) => this._handleLoadFailure(e))
             .off('did-get-redirect-request')
-            .on('did-get-redirect-request', (e, o, n) => this._handleRedirect(e, o, n))
+            .on('did-get-redirect-request', (e) => this._handleRedirect(e))
             .off('will-navigate')
-            .on('will-navigate', (e, n) => this._handleWillNavigate(o, n))
+            .on('will-navigate', (e) => this._handleWillNavigate(e))
             .off('new-window')
             .on('new-window', (e) => this._handleNewWindow(e))
             .off('console-message')
