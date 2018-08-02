@@ -6,7 +6,7 @@
  * b) successful loaded
  */
 function checkStatus(i = 0) {
-    const $ = window.$ || document.querySelectorAll;
+    const qs = document.querySelectorAll.bind(document);
     const err = document.querySelector('p.main-error');
     const errChildren = err && err.childElementCount && err.childElementCount > 0;
     const errText = err && err.textContent && err.textContent.length > 0;
@@ -15,16 +15,20 @@ function checkStatus(i = 0) {
     const loadChecks = [
         // No longer active in Ghost 1.0, but found in old versions
         () => !!document.querySelector('a[title="New Post"]'),
-        // Link to main editor
-        () => !!document.querySelector('a.gh-nav-main-editor'),
         // Alternative check
-        () => !!($("a:contains('New story')").length)
+        () => !!(document.querySelector('.gh-nav'))
     ];
+
+    const notLoadedChecks = [
+        // We're for sure on a sign in screen
+        () => !!document.querySelector('form.gh-signin')
+    ]
 
     // Try the load checks first
     const loaded = loadChecks.find((check) => check());
+    const notLoaded = notLoadedChecks.every((check) => check());
 
-    if (loaded) {
+    if (loaded && !notLoaded && window.$) {
         // Yay, successfully loaded - let's give the renderer 200 more ms
         // for rendering
         window.GHOST_LOADED = true;
@@ -32,7 +36,7 @@ function checkStatus(i = 0) {
         setTimeout(() => console.log('loaded'), 200);
     } else if (errors) {
         // Noooo, login errors!
-        console.log('login-error');
+        //console.log('login-error');
     } else {
         if (i > 150) return;
 
@@ -50,19 +54,17 @@ function checkStatus(i = 0) {
 function login(username = '', password = '', i = 0) {
     if (window.GHOST_LOADED) return;
 
-    const $ = window.$ || document.querySelectorAll;
-    const usernameField = $('input[name="identification"]');
-    const passwordField = $('input[name="password"]');
-    const loginButton = $('button.login');
+    const usernameField = window.$('input[name="identification"]');
+    const passwordField = window.$('input[name="password"]');
+    const loginButton = window.$('button.login');
     const results = usernameField.length  && passwordField.length  && loginButton.length;
 
     if (i === 0) checkStatus();
 
     if (results) {
-        usernameField.val(username);
-        usernameField.change();
-        passwordField.val(password);
-        passwordField.change();
+        usernameField.val(username).change().trigger('input');
+        passwordField.val(password).change().trigger('input');
+
         loginButton.click();
     } else {
         // We'll try for 5s
