@@ -26,6 +26,9 @@ export default Component.extend({
 
         return `WebView ${name}`;
     }),
+    prefix: computed('debugName', function () {
+        return `gh-instance-host: ${this.get('debugName')}: `
+    }),
 
     /**
      * Observes the 'isResetRequested' property, resetting the instance if
@@ -55,9 +58,9 @@ export default Component.extend({
     didRender() {
         this._super(...arguments);
 
-        log.silly(`gh-instance-host: Rendered, now setting up listeners`);
+        log.silly(`${this.get('prefix')}Rendered, now setting up listeners`);
 
-        // Once the webview is created, we immediatly attach handlers
+        // Once the webview is created, we immediately attach handlers
         // to handle the successful load of the content - and a
         // "new window" request coming from the instance
         this.$('webview')
@@ -68,9 +71,9 @@ export default Component.extend({
             .off('did-fail-load')
             .on('did-fail-load', (e, c, s) => this._handleLoadFailure(e, c, s))
             .off('did-get-redirect-request')
-            .on('did-get-redirect-request', (e, n) => this._handleWillNavigate(n))
+            .on('did-get-redirect-request', (e, o, n) => this._handleRedirect(e, o, n))
             .off('will-navigate')
-            .on('will-navigate', (e, o, n) => this._handleRedirect(o, n))
+            .on('will-navigate', (e, n) => this._handleWillNavigate(o, n))
             .off('new-window')
             .on('new-window', (e) => this._handleNewWindow(e))
             .off('console-message')
@@ -78,7 +81,8 @@ export default Component.extend({
     },
 
     didInsertElement() {
-        this.get('preferences').on('selectedDictionaryChanged', () => this._setupSpellchecker());
+        this.get('preferences')
+            .on('selectedDictionaryChanged', () => this._setupSpellchecker());
 
         if (this.get('blog.isResetRequested')) {
             this.set('blog.isResetRequested', false);
@@ -108,7 +112,7 @@ export default Component.extend({
      * A crude attempt at trying things again.
      */
     reload() {
-        log.info(`gh-instance-host: Reloading ${this.get('debugName')}`);
+        log.info(`${this.get('prefix')}Reloading`);
 
         this.set('isInstanceLoaded', false);
         this.set('isAttemptedSignin', false);
@@ -124,7 +128,7 @@ export default Component.extend({
         const username = this.get('blog.identification');
         const password = await this.get('blog').getPassword();
 
-        log.info(`gh-instance-host: ${this.get('debugName')} trying to sign in.`);
+        log.info(`${this.get('prefix')}Trying to sign in.`);
 
         // If we can't find username or password, bail out and let the
         // user deal with whatever happened
@@ -132,7 +136,7 @@ export default Component.extend({
         // TODO: Ask the user for credentials and add them back to the OS
         // keystore
         if (!username || !password || !$webview) {
-            log.info(`gh-instance-host: ${this.get('debugName')} tried to sign in, but no username or password found.`);
+            log.info(`${this.get('prefix')}Tried to sign in, but no username or password found.`);
             return this.show();
         }
 
@@ -170,20 +174,21 @@ export default Component.extend({
     /**
      * Handles will-navigate (mostly by just logging it)
      *
-     * @param {string} newUrl
+     * @param {JQuery.Event} e
      */
-    _handleWillNavigate(newUrl = '') {
-        log.info(`gh-instance-host: ${this.get('debugName')} will navigate: ${newUrl}`);
+    _handleWillNavigate(e) {
+        const { newURL, isMainFrame } = (e || {}).originalEvent || {};
+        log.info(`${this.get('prefix')}Will navigate: ${newURL}. Main frame: ${isMainFrame}.`);
     },
 
     /**
      * Handles redirection (mostly by just logging it)
      *
-     * @param {string} oldUrl
-     * @param {string} newUrl
+     * @param {JQuery.Event} e
      */
-    _handleRedirect(oldUrl = '', newUrl = '') {
-        log.info(`gh-instance-host: ${this.get('debugName')} was redirected: ${oldUrl}, ${newUrl}`);
+    _handleRedirect(e) {
+        const { oldURL, newURL, isMainFrame } = (e || {}).originalEvent || {};
+        log.info(`${this.get('prefix')} was redirected: ${oldURL}, ${newURL}. Main frame: ${isMainFrame}.`);
     },
 
     /**
@@ -204,7 +209,7 @@ export default Component.extend({
      * Handle's the 'did-finish-load' event on the webview hosting the Ghost blog
      */
     _handleLoaded() {
-        log.info(`gh-instance-host: ${this.get('debugName')} did-finish-loading`);
+        log.info(`${this.get('prefix')} did-finish-loading`);
         const $webview = this._getWebView();
         const isAttemptedSignin = this.get('isAttemptedSignin');
         let title = '';
@@ -220,7 +225,7 @@ export default Component.extend({
         if ((title.includes('Sign In') || title === 'Ghost Admin') && !isAttemptedSignin) {
             this.signin();
         } else {
-            log.info(`gh-instance-host: ${this.get('debugName')} Not trying to sign in.`, { title, isAttemptedSignin });
+            log.info(`${this.get('prefix')} Not trying to sign in.`, { title, isAttemptedSignin });
             this.show();
         }
     },
@@ -228,7 +233,7 @@ export default Component.extend({
     /**
      * Handles "new window" requests from the Ghost blog, piping them
      * through to the operating system's default browser
-     * @param  {Object} e - jQuery Event
+     * @param {JQuery.Event} e
      */
     _handleNewWindow(e) {
         if (e && e.originalEvent && e.originalEvent.url) {
@@ -243,22 +248,26 @@ export default Component.extend({
      * can be found in the Chrome source:
      * https://code.google.com/p/chromium/codesearch#chromium/src/net/base/net_error_list.h
      *
-     * @param e {Object} - event
-     * @param errorCode {number}
-     * @param errorDescription {string}
+     * @param {JQuery.Event} e
      */
-    _handleLoadFailure(e, errorCode, errorDescription = '') {
-        log.info(`gh-instance-host: ${this.get('debugName')} encountered load error: ${errorCode}`);
+    _handleLoadFailure(e) {
+        const { errorCode, errorDescription, validatedURL, isMainFrame } = (e || {}).originalEvent || {};
+        const prefix = `${this.get('prefix')}`;
+        log.info(`${prefix} encountered load error for ${validatedURL}: ${errorCode}`);
 
-        const $webview = this._getWebView();
-        const path = requireNode('path');
-        let errorPage = path.join(__dirname, '../ember-electron/', 'main', 'load-error', 'error.html');
-        const validatedURL = e.originalEvent.validatedURL || '';
+        // Let's not do this unless it's actually the root
+        if (!isMainFrame) {
+            return;
+        }
 
         // Don't try this at home
         if (validatedURL.includes('file://')) {
             return;
         }
+
+        const $webview = this._getWebView();
+        const path = requireNode('path');
+        let errorPage = path.join(__dirname, '../ember-electron/', 'main', 'load-error', 'error.html');
 
         if (ENV.environment === 'test') {
             errorPage = path.join(process.cwd(), 'main', 'load-error', 'error.html');
