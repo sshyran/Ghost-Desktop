@@ -40,7 +40,7 @@
 	<string>AtomApplication</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright (c) 2016-2017 Ghost Foundation</string>
+	<string>Copyright (c) 2016-2018 Ghost Foundation</string>
 	<true/>
 </dict>
 </plist>

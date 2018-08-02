@@ -34,7 +34,7 @@ module.exports = {
     },
     electronPackagerConfig: {
         appCategoryType: 'public.app-category.productivity',
-        appCopyright: 'Copyright (c) 2016-2017 Ghost Foundation',
+        appCopyright: 'Copyright (c) 2016-2018 Ghost Foundation',
         name: 'Ghost',
         versionString: {
             CompanyName: 'Ghost Foundation',
