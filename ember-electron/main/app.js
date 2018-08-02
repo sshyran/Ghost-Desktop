@@ -6,6 +6,8 @@ const { ensureSingleInstance } = require('./single-instance');
 const { fetchWindowState } = require('./window-state');
 const { parseArguments } = require('./parse-arguments');
 const { state } = require('./state-manager');
+const { secureApp } = require('./security');
+
 const log = require('electron-log');
 
 const emberAppLocation = `file://${__dirname}/../../ember/index.html`;
@@ -18,6 +20,8 @@ log.transports.file.appName = 'ghost';
 let mainWindow = null;
 
 function setupListeners(window) {
+    secureApp(window);
+
     // If a loading operation goes wrong, we'll send Electron back to
     // Ember App entry point
     window.webContents.on('did-fail-load', () => window.loadURL(emberAppLocation));
