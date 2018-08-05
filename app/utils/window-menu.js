@@ -187,15 +187,6 @@ export function setup() {
             ]
         });
     } else if (process.platform === 'linux') {
-        template.find((i) => i.label === 'Window').submenu.splice(1, 0, {
-            label: 'Maximize',
-            click(item, focusedWindow) {
-                if (focusedWindow) {
-                    focusedWindow.maximize();
-                }
-            }
-        });
-
         template.unshift({
             label: 'File',
             submenu: [ {
