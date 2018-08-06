@@ -137,10 +137,18 @@ export default Component.extend({
             log.info(`gh-edit-blog: Creating new blog record (or updating a new one)`);
             let record = this.get('blog') || await this._ensureSingleRecord(url);
 
+            const data = {
+                url,
+                name,
+                identification,
+                basicUsername,
+                basicPassword
+            }
+
             if (!record) {
                 // If the blog doesn't already exist, create it
                 log.info(`gh-edit-blog: Creating new record for ${url}`);
-                record = this.get('store').createRecord('blog', { url });
+                record = this.get('store').createRecord('blog', data);
             } else {
                 // If it does exist, ensure that everybody knows this is super new
                 // This ensures we update even if only the password field was updated
@@ -148,13 +156,7 @@ export default Component.extend({
                 record.set('isResetRequested', true);
             }
 
-            record.setProperties({
-                url,
-                name,
-                identification,
-                basicUsername,
-                basicPassword
-            });
+            record.setProperties(data);
 
             // Set the password in an extra step, because it's a native call
             record.setPassword(this.get('password'));

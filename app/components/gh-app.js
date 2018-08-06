@@ -88,7 +88,7 @@ export default Component.extend({
         return !!(b && b.length > 0);
     }),
 
-    blogsObserver: observer('hasBlogs', function () {
+    blogsObserver: observer('blogs', 'hasBlogs', function () {
         if (!this.get('hasBlogs')) this.send('showAddBlog');
     }),
 
@@ -145,11 +145,11 @@ export default Component.extend({
     },
 
     /**
-     * Reloads the blogs from the local databse
+     * Reloads the blogs from the local database
      */
     refreshBlogs() {
         log.silly(`gh-app: Refreshing blogs.`);
-        this.get('store').findAll('blog')
+        return this.get('store').findAll('blog')
             .then((result) => {
                 this.set('blogs', result);
                 this.setup();
@@ -255,7 +255,10 @@ export default Component.extend({
          * @param {Object} blog - Added blog
          */
         blogAdded(blog) {
-            this.send('switchToBlog', blog);
+            this.refreshBlogs()
+                .then(() => {
+                    this.send('switchToBlog', blog);
+                })
         },
 
         /**
