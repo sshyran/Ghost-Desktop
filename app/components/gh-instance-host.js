@@ -37,17 +37,7 @@ export default Component.extend({
      * the password, for instance)
      */
     blogObserver: observer('blog.isResetRequested', function() {
-        const blog = this.get('blog');
-
-        if (blog && blog.get('isResetRequested')) {
-            log.verbose(`gh-instance-host: ${blog.get('name')} requested reset`);
-            blog.set('isResetRequested', false);
-            blog.save();
-
-            if (this.get('isAttemptedSignin')) {
-                this.reload();
-            }
-        }
+        this.checkForReset();
     }),
 
     didReceiveAttrs() {
@@ -58,7 +48,7 @@ export default Component.extend({
     didRender() {
         this._super(...arguments);
 
-        log.silly(`${this.get('prefix')}Rendered, now setting up listeners`);
+        log.info(`${this.get('prefix')}Rendered, now setting up listeners`);
 
         // Once the webview is created, we immediately attach handlers
         // to handle the successful load of the content - and a
@@ -84,8 +74,18 @@ export default Component.extend({
         this.get('preferences')
             .on('selectedDictionaryChanged', () => this._setupSpellchecker());
 
-        if (this.get('blog.isResetRequested')) {
-            this.set('blog.isResetRequested', false);
+        this.checkForReset();
+    },
+
+    checkForReset() {
+        const blog = this.get('blog');
+
+        if (blog && blog.get('isResetRequested')) {
+            log.info(`gh-instance-host: ${blog.get('name')} requested reset`);
+            blog.set('isResetRequested', false);
+            blog.save();
+
+            this.reload();
         }
     },
 

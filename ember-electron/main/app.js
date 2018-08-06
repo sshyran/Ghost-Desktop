@@ -51,26 +51,10 @@ function setupListeners(window) {
     });
 }
 
-/**
- * Should the window be transparent? Let's find out!
- *
- * @returns {boolean} transparency
- */
-function getTransparency() {
-    if (process.platform !== 'darwin') {
-        return false;
-    }
-
-    const { getPreferences } = require('./preferences');
-    return getPreferences().isVibrancyEnabled;
-}
-
 function createMainWindow() {
     const titleBarStyle = (process.platform === 'darwin') ? 'hidden' : 'default';
     const frame = !(process.platform === 'win32');
-    const transparent = getTransparency();
-    const vibrancy = transparent ? 'dark' : null;
-    const defaultOptions = { show: false, titleBarStyle, vibrancy, frame, transparent };
+    const defaultOptions = { show: false, titleBarStyle, frame };
     let windowState, usableState, windowStateKeeper, window;
 
     // Instantiate the window with the existing size and position.

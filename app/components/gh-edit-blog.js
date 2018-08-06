@@ -142,7 +142,8 @@ export default Component.extend({
                 name,
                 identification,
                 basicUsername,
-                basicPassword
+                basicPassword,
+                isResetRequested: true
             }
 
             if (!record) {
@@ -153,10 +154,8 @@ export default Component.extend({
                 // If it does exist, ensure that everybody knows this is super new
                 // This ensures we update even if only the password field was updated
                 log.info(`gh-edit-blog: Record found, setting "isResetRequested" to true`);
-                record.set('isResetRequested', true);
+                record.setProperties({ ...data, isResetRequested: true });
             }
-
-            record.setProperties(data);
 
             // Set the password in an extra step, because it's a native call
             record.setPassword(this.get('password'));

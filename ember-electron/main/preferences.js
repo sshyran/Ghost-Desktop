@@ -30,8 +30,7 @@ function getPreferences() {
     return {
         isNotificationsEnabled: true,
         spellcheckLanguage: 'en',
-        isQuickSwitcherMinimized: false,
-        isVibrancyEnabled: false
+        isQuickSwitcherMinimized: false
     };
 }
 

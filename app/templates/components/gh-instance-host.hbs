@@ -1,7 +1,9 @@
+{{#if blog.url}}
 <webview src="{{blog.url}}"
          class="host {{if isInstanceLoaded "loaded"}}"
          allowpopups
          preload="{{preload}}"></webview>
+{{/if}}
 
 <div class="gh-app loading-container {{if isInstanceLoaded "loaded"}}">
     <div class="gh-loading-side"></div>

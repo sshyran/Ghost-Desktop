@@ -255,10 +255,12 @@ export default Component.extend({
          * @param {Object} blog - Added blog
          */
         blogAdded(blog) {
-            this.refreshBlogs()
-                .then(() => {
-                    this.send('switchToBlog', blog);
-                })
+            setTimeout(() => {
+                // Switching to a newly created WebView too
+                // soon breaks all kinds of Chrome-internal things.
+                // Todo: Move away from WebViews.
+                this.send('switchToBlog', blog);
+            }, 1000);
         },
 
         /**

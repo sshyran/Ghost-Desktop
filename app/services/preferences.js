@@ -19,26 +19,6 @@ export default Service.extend(Evented, {
     contributors: computed.alias('preferences.contributors'),
     spellcheckLanguage: computed.alias('preferences.spellcheckLanguage'),
 
-    isVibrancyEnabled: computed({
-        get() {
-            if (!getIsYosemiteOrHigher()) return false;
-            return !!this.get('preferences.isVibrancyEnabled');
-        },
-        set(k, v) {
-            const value = !!v;
-            this.set('preferences.isVibrancyEnabled', value);
-
-            const currentWindow = remote.getCurrentWindow();
-            if (value) {
-                currentWindow.setVibrancy('dark');
-            } else {
-                currentWindow.setVibrancy(null);
-            }
-
-            return value;
-        }
-    }),
-
     zoomFactor: computed({
         get() {
             return this.get('preferences.zoomFactor');
@@ -58,7 +38,6 @@ export default Service.extend(Evented, {
         const {
             isNotificationsEnabled,
             isQuickSwitcherMinimized,
-            isVibrancyEnabled,
             spellcheckLanguage,
             zoomFactor
         } = content;
@@ -68,7 +47,6 @@ export default Service.extend(Evented, {
         return {
             isNotificationsEnabled,
             isQuickSwitcherMinimized,
-            isVibrancyEnabled,
             spellcheckLanguage,
             zoomFactor
         };

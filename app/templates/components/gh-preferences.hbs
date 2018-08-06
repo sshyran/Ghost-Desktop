@@ -38,16 +38,6 @@
                         <p>Enable Desktop notifications</p>
                     </label>
                 </div>
-                {{#if showVibrancy}}
-                    <div class="form-group for-checkbox">
-                        <label for="isVibrancyEnabled">Enable Vibrancy Effect</label>
-                        <label class="checkbox" for="isVibrancyEnabled">
-                            {{input id="isVibrancyEnabled" type="checkbox" checked=preferences.isVibrancyEnabled}}
-                            <span class="input-toggle-component"></span>
-                            <p>Enable macOS "Vibrancy" effect</p>
-                        </label>
-                    </div>
-                {{/if}}
                 {{#unless hideSpellcheck}}
                     {{gh-dictionaries-dropdown}}
                 {{/unless}}

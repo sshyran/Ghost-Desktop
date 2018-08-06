@@ -11,7 +11,6 @@ export default Component.extend({
     preferences: inject(),
     autoUpdate: inject(),
     zoomFactor: computed.oneWay('preferences.preferences.zoomFactor'),
-    showVibrancy: getIsYosemiteOrHigher(),
 
     // In Ghost 1.0, an english-only spellchecker was released for the editor
     // component. Desktop has currently no control over that spellchecker.

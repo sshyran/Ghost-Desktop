@@ -46,10 +46,9 @@ export default Component.extend({
     store: inject(),
     preferences: inject(),
     windowMenu: inject(),
-    classNameBindings: [ 'isMinimized', 'isMac:mac', 'isVibrant', ':switcher', ':win-height-adjusted' ],
+    classNameBindings: [ 'isMinimized', 'isMac:mac', ':switcher', ':win-height-adjusted' ],
     isMinimized: computed.alias('preferences.isQuickSwitcherMinimized'),
     isMac: !!(process.platform === 'darwin'),
-    isVibrant: computed.alias('preferences.isVibrancyEnabled'),
     sortedBlogs: computed.sort('blogs', 'sortDefinition'),
     sortDefinition: [ 'index' ],
 
