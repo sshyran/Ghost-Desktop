@@ -1,7 +1,11 @@
 import Helper from '@ember/component/helper';
 
 export function firstLetter(params) {
-    return params[0].slice(0, 1);
+    if (params && params.length > 0) {
+        return params[0].slice(0, 1);
+    } else {
+        return 'G';
+    }
 }
 
 export default Helper.helper(firstLetter);
