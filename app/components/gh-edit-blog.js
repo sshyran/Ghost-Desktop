@@ -144,7 +144,7 @@ export default Component.extend({
                 basicUsername,
                 basicPassword,
                 isResetRequested: true
-            }
+            };
 
             if (!record) {
                 // If the blog doesn't already exist, create it

@@ -4,8 +4,6 @@ import { storageFor } from 'ember-local-storage';
 import Evented from '@ember/object/evented';
 import Service from '@ember/service';
 
-import { getIsYosemiteOrHigher } from '../utils/versions';
-
 const { remote } = requireNode('electron');
 const fs = requireNode('fs-extra');
 const log = requireNode('electron-log');
