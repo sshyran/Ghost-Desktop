@@ -33,8 +33,7 @@ export default Component.extend({
     /**
      * Observes the 'isResetRequested' property, resetting the instance if
      * it is set to true. This is our way of being able to refresh the blog
-     * if properties changed that are not part of the cleartext model (like
-     * the password, for instance)
+     * if properties changed that are not part of the cleartext model.
      */
     blogObserver: observer('blog.isResetRequested', function() {
         this.checkForReset();
@@ -115,43 +114,7 @@ export default Component.extend({
         log.info(`${this.get('prefix')}Reloading`);
 
         this.set('isInstanceLoaded', false);
-        this.set('isAttemptedSignin', false);
         this.didRender();
-
-        later(() => this.signin());
-    },
-
-    /**
-     * Programmatically attempt to login
-     */
-    async signin($webview = this._getWebView()) {
-        const username = this.get('blog.identification');
-        const password = await this.get('blog').getPassword();
-
-        log.info(`${this.get('prefix')}Trying to sign in.`);
-
-        // If we can't find username or password, bail out and let the
-        // user deal with whatever happened
-        //
-        // TODO: Ask the user for credentials and add them back to the OS
-        // keystore
-        if (!username || !password || !$webview) {
-            log.info(`${this.get('prefix')}Tried to sign in, but no username or password found.`);
-            return this.show();
-        }
-
-        const escapedUsername = escapeString(username);
-        const escapedPassword = escapeString(password);
-        const commands = [
-            `if (GhostDesktop && GhostDesktop.login) {`,
-            `  GhostDesktop.login('${escapedUsername}', '${escapedPassword}');`,
-            `}`
-        ];
-
-        // Execute the commands. Once done, the load handler will
-        // be called again, and the instance set to loaded.
-        $webview.executeJavaScript(commands.join(''));
-        this.set('isAttemptedSignin', true);
     },
 
     /**
@@ -211,7 +174,6 @@ export default Component.extend({
     _handleLoaded() {
         log.info(`${this.get('prefix')} did-finish-loading`);
         const $webview = this._getWebView();
-        const isAttemptedSignin = this.get('isAttemptedSignin');
         let title = '';
 
         try {
@@ -220,14 +182,7 @@ export default Component.extend({
             log.warn(`${this.get('debugName')} Error while trying to to get web view title:`);
         }
 
-        // Check if we're on the sign in page, and if so, attempt to
-        // login automatically (without bothering the user)
-        if ((title.includes('Sign In') || title === 'Ghost Admin') && !isAttemptedSignin) {
-            this.signin();
-        } else {
-            log.info(`${this.get('prefix')} Not trying to sign in.`, { title, isAttemptedSignin });
-            this.show();
-        }
+        this.show();
     },
 
     /**

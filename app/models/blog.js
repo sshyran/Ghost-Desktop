@@ -1,6 +1,5 @@
 import DS from 'ember-data';
 import getIconColor from '../utils/color-picker';
-import requireKeytar from '../utils/require-keytar';
 import getBlogName from '../utils/get-blog-name';
 
 const { Model, attr } = DS;
@@ -12,7 +11,6 @@ export default Model.extend({
     }),
     name: attr('string'),
     url: attr('string'),
-    identification: attr('string'),
     isSelected: attr('boolean'),
     iconColor: attr('string', {
         defaultValue: () => getIconColor(null)
@@ -63,55 +61,6 @@ export default Model.extend({
     },
 
     /**
-     * Uses the operating system's native credential store to set the password
-     * for this blog.
-     *
-     * @param {string} value - Password to set
-     * @return {Promise<void>} - Success
-     */
-    async setPassword(value) {
-        const keytar = requireKeytar();
-
-        log.verbose(`Blog model: Updating password ${this.url}`);
-        log.verbose(`Blog model: Keytar present: ${!!keytar}`);
-
-        if (keytar) {
-            try {
-                await keytar.setPassword(this.get('url'), this.get('identification'), value);
-            } catch (error) {
-                log.verbose(`Blog model: Unable to store password. Error: ${error}`);
-            }
-        }
-    },
-
-    /**
-     * Uses the operating system's native credential store to get the password
-     * for this blog.
-     *
-     * @return {Promise<string>} Password for this blog
-     */
-    async getPassword() {
-        if (!this.get('url') || !this.get('identification')) {
-            return null;
-        }
-
-        const keytar = requireKeytar();
-
-        log.verbose(`Blog model: Getting password ${this.url}`);
-        log.verbose(`Blog model: Keytar present: ${!!keytar}`);
-
-        if (keytar) {
-            try {
-                return keytar.getPassword(this.get('url'), this.get('identification'));
-            } catch (error) {
-                log.verbose(`Blog model: Unable to retrieve password. Error: ${error}`);
-            }
-        }
-
-        return null;
-    },
-
-    /**
      * Updates this blog's name by attempting to fetch the blog homepage
      * and extracting the name
      */
@@ -130,25 +79,6 @@ export default Model.extend({
                     log.info(`Blog model: Tried to update blog name, but failed: ${e}`);
                 });
         }
-    },
-
-    /**
-     * Delete the password while deleting the blog.
-     * Todo: DeleteRecord isn't persisted, meaning that if we ever
-     * call this and then pretend that we never meant to delete stuff,
-     * the password will still be gone.
-     */
-    deleteRecord() {
-        this._super();
-
-        const keytar = requireKeytar();
-
-        log.verbose(`Blog model: Deleting record`);
-        log.verbose(`Blog model: Keytar present: ${!!keytar}`);
-
-        return (keytar
-            ? keytar.deletePassword(this.get('url'), this.get('identification'))
-            : null);
     },
 
     /**
