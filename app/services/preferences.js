@@ -15,7 +15,6 @@ export default Service.extend(Evented, {
     isQuickSwitcherMinimized: computed.alias('preferences.isQuickSwitcherMinimized'),
     isNotificationsEnabled: computed.alias('preferences.isNotificationsEnabled'),
     contributors: computed.alias('preferences.contributors'),
-    spellcheckLanguage: computed.alias('preferences.spellcheckLanguage'),
 
     zoomFactor: computed({
         get() {
@@ -36,7 +35,6 @@ export default Service.extend(Evented, {
         const {
             isNotificationsEnabled,
             isQuickSwitcherMinimized,
-            spellcheckLanguage,
             zoomFactor
         } = content;
 
@@ -45,7 +43,6 @@ export default Service.extend(Evented, {
         return {
             isNotificationsEnabled,
             isQuickSwitcherMinimized,
-            spellcheckLanguage,
             zoomFactor
         };
     },

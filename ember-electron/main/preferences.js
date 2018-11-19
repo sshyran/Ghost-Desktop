@@ -29,7 +29,6 @@ function getPreferences() {
     // ../../app/storages/preferences.js
     return {
         isNotificationsEnabled: true,
-        spellcheckLanguage: 'en',
         isQuickSwitcherMinimized: false
     };
 }

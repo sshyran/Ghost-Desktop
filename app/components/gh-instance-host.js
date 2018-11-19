@@ -69,9 +69,6 @@ export default Component.extend({
     },
 
     didInsertElement() {
-        this.get('preferences')
-            .on('selectedDictionaryChanged', () => this._setupSpellchecker());
-
         this.checkForReset();
     },
 
@@ -163,7 +160,6 @@ export default Component.extend({
 
         this._insertCss();
         this._updateName();
-        this._setupSpellchecker($webview);
         this._setupWindowFocusListeners($webview);
     },
 
@@ -266,15 +262,6 @@ export default Component.extend({
         if (this.get('blog')) {
             this.get('blog').updateName();
         }
-    },
-
-    /**
-     * Sends the current spellchecker language to the webview
-     */
-    _setupSpellchecker($webview = this._getWebView()) {
-        const language = this.get('preferences.spellcheckLanguage');
-        log.verbose(`Setting up spellchecker: ${language}`);
-        $webview.send('spellchecker', language);
     },
 
     /**

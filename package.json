@@ -85,8 +85,7 @@
     "hexrgb": "0.0.2",
     "js-string-escape": "1.0.1",
     "query-string": "6.1.0",
-    "randomcolor": "0.5.3",
-    "spellchecker": "3.5.0"
+    "randomcolor": "0.5.3"
   },
   "config": {
     "forge": "./ember-electron/electron-forge-config.js"
