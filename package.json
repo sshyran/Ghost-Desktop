@@ -32,7 +32,7 @@
   "contributors": "https://github.com/TryGhost/Ghost-Desktop/graphs/contributors",
   "license": "MIT",
   "devDependencies": {
-    "babel-eslint": "^6.1.0",
+    "babel-eslint": "^10.0.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "broccoli-asset-rev": "^2.7.0",
@@ -65,7 +65,7 @@
     "ember-sortable": "1.11.2",
     "ember-source": "~3.5.0",
     "ember-test-helpers": "^0.6.3",
-    "eslint": "^3.19.0",
+    "eslint": "^5.9.0",
     "eslint-plugin-ember-suave": "^1.0.0",
     "find-parent-dir": "^0.3.0",
     "loader.js": "^4.7.0",
