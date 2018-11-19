@@ -8,8 +8,11 @@ const environment = EmberApp.env();
 module.exports = function(defaults) {
     const app = new EmberApp(defaults, {
         babel: {
-            comments: false,
-            plugins: ['transform-object-rest-spread']
+            loose: true,
+            plugins: [],
+            exclude: [
+                'transform-regenerator',
+            ],
         },
         fingerprint: {
             enabled: false
