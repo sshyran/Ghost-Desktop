@@ -6,7 +6,6 @@ import Component from '@ember/component';
 import ENV from 'ghost-desktop/config/environment';
 import { injectCss } from '../utils/inject-css';
 import Phrases from '../utils/phrases';
-import { escapeString } from '../utils/escape-string';
 
 const path = requireNode('path');
 const log = requireNode('electron-log');
@@ -173,15 +172,6 @@ export default Component.extend({
      */
     _handleLoaded() {
         log.info(`${this.get('prefix')} did-finish-loading`);
-        const $webview = this._getWebView();
-        let title = '';
-
-        try {
-            title = $webview.getTitle();
-        } catch (e) {
-            log.warn(`${this.get('debugName')} Error while trying to to get web view title:`);
-        }
-
         this.show();
     },
 

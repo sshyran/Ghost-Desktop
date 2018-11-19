@@ -3,7 +3,7 @@ export async function isReachable(url) {
     const log = requireNode('electron-log');
 
     try {
-        await fetch(url, { method: 'HEAD' })
+        await fetch(url, { method: 'HEAD' });
         log.info(`Reached ${url}`);
 
         return true;

@@ -1,4 +1,4 @@
-const urlPattern = /http(s?):\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,3000}(\.[a-z]{0,20})?\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+const urlPattern = /http(s?):\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,3000}(\.[a-z]{0,20})?\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g;
 
 /**
  * Sanitizes an input url, ensuring that it meets the requirements of Ghost Desktop
