@@ -1,5 +1,3 @@
-const he = requireNode('he');
-
 /**
  * Sets the title on the currently focused Window (or the first found window)
  *
@@ -7,6 +5,7 @@ const he = requireNode('he');
  * @param {string} [title='Ghost'] - New title
  */
 export default function setWindowTitle(title = 'Ghost') {
+    const he = requireNode('he');
     const { remote } = requireNode('electron');
     const { BrowserWindow } = remote;
     const currentWindow = BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];
