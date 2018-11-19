@@ -31,6 +31,12 @@ function setupListeners(window) {
     // app impossible to use without restarting. These events should be prevented.
     window.webContents.on('will-navigate', (event) => event.preventDefault());
 
+    // Emitted when the window is closed.
+    window.on('closed', () => {
+        window.removeAllListeners();
+        window = null;
+    });
+
     // Once the last window is closed, we'll exit
     app.on('window-all-closed', () => {
         // On macOS it is common for applications and their menu bar
@@ -54,7 +60,7 @@ function setupListeners(window) {
 function createMainWindow() {
     const titleBarStyle = (process.platform === 'darwin') ? 'hidden' : 'default';
     const frame = !(process.platform === 'win32');
-    const defaultOptions = { show: false, titleBarStyle, frame };
+    const defaultOptions = { show: true, titleBarStyle, frame };
     let windowState, usableState, windowStateKeeper, window;
 
     // Instantiate the window with the existing size and position.
@@ -70,12 +76,7 @@ function createMainWindow() {
         window = new BrowserWindow(defaultOptions);
     }
 
-    // Emitted when the window is closed.
-    window.on('closed', () => {
-        window.removeAllListeners();
-        window = null;
-    });
-
+    setupListeners(window);
     window.loadURL(emberAppLocation);
 
     delete window.module;
@@ -97,7 +98,6 @@ function reloadMainWindow() {
     }
 
     mainWindow = createMainWindow();
-    setupListeners(mainWindow);
 
     if (oldMainWindow) {
         // Burn, burn, buuuuurn
@@ -124,8 +124,6 @@ app.on('ready', function onReady() {
     // mainWindow.openDevTools();
 
     state.mainWindowId = mainWindow.id;
-
-    setupListeners(mainWindow);
 
     require('./ipc');
     require('./basic-auth');

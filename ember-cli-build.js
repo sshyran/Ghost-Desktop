@@ -2,10 +2,8 @@
 /* global require, module */
 'use strict';
 
-const EmberApp = require('ember-cli/lib/broccoli/ember-app'),
-    environment = EmberApp.env(),
-    isProduction = environment === 'production',
-    mythCompress = isProduction || environment === 'test';
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const environment = EmberApp.env();
 
 module.exports = function(defaults) {
     const app = new EmberApp(defaults, {
@@ -22,15 +20,7 @@ module.exports = function(defaults) {
         },
         sourcemaps: {
             enabled: EmberApp.env() !== 'production'
-        },
-        mythOptions: {
-            source: './app/styles/app.css',
-            inputFile: 'app.css',
-            browsers: 'last 2 Chrome versions',
-            sourcemap: true,
-            compress: mythCompress,
-            outputFile: 'ghost-desktop.css'
-        },
+        }
     });
 
     // Use `app.import` to add additional libraries to the generated
