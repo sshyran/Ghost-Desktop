@@ -270,7 +270,7 @@ export default Component.extend({
      */
     _setupWindowFocusListeners($webview = this._getWebView()) {
         window.addEventListener('blur', () => $webview.blur());
-        window.addEventListener('focus', () => $webview.focus());
+        // window.addEventListener('focus', () => $webview.focus());
     },
 
     /**
