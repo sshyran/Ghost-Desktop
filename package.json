@@ -39,7 +39,7 @@
     "cross-env": "^5.2.0",
     "devtron": "^1.4.0",
     "electron-forge": "^5.2.2",
-    "electron-prebuilt-compile": "3.0.6",
+    "electron-prebuilt-compile": "3.0.10",
     "ember-ajax": "4.0.0",
     "ember-cli": "3.5.0",
     "ember-cli-app-version": "^3.2.0",
