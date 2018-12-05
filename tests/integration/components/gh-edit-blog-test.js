@@ -1,7 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { getBlogs } from '../../fixtures/blogs';
-import EmberObject from '@ember/object';
 
 /**
  * Test Preparation
@@ -101,6 +100,7 @@ test('marks an incorrect url as invalid', function(assert) {
     this.$('input[name="url"]').focus();
     this.$('input[name="url"]').val('/not-a-url');
     this.$('input[name="url"]').change();
+    this.$('.btn').click();
 
     return assertErrorDivs(this, assert, 1);
 });
@@ -112,7 +112,7 @@ test('does not mark a correct url as invalid', function(assert) {
     this.$('input[name="url"]').focus();
     this.$('input[name="url"]').val('https://www.a-url.com/ghost');
     this.$('input[name="url"]').change();
-    this.$('input[name="url"]').blur();
+    this.$('.btn').click();
 
     return assertErrorDivs(this, assert, 0);
 });
