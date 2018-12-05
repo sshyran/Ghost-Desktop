@@ -12,15 +12,6 @@ export const TestBlog = Ember.Object.extend({
         Ember.run(() => this.set('isSelected', false));
     },
 
-    getPassword() {
-        // We so leet
-        return 'p@ssw0rd';
-    },
-
-    setPassword() {
-        return 'thanks much';
-    },
-
     updateName() {
         return Promise.resolve();
     },
@@ -36,7 +27,6 @@ export const getBlogs = () => Ember.A([
         name: 'Testblog (Signin)',
         url: path.join(realDirname, 'tests', 'fixtures', 'static-signin', 'signin.html'),
         isSelected: false,
-        identification: "test@user.com",
         iconColor: "#008000"
     }),
     TestBlog.create({
@@ -44,7 +34,6 @@ export const getBlogs = () => Ember.A([
         name: 'Testblog (Content)',
         url: path.join(realDirname, 'tests', 'fixtures', 'static-content', 'content.html'),
         isSelected: false,
-        identification: "test@user.com",
         iconColor: "#ff0000"
     }),
     TestBlog.create({
@@ -52,7 +41,6 @@ export const getBlogs = () => Ember.A([
         name: 'Testblog (New Post)',
         url: path.join(realDirname, 'tests', 'fixtures', 'static-newpost', 'newpost.html'),
         isSelected: false,
-        identification: "test@user.com",
         iconColor: "#800080"
     })
 ]);

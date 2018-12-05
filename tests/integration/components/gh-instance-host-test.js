@@ -26,7 +26,6 @@ test('it initializes the webview', function(assert) {
         name: 'Testblog (Content)',
         url: `file://${__dirname}/tests/fixtures/static-content/content.html`,
         isSelected: false,
-        identification: "test@user.com",
         iconColor: "#ff0000"
     });
 

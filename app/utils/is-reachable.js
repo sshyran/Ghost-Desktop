@@ -1,19 +1,16 @@
-const log = requireNode('electron-log');
-const request = requireNode('request');
 
-export function isReachable(url) {
-    return new Promise((resolve) => {
-        log.info(`Trying to reach ${url}`);
+export async function isReachable(url) {
+    const log = requireNode('electron-log');
 
-        request({ url, method: 'HEAD' }, (err) => {
-            if (err) {
-                log.info(`Tried to reach ${url}, but failed`);
-                log.info(JSON.stringify(err, null, 2));
-                resolve(false);
-            } else {
-                log.info(`Reached ${url}`);
-                resolve(true);
-            }
-        });
-    });
+    try {
+        await fetch(url, { method: 'HEAD' });
+        log.info(`Reached ${url}`);
+
+        return true;
+    } catch (error) {
+        log.info(`Tried to reach ${url}, but failed`);
+        log.info(JSON.stringify(error, null, 2));
+
+        return false;
+    }
 }

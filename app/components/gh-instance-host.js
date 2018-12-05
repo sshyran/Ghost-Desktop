@@ -6,7 +6,6 @@ import Component from '@ember/component';
 import ENV from 'ghost-desktop/config/environment';
 import { injectCss } from '../utils/inject-css';
 import Phrases from '../utils/phrases';
-import { escapeString } from '../utils/escape-string';
 
 const path = requireNode('path');
 const log = requireNode('electron-log');
@@ -33,8 +32,7 @@ export default Component.extend({
     /**
      * Observes the 'isResetRequested' property, resetting the instance if
      * it is set to true. This is our way of being able to refresh the blog
-     * if properties changed that are not part of the cleartext model (like
-     * the password, for instance)
+     * if properties changed that are not part of the cleartext model.
      */
     blogObserver: observer('blog.isResetRequested', function() {
         this.checkForReset();
@@ -71,9 +69,6 @@ export default Component.extend({
     },
 
     didInsertElement() {
-        this.get('preferences')
-            .on('selectedDictionaryChanged', () => this._setupSpellchecker());
-
         this.checkForReset();
     },
 
@@ -115,43 +110,7 @@ export default Component.extend({
         log.info(`${this.get('prefix')}Reloading`);
 
         this.set('isInstanceLoaded', false);
-        this.set('isAttemptedSignin', false);
         this.didRender();
-
-        later(() => this.signin());
-    },
-
-    /**
-     * Programmatically attempt to login
-     */
-    async signin($webview = this._getWebView()) {
-        const username = this.get('blog.identification');
-        const password = await this.get('blog').getPassword();
-
-        log.info(`${this.get('prefix')}Trying to sign in.`);
-
-        // If we can't find username or password, bail out and let the
-        // user deal with whatever happened
-        //
-        // TODO: Ask the user for credentials and add them back to the OS
-        // keystore
-        if (!username || !password || !$webview) {
-            log.info(`${this.get('prefix')}Tried to sign in, but no username or password found.`);
-            return this.show();
-        }
-
-        const escapedUsername = escapeString(username);
-        const escapedPassword = escapeString(password);
-        const commands = [
-            `if (GhostDesktop && GhostDesktop.login) {`,
-            `  GhostDesktop.login('${escapedUsername}', '${escapedPassword}');`,
-            `}`
-        ];
-
-        // Execute the commands. Once done, the load handler will
-        // be called again, and the instance set to loaded.
-        $webview.executeJavaScript(commands.join(''));
-        this.set('isAttemptedSignin', true);
     },
 
     /**
@@ -201,7 +160,6 @@ export default Component.extend({
 
         this._insertCss();
         this._updateName();
-        this._setupSpellchecker($webview);
         this._setupWindowFocusListeners($webview);
     },
 
@@ -210,24 +168,7 @@ export default Component.extend({
      */
     _handleLoaded() {
         log.info(`${this.get('prefix')} did-finish-loading`);
-        const $webview = this._getWebView();
-        const isAttemptedSignin = this.get('isAttemptedSignin');
-        let title = '';
-
-        try {
-            title = $webview.getTitle();
-        } catch (e) {
-            log.warn(`${this.get('debugName')} Error while trying to to get web view title:`);
-        }
-
-        // Check if we're on the sign in page, and if so, attempt to
-        // login automatically (without bothering the user)
-        if ((title.includes('Sign In') || title === 'Ghost Admin') && !isAttemptedSignin) {
-            this.signin();
-        } else {
-            log.info(`${this.get('prefix')} Not trying to sign in.`, { title, isAttemptedSignin });
-            this.show();
-        }
+        this.show();
     },
 
     /**
@@ -324,21 +265,12 @@ export default Component.extend({
     },
 
     /**
-     * Sends the current spellchecker language to the webview
-     */
-    _setupSpellchecker($webview = this._getWebView()) {
-        const language = this.get('preferences.spellcheckLanguage');
-        log.verbose(`Setting up spellchecker: ${language}`);
-        $webview.send('spellchecker', language);
-    },
-
-    /**
      * Ensures that Alt-Tab on Ghost Desktop windows doesn't mean that the user
      * looses focus in the Ghost Admin editor
      */
     _setupWindowFocusListeners($webview = this._getWebView()) {
         window.addEventListener('blur', () => $webview.blur());
-        window.addEventListener('focus', () => $webview.focus());
+        // window.addEventListener('focus', () => $webview.focus());
     },
 
     /**

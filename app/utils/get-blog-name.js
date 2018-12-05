@@ -1,5 +1,3 @@
-const he = requireNode('he');
-
 /**
  * Get's the blog name for a given blog url
  * @param  {string} url - Url for the blog
@@ -17,6 +15,7 @@ export default function getBlogName(url) {
     return fetch(url)
         .then((response) => response.text())
         .then((response) => {
+            const he = requireNode('he');
             const titleResult = response.match('<title>(.*)</title>');
             const title = (titleResult && titleResult.length > 1) ? titleResult[1] : url;
 

@@ -20,12 +20,9 @@ export default Component.extend({
     /**
      * A boolean value that is true if any errors are present
      */
-    hasError: computed('isIdentificationInvalid', 'isUrlInvalid', 'isPasswordInvalid', {
+    hasError: computed('isUrlInvalid', {
         get() {
-            const identification = this.get('isIdentificationInvalid');
-            const url = this.get('isUrlInvalid');
-            const password = this.get('isPasswordInvalid');
-            return (identification || url || password);
+            return this.get('isUrlInvalid');
         }
     }),
 
@@ -43,8 +40,6 @@ export default Component.extend({
 
             this.setProperties({
                 url: blog.get('url'),
-                identification: blog.get('identification'),
-                password: blog.getPassword(),
                 basicUsername: blog.get('basicUsername'),
                 basicPassword: blog.get('basicPassword'),
                 isBasicAuth
@@ -54,8 +49,6 @@ export default Component.extend({
 
             this.setProperties({
                 url: preFillValues.url || '',
-                identification: preFillValues.identification || '',
-                password: preFillValues.password || '',
                 basicUsername: preFillValues.basicUsername || '',
                 basicPassword: preFillValues.basicPassword || ''
             });
@@ -72,6 +65,7 @@ export default Component.extend({
      */
     _validateUrlIsGhost(url = '', basicAuth) {
         log.verbose(`gh-edit-blog: Validating Ghost url ${url}`);
+
         return getIsGhost(url, basicAuth)
             .then((is) => {
                 log.verbose(`gh-edit-blog: Validation result: ${is}`);
@@ -127,12 +121,11 @@ export default Component.extend({
      *
      * @param {string} [url=''] Url
      * @param {string} [name=''] Name
-     * @param {string} [identification=''] Identification
      * @param {string} [basicUsername=''] HTTP Basic Auth Username
      * @param {string} [basicPassword=''] HTTP Basic Auth Password
      * @returns {Promise} - Resolves with a blog record
      */
-    _createBlogIfNotExists(url = '', name = '', identification = '', basicUsername = '', basicPassword = '') {
+    _createBlogIfNotExists(url = '', name = '', basicUsername = '', basicPassword = '') {
         return new Promise(async (resolve) => {
             log.info(`gh-edit-blog: Creating new blog record (or updating a new one)`);
             let record = this.get('blog') || await this._ensureSingleRecord(url);
@@ -140,7 +133,6 @@ export default Component.extend({
             const data = {
                 url,
                 name,
-                identification,
                 basicUsername,
                 basicPassword,
                 isResetRequested: true
@@ -151,14 +143,10 @@ export default Component.extend({
                 log.info(`gh-edit-blog: Creating new record for ${url}`);
                 record = this.get('store').createRecord('blog', data);
             } else {
-                // If it does exist, ensure that everybody knows this is super new
-                // This ensures we update even if only the password field was updated
                 log.info(`gh-edit-blog: Record found, setting "isResetRequested" to true`);
                 record.setProperties({ ...data, isResetRequested: true });
             }
 
-            // Set the password in an extra step, because it's a native call
-            record.setPassword(this.get('password'));
             record.save().then((savedBlog) => resolve(savedBlog));
         });
     },
@@ -174,7 +162,6 @@ export default Component.extend({
             this.set('isSubmitting', true);
 
             const url = sanitizeUrl(this.get('url'));
-            const identification = this.get('identification');
             const basicUsername = this.get('basicUsername');
             const basicPassword = this.get('basicPassword');
             const isUrlGhost = await this._validateUrlIsGhost(url, { basicUsername, basicPassword });
@@ -182,23 +169,12 @@ export default Component.extend({
             if (isUrlGhost) {
                 const name = await getBlogName(url);
 
-                this._createBlogIfNotExists(url, name, identification, basicUsername, basicPassword)
+                this._createBlogIfNotExists(url, name, basicUsername, basicPassword)
                     .then((record) => this.sendAction('blogAdded', record));
             }
 
             this.set('isSubmitting', false);
             end();
-        },
-
-        /**
-         * Validates the identification entered by the user. It should be an email.
-         */
-        validateIdentification(input) {
-            const identificationPattern = /[^@]+@[^@]+\.[^@]+/gi;
-            const invalid = !identificationPattern.test(input);
-
-            this.set('identificationError', invalid ? Phrases.identificationInvalid : null);
-            this.set('isIdentificationInvalid', invalid);
         },
 
         /**
@@ -209,13 +185,6 @@ export default Component.extend({
 
             this.set('isUrlInvalid', invalid);
             this.set('urlError', invalid ? Phrases.urlInvalid : undefined);
-        },
-
-        /**
-         * Validates the password given by the user. It should not be empty.
-         */
-        validatePassword(input) {
-            this.set('isPasswordInvalid', (!input || input.length < 1));
         }
     }
 });

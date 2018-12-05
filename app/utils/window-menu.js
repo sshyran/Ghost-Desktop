@@ -73,7 +73,6 @@ export function openRepository() {
  */
 export function setup() {
     const { remote, ipcRenderer } = requireNode('electron');
-    const browserWindow = remote.getCurrentWindow();
 
     const template = [
         {
@@ -181,7 +180,7 @@ export function setup() {
                     accelerator: 'Command+Q',
                     click() {
                         ipcRenderer.send('shutdown-requested', true);
-                        browserWindow.close();
+                        remote.getCurrentWindow().close();
                     }
                 }
             ]

@@ -16,10 +16,6 @@ const path = requireNode('path');
 const blog501 = {
     blog: {
         url: path.join('http://0.0.0.0/404'),
-        identification: 'testuser',
-        getPassword() {
-            return undefined;
-        },
         updateName() {
             return new Promise((resolve) => resolve());
         },
@@ -31,10 +27,6 @@ const blog501 = {
 const blog404 = {
     blog: {
         url: path.join('http://0.0.0.0/404'),
-        identification: 'testuser',
-        getPassword() {
-            return 'p@ssword';
-        },
         updateName() {
             return new Promise((resolve) => resolve());
         },
@@ -46,10 +38,6 @@ const blog404 = {
 const blog200 = {
     blog: {
         url: path.join(__dirname, 'tests', 'fixtures', 'static-signin', 'signin.html'),
-        identification: 'testuser',
-        getPassword() {
-            return 'p@ssword';
-        },
         updateName() {
             return new Promise((resolve) => resolve());
         },
@@ -61,10 +49,6 @@ const blog200 = {
 const blogFile404 = {
     blog: {
         url: 'file://hi.com',
-        identification: 'testuser',
-        getPassword() {
-            return 'p@ssword';
-        },
         updateName() {
             return new Promise((resolve) => resolve());
         },
@@ -84,24 +68,6 @@ test('show sets the instance to loaded', function(assert) {
     component.show();
 
     assert.ok(component.get('isInstanceLoaded'));
-});
-
-test('signing aborts attempts to signin when username or password are missing', async function(assert) {
-    const component = this.subject(blog501);
-
-    this.render();
-    await run(async () => await component.signin());
-
-    assert.ok(component.get('isInstanceLoaded'));
-});
-
-test('signing attempts to signin', async function(assert) {
-    const component = this.subject(blog200);
-
-    this.render();
-    await component.signin();
-
-    assert.ok(component.get('isAttemptedSignin'));
 });
 
 test('handleLoaded eventually shows the webview', function(assert) {

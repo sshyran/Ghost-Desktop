@@ -17,11 +17,12 @@ function secureApp(mainWindow) {
     // Disallow navigation
     mainWindow.webContents.on('will-navigate', (event, url) => {
         const parsedUrl = new URL(url);
-
-        const isFile = parsedUrl.protocol === 'file';
+        const { protocol } = parsedUrl;
+        const isFile = protocol === 'file';
 
         if (!isFile) {
             console.warn(`Prevented navigation to ${url}`);
+            console.log(`Protocol: ${protocol}`);
             console.log(`Hostname: ${parsedUrl.hostname}`);
             event.preventDefault();
         }

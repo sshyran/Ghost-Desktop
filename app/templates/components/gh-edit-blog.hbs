@@ -22,30 +22,6 @@
                                    title=urlError}}
                     </span>
                 </div>
-                <div class="{{if isIdentificationInvalid "error"}}">
-                    <span class="input-icon icon-mail">
-                        {{gh-input class="gh-input email"
-                                   type="email"
-                                   placeholder="Email Address"
-                                   name="identification"
-                                   autocapitalize="off"
-                                   autocorrect="off"
-                                   focusOut=(action "validateIdentification" identification)
-                                   value=identification
-                                   title=identificationError}}
-                    </span>
-                </div>
-                <div class="{{if isPasswordInvalid "error"}}">
-                    <span class="input-icon icon-lock">
-                        {{gh-input class="password"
-                                   type="password"
-                                   placeholder="Password"
-                                   name="password"
-                                   value=password
-                                   autocorrect="off"
-                                   focusOut=(action "validatePassword" password)}}
-                    </span>
-                </div>
                 {{gh-basic-auth isEnabled=isBasicAuth username=basicUsername password=basicPassword}}
                 {{#gh-spin-button disabled=hasError
                                   class="btn btn-blue btn-block add-blog"
