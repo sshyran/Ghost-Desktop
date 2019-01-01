@@ -12,4 +12,4 @@ The project is maintained by a non-profit organisation called the **Ghost Founda
 Ghost Desktop is a beautiful desktop application that allows you to easily manage multiple Ghost blogs and work without distractions. If you're interested in giving us a hand, [check out the contributing guide](https://github.com/TryGhost/Ghost-Desktop/tree/master/docs)!
 
 # Copyright & License
-Copyright (c) 2013-2018 Ghost Foundation - Released under the [MIT license](LICENSE). Ghost and the Ghost Logo are trademarks of Ghost Foundation Ltd. Please see our [trademark policy](https://ghost.org/trademark/) for info on acceptable usage.
+Copyright (c) 2013-2019 Ghost Foundation - Released under the [MIT license](LICENSE). Ghost and the Ghost Logo are trademarks of Ghost Foundation Ltd. Please see our [trademark policy](https://ghost.org/trademark/) for info on acceptable usage.
